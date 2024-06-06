@@ -3,4 +3,15 @@ project(stealer)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(stealer main.cpp)
+add_definitions(-DDEV=true)
+
+add_executable(stealer src/main.cpp
+        src/stealer/Stealer.cpp
+        src/stealer/Stealer.h
+        src/stealer/StealerImpl.h
+        src/Includes.h
+        src/Utils.cpp
+        src/Utils.h
+        src/stealer/impl/Screenshot.cpp
+        src/stealer/impl/Screenshot.h
+)
