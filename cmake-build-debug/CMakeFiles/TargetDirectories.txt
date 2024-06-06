@@ -1,3 +1,0 @@
-D:/Projetcs/c++/stealer/cmake-build-debug/CMakeFiles/stealer.dir
-D:/Projetcs/c++/stealer/cmake-build-debug/CMakeFiles/edit_cache.dir
-D:/Projetcs/c++/stealer/cmake-build-debug/CMakeFiles/rebuild_cache.dir
