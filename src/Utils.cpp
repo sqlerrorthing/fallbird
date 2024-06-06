@@ -27,3 +27,15 @@ std::string Utils::generateString(size_t length) {
 std::filesystem::path Utils::getTemp() {
     return fs::temp_directory_path();
 }
+
+std::filesystem::path Utils::getLocalPath() {
+    return getUserPath() / "AppData" / "Roaming";
+}
+
+std::filesystem::path Utils::getRoamingPath() {
+    return getUserPath() / "AppData" / "Roaming";
+}
+
+std::filesystem::path Utils::getUserPath() {
+    return std::filesystem::path(std::getenv("USERPROFILE"));
+}

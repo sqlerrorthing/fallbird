@@ -12,6 +12,9 @@ class Utils {
 public:
     static std::string generateString(size_t length);
     static std::filesystem::path getTemp();
+    static std::filesystem::path getUserPath();
+    static std::filesystem::path getRoamingPath();
+    static std::filesystem::path getLocalPath();
 };
 
 

