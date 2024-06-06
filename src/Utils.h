@@ -8,13 +8,21 @@
 #include <random>
 #include <algorithm>
 
+namespace fs = std::filesystem;
+
 class Utils {
 public:
     static std::string generateString(size_t length);
-    static std::filesystem::path getTemp();
-    static std::filesystem::path getUserPath();
-    static std::filesystem::path getRoamingPath();
-    static std::filesystem::path getLocalPath();
+    static fs::path getTemp();
+    static fs::path getUserPath();
+    static fs::path getRoamingPath();
+    static fs::path getLocalPath();
+
+    static std::vector<std::string> splitString(const std::string& str, char delimiter);
+
+    static std::string readFile(const fs::path &file);
+private:
+    static bool copyFile(const fs::path &from, const fs::path &to);
 };
 
 

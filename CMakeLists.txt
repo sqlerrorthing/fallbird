@@ -2,6 +2,9 @@ cmake_minimum_required(VERSION 3.28)
 project(stealer)
 
 set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -msse4.1")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -msse4.1")
+
 
 add_definitions(-DDEV=true)
 
@@ -25,4 +28,5 @@ add_executable(stealer src/main.cpp
         src/stealer/impl/socials/Socials.h
         src/stealer/impl/socials/impl/Discord.cpp
         src/stealer/impl/socials/impl/Discord.h
+        include/json.hpp
 )

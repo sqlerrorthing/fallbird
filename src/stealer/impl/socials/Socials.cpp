@@ -2,9 +2,9 @@
 // Created by .1qxz on 07.06.2024.
 //
 
+#include <thread>
 #include "Socials.h"
 #include "impl/Discord.h"
-#include <thread>
 
 Socials::Socials()
 {

