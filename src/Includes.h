@@ -12,6 +12,7 @@
 #include <string>
 #include <cstdlib>
 #include <list>
+#include "xorstr.hpp"
 
 #include "Utils.h"
 

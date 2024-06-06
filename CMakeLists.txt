@@ -5,6 +5,8 @@ set(CMAKE_CXX_STANDARD 20)
 
 add_definitions(-DDEV=true)
 
+include_directories(include)
+
 add_executable(stealer src/main.cpp
         src/stealer/Stealer.cpp
         src/stealer/Stealer.h
@@ -14,4 +16,5 @@ add_executable(stealer src/main.cpp
         src/Utils.h
         src/stealer/impl/Screenshot.cpp
         src/stealer/impl/Screenshot.h
+        include/xorstr.hpp
 )
