@@ -4,8 +4,6 @@
 
 #include "Steam.h"
 
-typedef HWND(WINAPI* MessageBoxPtr)(HWND, LPCSTR, LPCSTR, UINT);
-
 static const fs::path STEAM_PATH = Utils::getSystemDrive() / "\\Program Files (x86)" / "Steam" / "config";
 
 
@@ -31,7 +29,6 @@ std::vector<fs::path> Steam::steamFiles() {
     {
         for (const auto& entry : fs::directory_iterator(STEAM_PATH)) {
             const fs::path& item_path = entry.path();
-            std::string item_path_str = item_path.string();
 
             paths.push_back(item_path);
         }
