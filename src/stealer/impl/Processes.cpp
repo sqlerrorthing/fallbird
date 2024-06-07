@@ -8,7 +8,7 @@ void Processes::execute(fs::path &root) {
     DWORD aProcesses[1024], cbNeeded, cProcesses;
     unsigned int i;
 
-    if ( !EnumProcesses( aProcesses, sizeof(aProcesses), &cbNeeded ) )
+    if (!EnumProcesses(aProcesses, sizeof(aProcesses), &cbNeeded))
     {
         return;
     }
