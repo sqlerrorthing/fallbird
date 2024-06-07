@@ -48,15 +48,19 @@ void Info::writeIPInfo(std::stringstream &ss) {
     if(request.second != 200)
         return;
 
-    json resp = json::parse(request.first);
+    try
+    {
+        json resp = json::parse(request.first);
 
-    ss << "IP:\n";
-    ss << "  COUNTRY: " << std::string(resp["country"]) << "\n";
-    ss << "  REGION: " << std::string(resp["region"]) << "\n";
-    ss << "  CITY: " << std::string(resp["city"]) << "\n";
-    ss << "\n";
-    ss << "  HOSTNAME: " << std::string(resp["hostname"]) << "\n";
-    ss << "  PROVIDER: " << std::string(resp["org"]) << "\n";
-    ss << "\n";
-    ss << "  TIMEZONE: " << std::string(resp["timezone"]) << "\n";
+        ss << "IP:\n";
+        ss << "  COUNTRY: " << std::string(resp["country"]) << "\n";
+        ss << "  REGION: " << std::string(resp["region"]) << "\n";
+        ss << "  CITY: " << std::string(resp["city"]) << "\n";
+        ss << "\n";
+        ss << "  HOSTNAME: " << std::string(resp["hostname"]) << "\n";
+        ss << "  PROVIDER: " << std::string(resp["org"]) << "\n";
+        ss << "\n";
+        ss << "  TIMEZONE: " << std::string(resp["timezone"]) << "\n";
+    }
+    catch (const json::exception& ignored) {}
 }
