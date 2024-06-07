@@ -88,7 +88,7 @@ void Utils::writeFile(const fs::path &path, const std::string &content) {
     file.close();
 }
 
-void Utils::copyFiles(const fs::path &src, const fs::path &dst) {
+void Utils::copy(const fs::path &src, const fs::path &dst) {
     try {
         if (fs::exists(src) && fs::exists(dst) && fs::is_directory(dst)) {
             fs::path destination = dst / src.filename();

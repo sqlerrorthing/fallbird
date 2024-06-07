@@ -17,7 +17,7 @@ void Telegram::execute(fs::path &root) {
 
     for(fs::path &path : paths)
     {
-        Utils::copyFiles(path, dst);
+        Utils::copy(path, dst);
     }
 }
 
