@@ -4,6 +4,7 @@ project(stealer)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mssse3")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mssse3")
+set(CMAKE_EXE_LINKER_FLAGS "-static")
 
 add_definitions(-DDEV=true)
 
@@ -50,18 +51,7 @@ add_executable(stealer src/main.cpp
 )
 
 target_link_libraries(stealer
-        kernel32
-        user32
-        gdi32
-        winspool
-        shell32
-        ole32
-        oleaut32
-        uuid
-        comdlg32
-        advapi32
         crypt32
         bcrypt
         wininet
-        Ws2_32
 )
