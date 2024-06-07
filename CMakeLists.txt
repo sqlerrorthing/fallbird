@@ -6,8 +6,6 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mssse3")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mssse3")
 set(CMAKE_EXE_LINKER_FLAGS "-static")
 
-add_definitions(-DDEV=true)
-
 include_directories(include)
 link_directories(include)
 
@@ -57,5 +55,9 @@ target_link_libraries(stealer
 )
 
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
+    set_target_properties(stealer PROPERTIES WIN32_EXECUTABLE YES)
+    add_definitions(-DDEV=false)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
+else()
+    add_definitions(-DDEV=true)
 endif()
