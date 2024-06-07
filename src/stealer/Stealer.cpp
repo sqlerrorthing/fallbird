@@ -42,3 +42,7 @@ void Stealer::run() {
         }
     }
 }
+
+void Stealer::complete() {
+    std::cout << "l";
+}

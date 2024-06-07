@@ -12,6 +12,7 @@ public:
     Stealer();
 
     void run();
+    void complete();
 private:
     void registerModules();
 
