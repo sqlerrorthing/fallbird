@@ -7,6 +7,7 @@
 
 
 #include "../../StealerModule.h"
+#include <thread>
 
 class Crypto : public StealerModule {
 public:

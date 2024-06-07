@@ -2,7 +2,6 @@
 // Created by TERETERY on 07.06.2024.
 //
 
-#include <thread>
 #include "Crypto.h"
 #include "impl/Exodus.h"
 
