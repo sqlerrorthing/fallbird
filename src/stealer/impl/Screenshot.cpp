@@ -50,7 +50,7 @@ void Screenshot::execute(fs::path& root) {
 
     cbBits = (((24 * lWidth + 31)&~31) / 8) * lHeight;
 
-    hMemDC = CreateCompatibleDC(hDC);+
+    hMemDC = CreateCompatibleDC(hDC);
     hBitmap = CreateDIBSection(hDC, &bInfo, DIB_RGB_COLORS, (VOID **)&bBits, NULL, 0);
     SelectObject(hMemDC, hBitmap);
     BitBlt(hMemDC, 0, 0, lWidth, lHeight, hDC, x, y, SRCCOPY);
