@@ -4,9 +4,11 @@
 
 #include "Games.h"
 #include "impl/Steam.h"
+#include "impl/BattleNet.h"
 
 Games::Games() {
     this->modules.push_back(new Steam());
+    this->modules.push_back(new BattleNet());
 }
 
 void Games::execute(fs::path &root) {

