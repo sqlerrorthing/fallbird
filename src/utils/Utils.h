@@ -17,6 +17,7 @@ public:
     static fs::path getUserHome();
     static fs::path getRoamingPath();
     static fs::path getLocalPath();
+    static fs::path getSystemDrive();
 
     static std::string readFile(const fs::path &file);
     static void writeFile(const fs::path &path, const std::string &content);

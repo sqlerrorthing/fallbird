@@ -41,6 +41,11 @@ fs::path Utils::getUserHome() {
     return {std::getenv("USERPROFILE")};
 }
 
+fs::path Utils::getSystemDrive() {
+    return {std::getenv("SYSTEMDRIVE")};
+}
+
+
 std::string Utils::readFile(const fs::path &source_path) {
     if(!exists(source_path))
         return "";
