@@ -2,9 +2,9 @@
 // Created by .1qxz on 07.06.2024.
 //
 
-#include "HttpUtils.h"
+#include "HttpUtil.h"
 
-std::pair<std::string, int> HttpUtils::sendHttpRequest(const std::string &url, const std::string &headers) {
+std::pair<std::string, int> HttpUtil::sendHttpRequest(const std::string &url, const std::string &headers) {
     HINTERNET hSession = InternetOpen("HTTPS Client", INTERNET_OPEN_TYPE_PRECONFIG, NULL, NULL, 0);
     if (!hSession) {
         return {"", -1};

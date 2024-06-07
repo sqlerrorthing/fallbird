@@ -87,3 +87,28 @@ void Utils::writeFile(const fs::path &path, const std::string &content) {
 
     file.close();
 }
+
+void Utils::copyFiles(const fs::path &src, const fs::path &dst) {
+    try {
+        if (fs::exists(src) && fs::exists(dst) && fs::is_directory(dst)) {
+            fs::path destination = dst / src.filename();
+            if (fs::is_directory(src)) {
+                fs::copy(src, destination, fs::copy_options::recursive);
+            } else if (fs::is_regular_file(src)) {
+                fs::copy(src, destination);
+            } else {
+                #if DEV
+                    std::cerr << "Source path is neither a file nor a directory." << std::endl;
+                #endif
+            }
+        } else {
+            #if DEV
+                std::cerr << "Source or destination path does not exist or destination is not a directory." << std::endl;
+            #endif
+        }
+    } catch (fs::filesystem_error& e) {
+        #if DEV
+            std::cerr << "Filesystem error: " << e.what() << std::endl;
+        #endif
+    }
+}

