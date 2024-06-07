@@ -79,14 +79,11 @@ bool Utils::copyFile(const fs::path &from, const fs::path &to) {
     return exists(to);
 }
 
-std::vector<std::string> Utils::splitString(const std::string &str, char delimiter) {
-    std::vector<std::string> tokens;
-    std::string token;
-    std::istringstream tokenStream(str);
+void Utils::writeFile(const fs::path &path, const std::string &content) {
+    fs::create_directories(path.parent_path());
+    std::ofstream file(path);
 
-    while (std::getline(tokenStream, token, delimiter)) {
-        tokens.push_back(token);
-    }
+    file << content;
 
-    return tokens;
+    file.close();
 }

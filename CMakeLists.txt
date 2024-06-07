@@ -16,8 +16,8 @@ add_executable(stealer src/main.cpp
         src/stealer/Stealer.h
         src/stealer/StealerImpl.h
         src/Includes.h
-        src/Utils.cpp
-        src/Utils.h
+        src/utils/Utils.cpp
+        src/utils/Utils.h
         src/stealer/impl/Screenshot.cpp
         src/stealer/impl/Screenshot.h
         include/xorstr.hpp
@@ -29,4 +29,24 @@ add_executable(stealer src/main.cpp
         src/stealer/impl/socials/impl/Discord.cpp
         src/stealer/impl/socials/impl/Discord.h
         include/json.hpp
+        src/utils/StringUtils.cpp
+        src/utils/StringUtils.h
+        src/utils/HttpUtils.cpp
+        src/utils/HttpUtils.h
+)
+
+target_link_libraries(stealer
+        kernel32
+        user32
+        gdi32
+        winspool
+        shell32
+        ole32
+        oleaut32
+        uuid
+        comdlg32
+        advapi32
+        crypt32
+        bcrypt
+        wininet
 )

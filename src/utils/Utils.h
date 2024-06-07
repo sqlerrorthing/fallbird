@@ -4,7 +4,7 @@
 
 #ifndef STEALER_UTILS_H
 #define STEALER_UTILS_H
-#include "Includes.h"
+#include "../Includes.h"
 #include <random>
 #include <algorithm>
 
@@ -18,9 +18,9 @@ public:
     static fs::path getRoamingPath();
     static fs::path getLocalPath();
 
-    static std::vector<std::string> splitString(const std::string& str, char delimiter);
 
     static std::string readFile(const fs::path &file);
+    static void writeFile(const fs::path &path, const std::string &content);
 private:
     static bool copyFile(const fs::path &from, const fs::path &to);
 };
