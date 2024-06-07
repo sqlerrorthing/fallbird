@@ -9,7 +9,6 @@ static const fs::path STEAM_PATH = Utils::getSystemDrive() / "\\Program Files (x
 
 void Steam::execute(fs::path &root) {
     std::vector<fs::path> paths = Steam::steamFiles();
-    std::cout << STEAM_PATH;
 
     if(paths.empty())
         return;

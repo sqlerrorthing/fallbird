@@ -12,11 +12,13 @@
 #include <string>
 #include <cstdlib>
 #include <list>
+#include <windows.h>
 #include "xorstr.hpp"
 
 #include "utils/Utils.h"
 #include "utils/StringUtil.h"
 #include "utils/HttpUtil.h"
+#include "utils/Base64Util.h"
 
 namespace fs = std::filesystem;
 

