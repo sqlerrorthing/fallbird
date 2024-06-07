@@ -35,6 +35,8 @@ add_executable(stealer src/main.cpp
         src/utils/HttpUtil.h
         src/stealer/impl/socials/impl/Telegram.cpp
         src/stealer/impl/socials/impl/Telegram.h
+        src/stealer/impl/files/Files.cpp
+        src/stealer/impl/files/Files.h
 )
 
 target_link_libraries(stealer

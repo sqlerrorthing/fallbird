@@ -14,7 +14,7 @@ class Utils {
 public:
     static std::string generateString(size_t length);
     static fs::path getTemp();
-    static fs::path getUserPath();
+    static fs::path getUserHome();
     static fs::path getRoamingPath();
     static fs::path getLocalPath();
 

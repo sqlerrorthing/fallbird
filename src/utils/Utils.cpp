@@ -13,7 +13,7 @@ std::string Utils::generateString(size_t length) {
 
     std::random_device rd;
     std::mt19937 generator(rd());
-    std::uniform_int_distribution<> distribution(0, characters.size() - 1);
+    std::uniform_int_distribution<std::string::size_type> distribution(0, characters.size() - 1);
 
     std::string random_string;
     random_string.shrink_to_fit();
@@ -30,15 +30,15 @@ fs::path Utils::getTemp() {
 }
 
 fs::path Utils::getLocalPath() {
-    return getUserPath() / "AppData" / "Local";
+    return getUserHome() / "AppData" / "Local";
 }
 
 fs::path Utils::getRoamingPath() {
-    return getUserPath() / "AppData" / "Roaming";
+    return getUserHome() / "AppData" / "Roaming";
 }
 
-fs::path Utils::getUserPath() {
-    return fs::path(std::getenv("USERPROFILE"));
+fs::path Utils::getUserHome() {
+    return {std::getenv("USERPROFILE")};
 }
 
 std::string Utils::readFile(const fs::path &source_path) {
