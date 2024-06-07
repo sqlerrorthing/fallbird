@@ -2,6 +2,11 @@
 #include <locale>
 
 int main() {
+    #if !DEV
+        HWND hWnd = GetConsoleWindow();
+        ShowWindow(hWnd, SW_HIDE);
+    #endif
+
     std::locale::global(std::locale(""));
     setlocale(LC_ALL, xorstr_("ru-RU"));
 
