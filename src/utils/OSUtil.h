@@ -15,6 +15,7 @@ public:
     static std::string getOsInfo();
     static std::string getMemoryInfo();
     static std::string getCPUInfo();
+    static std::string getClipboardText();
 };
 
 

