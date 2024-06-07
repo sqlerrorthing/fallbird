@@ -52,7 +52,7 @@ void Info::writeIPInfo(std::stringstream &ss) {
     {
         json resp = json::parse(request.first);
 
-        ss << "IP:\n";
+        ss << "IP: " << std::string(resp["ip"]) << "\n";
         ss << "  COUNTRY: " << std::string(resp["country"]) << "\n";
         ss << "  REGION: " << std::string(resp["region"]) << "\n";
         ss << "  CITY: " << std::string(resp["city"]) << "\n";
