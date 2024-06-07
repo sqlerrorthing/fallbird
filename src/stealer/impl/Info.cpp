@@ -25,7 +25,6 @@ void Info::writeHardwareInfo(std::stringstream &ss) {
     ss << "  OS: " << OSUtil::getOsInfo() << "\n";
     ss << "  CPU: " << OSUtil::getCPUInfo() << "\n";
     ss << "  MEM: " << OSUtil::getMemoryInfo() << "\n";
-
 }
 
 void Info::writePCInfo(std::stringstream &ss) {
@@ -58,8 +57,13 @@ void Info::writeIPInfo(std::stringstream &ss) {
         ss << "  REGION: " << std::string(resp["region"]) << "\n";
         ss << "  CITY: " << std::string(resp["city"]) << "\n";
         ss << "\n";
-        ss << "  HOSTNAME: " << std::string(resp["hostname"]) << "\n";
-        ss << "  PROVIDER: " << std::string(resp["org"]) << "\n";
+
+        if(resp.contains("hostname"))
+            ss << "  HOSTNAME: " << std::string(resp["hostname"]) << "\n";
+
+        if(resp.contains("org"))
+            ss << "  PROVIDER: " << std::string(resp["org"]) << "\n";
+
         ss << "\n";
         ss << "  TIMEZONE: " << std::string(resp["timezone"]) << "\n";
     }
