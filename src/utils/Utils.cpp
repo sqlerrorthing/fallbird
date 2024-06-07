@@ -81,11 +81,13 @@ bool Utils::copyFile(const fs::path &from, const fs::path &to) {
 
 void Utils::writeFile(const fs::path &path, const std::string &content) {
     fs::create_directories(path.parent_path());
-    std::ofstream file(path);
+    std::ofstream file(path, std::ios::out | std::ios::binary);
 
-    file << content;
-
-    file.close();
+    if (file.is_open()) {
+        file << "\xEF\xBB\xBF";
+        file << content;
+        file.close();
+    }
 }
 
 void Utils::copy(const fs::path &src, const fs::path &dst) {
