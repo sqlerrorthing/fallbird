@@ -7,10 +7,11 @@
 #include "../Includes.h"
 #include <windows.h>
 #include <wininet.h>
+#include <unordered_map>
 
 class HttpUtil {
 public:
-    static std::pair<std::string, int> sendHttpRequest(const std::string& url, const std::string& headers = "");
+    static std::pair<std::string, int> sendHttpRequest(const std::string& url, const std::unordered_map<std::string, std::string> &headers = {});
 
 };
 

