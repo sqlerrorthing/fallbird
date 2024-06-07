@@ -14,7 +14,7 @@ link_directories(include)
 add_executable(stealer src/main.cpp
         src/stealer/Stealer.cpp
         src/stealer/Stealer.h
-        src/stealer/StealerImpl.h
+        src/stealer/StealerModule.h
         src/Includes.h
         src/utils/Utils.cpp
         src/utils/Utils.h

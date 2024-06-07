@@ -5,9 +5,9 @@
 #ifndef STEALER_TELEGRAM_H
 #define STEALER_TELEGRAM_H
 
-#include "../../../StealerImpl.h"
+#include "../../../StealerModule.h"
 
-class Telegram : public StealerImpl {
+class Telegram : public StealerModule {
 public:
     void execute(fs::path &root) override;
 private:

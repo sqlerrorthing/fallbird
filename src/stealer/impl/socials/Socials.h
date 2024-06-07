@@ -5,15 +5,15 @@
 #ifndef STEALER_SOCIALS_H
 #define STEALER_SOCIALS_H
 
-#include "../../StealerImpl.h"
+#include "../../StealerModule.h"
 
-class Socials : public StealerImpl {
+class Socials : public StealerModule {
 public:
     Socials();
     void execute(fs::path& root) override;
 
 private:
-    std::list<StealerImpl*> modules;
+    std::list<StealerModule*> modules;
 };
 
 #endif //STEALER_SOCIALS_H

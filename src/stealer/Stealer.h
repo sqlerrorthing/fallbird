@@ -5,7 +5,7 @@
 #ifndef STEALER_STEALER_H
 #define STEALER_STEALER_H
 #include "../Includes.h"
-#include "StealerImpl.h"
+#include "StealerModule.h"
 
 class Stealer {
 public:
@@ -17,7 +17,7 @@ private:
     void registerModules();
 
     fs::path root_dir;
-    std::list<StealerImpl*> modules;
+    std::list<StealerModule*> modules;
 };
 
 
