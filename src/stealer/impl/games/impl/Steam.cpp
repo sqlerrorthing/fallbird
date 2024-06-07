@@ -30,6 +30,9 @@ std::vector<fs::path> Steam::steamFiles() {
         for (const auto& entry : fs::directory_iterator(STEAM_PATH)) {
             const fs::path& item_path = entry.path();
 
+            if(is_directory(item_path))
+                continue;
+
             paths.push_back(item_path);
         }
     }
