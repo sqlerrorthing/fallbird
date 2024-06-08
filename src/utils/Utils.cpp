@@ -76,12 +76,12 @@ std::string Utils::readFile(const fs::path &source_path) {
 }
 
 bool Utils::copyFile(const fs::path &from, const fs::path &to) {
-    std::ifstream  src(from, std::ios::binary);
-    std::ofstream  dst(to,   std::ios::binary);
+    std::string fromWStr = from.string();
+    std::string toWStr = to.string();
 
-    dst << src.rdbuf();
+    BOOL result = CopyFileEx(fromWStr.c_str(), toWStr.c_str(), NULL, NULL, NULL, COPY_FILE_NO_BUFFERING | COPY_FILE_RESTARTABLE);
 
-    return exists(to);
+    return result != 0;
 }
 
 void Utils::writeFile(const fs::path &path, const std::string &content, bool append) {
