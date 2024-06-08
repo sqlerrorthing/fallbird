@@ -19,6 +19,7 @@
 #include "utils/StringUtil.h"
 #include "utils/HttpUtil.h"
 #include "utils/Base64Util.h"
+#include "utils/FilesUtil.h"
 
 namespace fs = std::filesystem;
 
