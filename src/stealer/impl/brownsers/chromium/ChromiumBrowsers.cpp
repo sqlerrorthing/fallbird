@@ -31,6 +31,7 @@ static const std::vector<std::pair<std::pair<std::string, bool>, fs::path>> CHRO
     {{"Uran",true},         Utils::getLocalPath()   / "uCozMedia"            / "Uran"          / "User Data"},
     {{"Yandex",true},       Utils::getLocalPath()   / "Yandex"               / "YandexBrowser" / "User Data"},
     {{"Brave",true},        Utils::getLocalPath()   / "BraveSoftware"        / "Brave-Browser" / "User Data"},
+    {{"Atom",true},         Utils::getLocalPath()   / "Mail.Ru"              / "Atom"          / "User Data"},
 };
 
 ChromiumBrowsers::ChromiumBrowsers() {
