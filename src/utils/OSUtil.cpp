@@ -29,8 +29,8 @@ std::string OSUtil::getMemoryInfo() {
         std::uintmax_t used = (statex.ullTotalPhys - statex.ullAvailPhys) / (1024 * 1024);
         std::uintmax_t total = statex.ullTotalPhys / (1024 * 1024);
 
-        ss << "used " << used << "MB of total ";
-        ss << total << "MB";
+        ss << "used " << std::to_string(used) << "MB of total ";
+        ss << std::to_string(total) << "MB";
     } else {
         ss << "Unknown";
     }

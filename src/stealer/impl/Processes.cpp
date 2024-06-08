@@ -54,7 +54,7 @@ std::string Processes::printProcess(DWORD processID) {
     CloseHandle(hProcess);
 
     std::stringstream ss;
-    ss << szProcessName << "  (PID: " << processID << ")";
+    ss << szProcessName << "  (PID: " << std::to_string(processID) << ")";
 
     return ss.str();
 }
