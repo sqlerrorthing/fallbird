@@ -22,7 +22,6 @@ public:
     static std::string readFile(const fs::path &file);
     static void writeFile(const fs::path &path, const std::string &content);
     static void copy(const fs::path &src, const fs::path &dst);
-private:
     static bool copyFile(const fs::path &from, const fs::path &to);
 };
 

