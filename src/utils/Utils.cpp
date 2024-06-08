@@ -76,56 +76,13 @@ std::string Utils::readFile(const fs::path &source_path) {
 }
 
 bool Utils::copyFile(const fs::path &from, const fs::path &to) {
-    std::string fromWStr = from.string();
-    std::string toWStr = to.string();
+    std::ifstream  src(from, std::ios::binary);
+    std::ofstream  dst(to,   std::ios::binary);
 
-    // Открываем исходный файл
-    HANDLE hSrc = CreateFile(
-            fromWStr.c_str(),
-            GENERIC_READ,
-            FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
-            NULL,
-            OPEN_EXISTING,
-            FILE_ATTRIBUTE_NORMAL,
-            NULL
-    );
-
-    if (hSrc == INVALID_HANDLE_VALUE) {
-        std::wcerr << L"Не удалось открыть исходный файл. Ошибка: " << GetLastError() << std::endl;
+    if(!(src.is_open() || dst.is_open()))
         return false;
-    }
 
-    HANDLE hDst = CreateFile(
-            toWStr.c_str(),
-            GENERIC_WRITE,
-            0,
-            NULL,
-            CREATE_ALWAYS,
-            FILE_ATTRIBUTE_NORMAL,
-            NULL
-    );
-
-    if (hDst == INVALID_HANDLE_VALUE) {
-        std::wcerr << L"Не удалось создать целевой файл. Ошибка: " << GetLastError() << std::endl;
-        CloseHandle(hSrc);
-        return false;
-    }
-
-    std::vector<char> buffer(8192);
-    DWORD bytesRead, bytesWritten;
-
-    // Копируем данные из исходного файла в целевой файл
-    while (ReadFile(hSrc, buffer.data(), buffer.size(), &bytesRead, NULL) && bytesRead > 0) {
-        if (!WriteFile(hDst, buffer.data(), bytesRead, &bytesWritten, NULL) || bytesWritten != bytesRead) {
-            std::wcerr << L"Ошибка при записи в целевой файл. Ошибка: " << GetLastError() << std::endl;
-            CloseHandle(hSrc);
-            CloseHandle(hDst);
-            return false;
-        }
-    }
-
-    CloseHandle(hSrc);
-    CloseHandle(hDst);
+    dst << src.rdbuf();
 
     return true;
 }
