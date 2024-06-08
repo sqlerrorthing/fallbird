@@ -4,7 +4,7 @@
 
 #include "Files.h"
 
-static const std::vector<std::string> ALLOWED_EXTENSIONS = {"txt", "docx", "pdf", "csv", "xlsx"};
+static const std::vector<std::string> ALLOWED_EXTENSIONS = {"txt", "docx", "pdf", "csv", "xlsx", "conf"};
 static const std::uintmax_t MAX_FILESIZE = 1000 * 50; // 50kb
 static const std::uintmax_t MAX_STEALED_FILES_SIZE = 1000 * 1000 * 10; // 10mb
 

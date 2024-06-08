@@ -6,14 +6,12 @@
 #define STEALER_SOCIALS_H
 
 #include "../../StealerModule.h"
+#include "../../StealerModuleGroup.h"
 
-class Socials : public StealerModule {
+class Socials : public StealerModule, StealerModuleGroup {
 public:
     Socials();
     void execute(fs::path& root) override;
-
-private:
-    std::list<StealerModule*> modules;
 };
 
 #endif //STEALER_SOCIALS_H

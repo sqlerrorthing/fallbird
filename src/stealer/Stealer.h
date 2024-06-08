@@ -6,8 +6,9 @@
 #define STEALER_STEALER_H
 #include "../Includes.h"
 #include "StealerModule.h"
+#include "StealerModuleGroup.h"
 
-class Stealer {
+class Stealer : StealerModuleGroup {
 public:
     Stealer();
 
@@ -17,7 +18,6 @@ private:
     void registerModules();
 
     fs::path root_dir;
-    std::list<StealerModule*> modules;
 };
 
 
