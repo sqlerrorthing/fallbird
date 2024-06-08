@@ -10,7 +10,9 @@
 
 class ChromiumBrowserModule : public BrowserModule {
 public:
-    void setMasterKey(const std::vector<BYTE> &key){this->master_key = key;}
+    void setMasterKey(const std::vector<BYTE> &key){
+        this->master_key = key;
+    }
 
 protected:
     std::vector<BYTE> getMasterKey() {return this->master_key;}
