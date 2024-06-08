@@ -9,7 +9,7 @@
 
 class Base64Util {
 public:
-    static std::vector<BYTE> b64decode(std::string &input);
+    static std::vector<BYTE> b64decode(const std::string &input);
 };
 
 

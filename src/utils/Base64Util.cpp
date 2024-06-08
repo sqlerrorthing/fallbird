@@ -14,7 +14,7 @@ static inline bool is_base64(BYTE c) {
     return (isalnum(c) || (c == '+') || (c == '/'));
 }
 
-std::vector<BYTE> Base64Util::b64decode(std::string &input) {
+std::vector<BYTE> Base64Util::b64decode(const std::string &input) {
     size_t in_len = input.size();
     int i = 0;
     int j = 0;
