@@ -4,8 +4,8 @@
 
 #include "CDownloads.h"
 
-void CDownloads::execute(const fs::path &root, const std::string &name, const fs::path &path) {
-    fs::path orig_db_path = path / this->getProfile() / "History";
+void CDownloads::execute(const fs::path &root, const std::string &name, const fs::path &browser_root) {
+    fs::path orig_db_path = this->getProfileDir(browser_root) / "History";
     fs::path copied_db = FilesUtil::copyTemporary(orig_db_path);
 
     if(!exists(copied_db))

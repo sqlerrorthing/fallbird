@@ -11,7 +11,7 @@
 
 class BrowserModule {
 public:
-    virtual void execute(const fs::path &root, const std::string &name, const fs::path &path) = 0;
+    virtual void execute(const fs::path &root, const std::string &name, const fs::path &browser_root) = 0;
 };
 
 #endif //STEALER_BROWSERMODULE_H

