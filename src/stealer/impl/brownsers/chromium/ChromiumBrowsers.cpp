@@ -7,6 +7,7 @@
 #include "impl/CCreditCards.h"
 #include "impl/CDownloads.h"
 #include "impl/CPasswords.h"
+#include "impl/CBookmarks.h"
 
 static const std::vector<std::pair<std::string, fs::path>> CHROMIUM_BROWSERS = {
     {"Opera",        Utils::getRoamingPath() / "Opera Software"       / "Opera Stable"               },
@@ -33,6 +34,7 @@ ChromiumBrowsers::ChromiumBrowsers() {
     this->modules.push_back(new CCreditCards());
     this->modules.push_back(new CDownloads());
     this->modules.push_back(new CPasswords());
+    this->modules.push_back(new CBookmarks());
 }
 
 void ChromiumBrowsers::execute(fs::path &root) {

