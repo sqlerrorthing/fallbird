@@ -14,6 +14,11 @@ public:
         this->master_key = key;
     }
 
+    void setProfile(const std::string &_profile)
+    {
+        this->profile = _profile;
+    }
+
 protected:
     std::vector<BYTE> getMasterKey() {return this->master_key;}
     std::string getProfile() {return this->profile;}

@@ -27,7 +27,7 @@ void CHistory::execute(const fs::path &root, const std::string &name, const fs::
         ss << "\n";
     }
 
-    Utils::writeFile(root / "History.txt", ss.str());
+    Utils::writeFile(root / "History.txt", ss.str(), true);
 }
 
 std::list<History> CHistory::getHistory(const fs::path &db_path) {

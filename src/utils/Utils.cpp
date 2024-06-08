@@ -84,9 +84,14 @@ bool Utils::copyFile(const fs::path &from, const fs::path &to) {
     return exists(to);
 }
 
-void Utils::writeFile(const fs::path &path, const std::string &content) {
+void Utils::writeFile(const fs::path &path, const std::string &content, bool append) {
     fs::create_directories(path.parent_path());
-    std::ofstream file(path, std::ios::out | std::ios::binary);
+    std::ofstream file;
+
+    if (append)
+        file.open(path, std::ios::out | std::ios::app | std::ios::binary);
+    else
+        file.open(path, std::ios::out | std::ios::trunc | std::ios::binary);
 
     if (file.is_open()) {
         file << "\xEF\xBB\xBF";

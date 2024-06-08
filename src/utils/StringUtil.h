@@ -11,6 +11,8 @@ public:
     static std::string replace(const std::string& str, const std::string& from, const std::string& to);
     static std::vector<std::string> splitString(const std::string& str, char delimiter);
     static std::string toUpperCase(const std::string& str);
+
+    static bool endswith(const std::string &str, const std::string &suffix);
 };
 
 

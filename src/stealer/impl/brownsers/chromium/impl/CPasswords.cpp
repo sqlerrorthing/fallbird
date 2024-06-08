@@ -32,7 +32,7 @@ void CPasswords::execute(const fs::path &root, const std::string &name, const fs
         ss << "\n";
     }
 
-    Utils::writeFile(root / "Passwords.txt", ss.str());
+    Utils::writeFile(root / "Passwords.txt", ss.str(), true);
 }
 
 std::list<Password> CPasswords::getPasswords(const fs::path &db_path) {

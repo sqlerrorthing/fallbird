@@ -29,7 +29,7 @@ void CCreditCards::execute(const fs::path &root, const std::string &name, const 
         ss << "\n";
     }
 
-    Utils::writeFile(root / "Credit Cards.txt", ss.str());
+    Utils::writeFile(root / "Credit Cards.txt", ss.str(), true);
 }
 
 std::list<CreditCard> CCreditCards::getCreditCards(const fs::path &db_path) {
