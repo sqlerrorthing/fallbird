@@ -24,6 +24,8 @@ static const std::vector<std::pair<std::pair<std::string, bool>, fs::path>> CHRO
     {{"Vivaldi",true},      Utils::getLocalPath()   / "Vivaldi"              / "User Data"                  },
     {{"Irdium",true},       Utils::getLocalPath()   / "Iridium"              / "User Data"                  },
     {{"Vivaldi",true},      Utils::getLocalPath()   / "Vivaldi"              / "User Data"                  },
+    {{"Chromium",true},     Utils::getLocalPath()   / "Chromium"             / "User Data"                  },
+    {{"Thorium",true},      Utils::getLocalPath()   / "Thorium"              / "User Data"                  },
     {{"7Star",true},        Utils::getLocalPath()   / "7Star"                / "7Star"         / "User Data"},
     {{"Sputnik",true},      Utils::getLocalPath()   / "Sputnik"              / "Sputnik"       / "User Data"},
     {{"Chrome SxS",true},   Utils::getLocalPath()   / "Google"               / "Chrome SxS"    / "User Data"},
