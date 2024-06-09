@@ -11,7 +11,7 @@ void CCookies::execute(const fs::path &root, const std::string &name, const fs::
     if(!exists(copied_db))
         return;
 
-    std::list<Cookie> cookies = this->getCookies(copied_db);
+    std::list<Cookie> cookies = this->getCookies(orig_db_path);
 
     if(cookies.empty())
         return;
@@ -47,6 +47,7 @@ std::list<Cookie> CCookies::getCookies(const fs::path &db_path) {
     }
 
     const char* sql = "SELECT host_key, name, value, encrypted_value, path, expires_utc FROM cookies";
+//    rc = sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr);
     rc = sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr);
     if (rc != SQLITE_OK) {
         sqlite3_close(db);

