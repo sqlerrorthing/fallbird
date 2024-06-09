@@ -43,5 +43,4 @@ private:
     bool has_profiles = true;
 };
 
-
 #endif //STEALER_CHROMIUMBROWSERMODULE_H
