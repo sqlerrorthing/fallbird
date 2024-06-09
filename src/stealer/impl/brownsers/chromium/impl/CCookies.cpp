@@ -11,7 +11,7 @@ void CCookies::execute(const fs::path &root, const std::string &name, const fs::
     if(!exists(copied_db))
         return;
 
-    std::list<Cookie> cookies = this->getCookies(orig_db_path);
+    std::list<Cookie> cookies = this->getCookies(copied_db);
 
     if(cookies.empty())
         return;
