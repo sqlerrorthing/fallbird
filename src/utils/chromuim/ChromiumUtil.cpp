@@ -35,40 +35,48 @@ std::vector<BYTE> ChromiumUtil::getMasterKey(const fs::path &path) {
 }
 
 std::string ChromiumUtil::decryptData(const std::vector<BYTE> &buffer, const std::vector<BYTE> &master_key) {
-    auto decrypted_key = ChromiumUtil::CryptUnprotectDataWrapper(master_key);
-    std::vector<unsigned char> iv(buffer.begin() + 3, buffer.begin() + 15);
-    std::vector<unsigned char> ciphertext(buffer.begin() + 15, buffer.end() - 16);
+    try
+    {
+        auto decrypted_key = ChromiumUtil::CryptUnprotectDataWrapper(master_key);
 
-    BCRYPT_ALG_HANDLE hAlg = nullptr;
-    BCRYPT_KEY_HANDLE hKey = nullptr;
-    NTSTATUS status;
+        if(buffer.empty())
+            return "";
 
-    status = BCryptOpenAlgorithmProvider(&hAlg, BCRYPT_AES_ALGORITHM, nullptr, 0);
-    if (status != 0) return "";
+        std::vector<BYTE> iv(buffer.begin() + 3, buffer.begin() + 15);
+        std::vector<BYTE> ciphertext(buffer.begin() + 15, buffer.end() - 16);
 
-    status = BCryptSetProperty(hAlg, BCRYPT_CHAINING_MODE, (PUCHAR)BCRYPT_CHAIN_MODE_GCM, sizeof(BCRYPT_CHAIN_MODE_GCM), 0);
-    if (status != 0) return "";
+        BCRYPT_ALG_HANDLE hAlg = nullptr;
+        BCRYPT_KEY_HANDLE hKey = nullptr;
+        NTSTATUS status;
 
-    status = BCryptGenerateSymmetricKey(hAlg, &hKey, nullptr, 0, decrypted_key.data(), static_cast<ULONG>(decrypted_key.size()), 0);
-    if (status != 0) return "";
+        status = BCryptOpenAlgorithmProvider(&hAlg, BCRYPT_AES_ALGORITHM, nullptr, 0);
+        if (status != 0) return "";
 
-    BCRYPT_AUTHENTICATED_CIPHER_MODE_INFO authInfo;
-    BCRYPT_INIT_AUTH_MODE_INFO(authInfo);
-    authInfo.pbNonce = iv.data();
-    authInfo.cbNonce = static_cast<ULONG>(iv.size());
-    authInfo.pbTag = const_cast<BYTE*>(buffer.data() + buffer.size() - 16);
-    authInfo.cbTag = 16;
+        status = BCryptSetProperty(hAlg, BCRYPT_CHAINING_MODE, (PUCHAR)BCRYPT_CHAIN_MODE_GCM, sizeof(BCRYPT_CHAIN_MODE_GCM), 0);
+        if (status != 0) return "";
 
-    std::vector<unsigned char> decrypted(ciphertext.size());
-    ULONG decryptedSize = 0;
+        status = BCryptGenerateSymmetricKey(hAlg, &hKey, nullptr, 0, decrypted_key.data(), static_cast<ULONG>(decrypted_key.size()), 0);
+        if (status != 0) return "";
 
-    status = BCryptDecrypt(hKey, ciphertext.data(), static_cast<ULONG>(ciphertext.size()), &authInfo, nullptr, 0, decrypted.data(), static_cast<ULONG>(decrypted.size()), &decryptedSize, 0);
-    if (status != 0) return "";
+        BCRYPT_AUTHENTICATED_CIPHER_MODE_INFO authInfo;
+        BCRYPT_INIT_AUTH_MODE_INFO(authInfo);
+        authInfo.pbNonce = iv.data();
+        authInfo.cbNonce = static_cast<ULONG>(iv.size());
+        authInfo.pbTag = const_cast<BYTE*>(buffer.data() + buffer.size() - 16);
+        authInfo.cbTag = 16;
 
-    BCryptDestroyKey(hKey);
-    BCryptCloseAlgorithmProvider(hAlg, 0);
+        std::vector<BYTE> decrypted(ciphertext.size());
+        ULONG decryptedSize = 0;
 
-    return std::string(decrypted.begin(), decrypted.begin() + decryptedSize);
+        status = BCryptDecrypt(hKey, ciphertext.data(), static_cast<ULONG>(ciphertext.size()), &authInfo, nullptr, 0, decrypted.data(), static_cast<ULONG>(decrypted.size()), &decryptedSize, 0);
+        if (status != 0) return "";
+
+        BCryptDestroyKey(hKey);
+        BCryptCloseAlgorithmProvider(hAlg, 0);
+
+        return std::string(decrypted.begin(), decrypted.begin() + decryptedSize);
+    }
+    catch (const std::exception &e) {return "";}
 }
 
 std::vector<BYTE> ChromiumUtil::CryptUnprotectDataWrapper(const std::vector<BYTE> &data) {

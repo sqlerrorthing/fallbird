@@ -4,9 +4,11 @@
 
 #ifndef STEALER_UTILS_H
 #define STEALER_UTILS_H
+
 #include "../Includes.h"
 #include <random>
 #include <algorithm>
+#include "binaryhandler.hpp"
 
 namespace fs = std::filesystem;
 

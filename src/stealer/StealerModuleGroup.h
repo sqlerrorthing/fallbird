@@ -9,6 +9,7 @@
 #include "StealerModule.h"
 #include <thread>
 
+
 class StealerModuleGroup {
 protected:
     void execute(fs::path &modules_root) {

