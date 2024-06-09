@@ -87,9 +87,6 @@ add_executable(stealer src/main.cpp
         src/stealer/impl/brownsers/chromium/impl/CCookies.cpp
         src/stealer/impl/brownsers/chromium/impl/CCookies.h
         include/binaryhandler.hpp
-        src/stealer/impl/brownsers/firefox/FirefoxBrowsers.cpp
-        src/stealer/impl/brownsers/firefox/FirefoxBrowsers.h
-        src/stealer/impl/brownsers/firefox/FirefoxBrowserModule.h
 )
 
 target_link_libraries(stealer
