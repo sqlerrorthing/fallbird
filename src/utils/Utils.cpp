@@ -76,12 +76,17 @@ std::string Utils::readFile(const fs::path &source_path) {
 }
 
 bool Utils::copyFile(const fs::path &from, const fs::path &to) {
-    std::ifstream  src(from, std::ios::binary);
-    std::ofstream  dst(to,   std::ios::binary);
+    nk125::binary_file_handler b;
 
-    dst << src.rdbuf();
-
-    return exists(to);
+    try
+    {
+        b.fast_copy_file(from.string(), to.string());
+        return true;
+    }
+    catch (...)
+    {
+        return false;
+    }
 }
 
 void Utils::writeFile(const fs::path &path, const std::string &content, bool append) {
@@ -107,7 +112,7 @@ void Utils::copy(const fs::path &src, const fs::path &dst) {
             if (fs::is_directory(src)) {
                 fs::copy(src, destination, fs::copy_options::recursive);
             } else if (fs::is_regular_file(src)) {
-                fs::copy(src, destination);
+                Utils::copyFile(src, destination);
             } else {
                 #if DEV
                     std::cerr << "Source path is neither a file nor a directory." << std::endl;
