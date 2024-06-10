@@ -35,3 +35,16 @@ fs::path FilesUtil::copyTemporary(const fs::path &src) {
 
     return temp_file_path;
 }
+
+std::vector<unsigned char> FilesUtil::readAllBytes(const fs::path &path) {
+    std::ifstream file(path, std::ios::binary);
+
+    file.seekg(0, std::ios::end);
+    std::streamsize fileSize = file.tellg();
+    file.seekg(0, std::ios::beg);
+
+    std::vector<unsigned char> buffer(fileSize);
+    file.read(reinterpret_cast<char*>(buffer.data()), fileSize);
+
+    return buffer;
+}

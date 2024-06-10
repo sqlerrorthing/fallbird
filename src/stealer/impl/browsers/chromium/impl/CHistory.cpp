@@ -3,6 +3,7 @@
 //
 
 #include "CHistory.h"
+#include "../../../../../utils/sqlite/SQLite.h"
 
 void CHistory::execute(const fs::path &root, const std::string &name, const fs::path &browser_root) {
     fs::path orig_db_path = this->getProfileDir(browser_root) / "History";
@@ -28,6 +29,15 @@ void CHistory::execute(const fs::path &root, const std::string &name, const fs::
 
 std::list<History> CHistory::getHistory(const fs::path &db_path) {
     std::list<History> history;
+
+    SQLite db(db_path);
+    if(db.readTable("urls"))
+    {
+        for(auto i = 0; i < db.getRowCount(); i++)
+        {
+            std::cout << "D: " << db.getValue(i, 0);
+        }
+    }
 
     SQLiteUtil::connectAndRead("SELECT url, title FROM urls ORDER BY last_visit_time DESC LIMIT 0, 1000", db_path, [&history](sqlite3_stmt *stmt) {
         const unsigned char* url = sqlite3_column_text(stmt, 0);
