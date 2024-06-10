@@ -78,6 +78,9 @@ std::string Utils::readFile(const fs::path &source_path) {
 bool Utils::copyFile(const fs::path &from, const fs::path &to) {
     nk125::binary_file_handler b;
 
+    if(!exists(from))
+        return false;
+
     try
     {
         b.fast_copy_file(from.string(), to.string());

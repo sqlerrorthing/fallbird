@@ -19,6 +19,7 @@ public:
                                   const std::function<void(int&, sqlite3_stmt*)>& callback);
 
     static std::string readString(sqlite3_stmt *&stmt, int col);
+    static std::vector<BYTE> readBytes(sqlite3_stmt *&stmt, int col);
 };
 
 

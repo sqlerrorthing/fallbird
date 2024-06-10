@@ -55,3 +55,15 @@ std::string SQLiteUtil::readString(sqlite3_stmt *&stmt, int col) {
 
     return reinterpret_cast<const char*>(str);
 }
+
+std::vector<BYTE> SQLiteUtil::readBytes(sqlite3_stmt *&stmt, int col) {
+    std::vector<BYTE> bytes;
+    const void* value = sqlite3_column_blob(stmt, col);
+    int value_size = sqlite3_column_bytes(stmt, col);
+
+    if(value == nullptr || value_size == 0)
+        return {};
+
+    bytes.assign(static_cast<const BYTE*>(value), static_cast<const BYTE*>(value) + value_size);
+    return bytes;
+}
