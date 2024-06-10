@@ -7,7 +7,7 @@
 
 
 #include "../ChromiumBrowserModule.h"
-#include "sqlite3.h"
+#include "../../../../../utils/SQLiteUtil.h"
 
 class CCookies : public ChromiumBrowserModule {
 public:

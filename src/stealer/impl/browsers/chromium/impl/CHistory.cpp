@@ -28,24 +28,8 @@ void CHistory::execute(const fs::path &root, const std::string &name, const fs::
 
 std::list<History> CHistory::getHistory(const fs::path &db_path) {
     std::list<History> history;
-    sqlite3* db;
-    sqlite3_stmt* stmt;
-    int rc;
 
-    rc = sqlite3_open(db_path.string().c_str(), &db);
-    if (rc) {
-        return {};
-    }
-
-    const char* sql = "SELECT url, title FROM urls ORDER BY last_visit_time DESC LIMIT 0, 1000";
-
-    rc = sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr);
-    if (rc != SQLITE_OK) {
-        sqlite3_close(db);
-        return {};
-    }
-
-    while ((rc = sqlite3_step(stmt)) == SQLITE_ROW) {
+    SQLiteUtil::connectAndRead("SELECT url, title FROM urls ORDER BY last_visit_time DESC LIMIT 0, 1000", db_path, [&history](sqlite3_stmt *stmt) {
         const unsigned char* url = sqlite3_column_text(stmt, 0);
         const unsigned char* title = sqlite3_column_text(stmt, 1);
 
@@ -54,10 +38,7 @@ std::list<History> CHistory::getHistory(const fs::path &db_path) {
         historyRecord.title = std::string(reinterpret_cast<const char*>(title));
 
         history.push_back(historyRecord);
-    }
-
-    sqlite3_finalize(stmt);
-    sqlite3_close(db);
+    });
 
     return history;
 }

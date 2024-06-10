@@ -27,25 +27,9 @@ void CAutoFill::execute(const fs::path &root, const std::string &name, const fs:
 }
 
 std::list<AutoFill> CAutoFill::getAutoFill(const fs::path &db_path) {
-    std::list<AutoFill> history;
-    sqlite3* db;
-    sqlite3_stmt* stmt;
-    int rc;
+    std::list<AutoFill> fills;
 
-    rc = sqlite3_open(db_path.string().c_str(), &db);
-    if (rc) {
-        return {};
-    }
-
-    const char* sql = "SELECT name, value FROM autofill ORDER BY date_last_used DESC LIMIT 0, 1000";
-
-    rc = sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr);
-    if (rc != SQLITE_OK) {
-        sqlite3_close(db);
-        return {};
-    }
-
-    while ((rc = sqlite3_step(stmt)) == SQLITE_ROW) {
+    SQLiteUtil::connectAndRead("SELECT name, value FROM autofill ORDER BY date_last_used DESC LIMIT 0, 1000", db_path, [&fills](sqlite3_stmt *stmt) {
         const unsigned char* name = sqlite3_column_text(stmt, 0);
         const unsigned char* value = sqlite3_column_text(stmt, 1);
 
@@ -53,11 +37,8 @@ std::list<AutoFill> CAutoFill::getAutoFill(const fs::path &db_path) {
         autoFillRecord.name = std::string(reinterpret_cast<const char*>(name));
         autoFillRecord.value = std::string(reinterpret_cast<const char*>(value));
 
-        history.push_back(autoFillRecord);
-    }
+        fills.push_back(autoFillRecord);
+    });
 
-    sqlite3_finalize(stmt);
-    sqlite3_close(db);
-
-    return history;
+    return fills;
 }

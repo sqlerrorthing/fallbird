@@ -25,25 +25,9 @@ void CCookies::execute(const fs::path &root, const std::string &name, const fs::
 }
 
 std::list<Cookie> CCookies::getCookies(const fs::path &db_path) {
-    std::list<Cookie> cookieList;
-    sqlite3* db;
-    sqlite3_stmt* stmt;
-    int rc;
+    std::list<Cookie> cookies;
 
-    rc = sqlite3_open(db_path.string().c_str(), &db);
-    if (rc) {
-        return {};
-    }
-
-    const char* sql = "SELECT host_key, name, value, encrypted_value, path, expires_utc FROM cookies";
-//    rc = sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr);
-    rc = sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr);
-    if (rc != SQLITE_OK) {
-        sqlite3_close(db);
-        return {};
-    }
-
-    while ((rc = sqlite3_step(stmt)) == SQLITE_ROW) {
+    SQLiteUtil::connectAndRead("SELECT host_key, name, value, encrypted_value, path, expires_utc FROM cookies", db_path, [this, &cookies](sqlite3_stmt *stmt) {
         const unsigned char* host_key = sqlite3_column_text(stmt, 0);
         const unsigned char* name = sqlite3_column_text(stmt, 1);
         const unsigned char* value = sqlite3_column_text(stmt, 2);
@@ -69,15 +53,8 @@ std::list<Cookie> CCookies::getCookies(const fs::path &db_path) {
         if(decoded_value.empty())
             cookieRecord.value = std::string(reinterpret_cast<const char*>(value));
 
-        cookieList.push_back(cookieRecord);
-    }
+        cookies.push_back(cookieRecord);
+    });
 
-    if (rc != SQLITE_DONE) {
-        std::cerr << "Execution failed: " << sqlite3_errmsg(db) << std::endl;
-    }
-
-    sqlite3_finalize(stmt);
-    sqlite3_close(db);
-
-    return cookieList;
+    return cookies;
 }
