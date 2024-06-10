@@ -4,12 +4,16 @@
 
 #include "FilesUtil.h"
 
-std::vector<fs::path> FilesUtil::scanDirectory(const fs::path &dir) {
+std::vector<fs::path> FilesUtil::scanDirectory(const fs::path &dir, const std::function<bool(fs::path)> &callback) {
     std::vector<fs::path> paths;
     try
     {
         for (const auto& entry : fs::directory_iterator(dir)) {
             const fs::path& item_path = entry.path();
+
+            if(callback && !callback(item_path))
+                continue;
+
             paths.push_back(item_path);
         }
     }

