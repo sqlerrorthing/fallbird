@@ -23,6 +23,9 @@ std::vector<fs::path> FilesUtil::scanDirectory(const fs::path &dir, const std::f
 }
 
 fs::path FilesUtil::copyTemporary(const fs::path &src) {
+    if(!exists(src))
+        return "";
+
     if(is_directory(src))
         return "";
 

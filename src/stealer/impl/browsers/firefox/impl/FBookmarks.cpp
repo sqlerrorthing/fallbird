@@ -19,12 +19,10 @@ void FBookmarks::execute(const fs::path &root, const std::string &name, const fs
         JOIN moz_places ON moz_bookmarks.fk = moz_places.id
         WHERE moz_bookmarks.type = 1 AND moz_bookmarks.title IS NOT NULL
     )", copied_db, [&bookmarks](sqlite3_stmt *stmt) {
-        const unsigned char* title = sqlite3_column_text(stmt, 0);
-        const unsigned char* url = sqlite3_column_text(stmt, 1);
-
         auto bookmarkRecord = std::make_unique<Bookmark>();
-        bookmarkRecord->name = std::string(reinterpret_cast<const char*>(title));
-        bookmarkRecord->url = std::string(reinterpret_cast<const char*>(url));
+
+        bookmarkRecord->name = SQLiteUtil::readString(stmt, 0);
+        bookmarkRecord->url = SQLiteUtil::readString(stmt, 1);
 
         bookmarks.push_back(std::move(bookmarkRecord));
     });

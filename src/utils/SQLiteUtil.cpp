@@ -34,9 +34,24 @@ void SQLiteUtil::connectAndExecute(const char *sql, const fs::path &db_path,
 
 void SQLiteUtil::connectAndRead(const char *sql, const fs::path &db_path,
                                 const std::function<void(sqlite3_stmt *)> &callback) {
-    SQLiteUtil::connectAndExecute(sql, db_path, [&callback](int &rc, sqlite3_stmt *stmt) {
+    SQLiteUtil::connectAndExecute(sql, db_path, [&callback, &db_path](int &rc, sqlite3_stmt *stmt) {
         while ((rc = sqlite3_step(stmt)) == SQLITE_ROW) {
-            callback(stmt);
+            try {
+                callback(stmt);
+            }
+            catch (...) {
+#if DEV
+                std::cerr << "Error when trying to get something in the database " << db_path.string() << std::endl;
+#endif
+            }
         }
     });
+}
+
+std::string SQLiteUtil::readString(sqlite3_stmt *&stmt, int col) {
+    const unsigned char* str = sqlite3_column_text(stmt, col);
+    if(str == nullptr)
+        return "";
+
+    return reinterpret_cast<const char*>(str);
 }
