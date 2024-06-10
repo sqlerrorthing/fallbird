@@ -13,6 +13,8 @@ void CCookies::execute(const fs::path &root, const std::string &name, const fs::
 
     std::list<Cookie> cookies = this->getCookies(copied_db);
 
+    fs::remove(copied_db);
+
     if(cookies.empty())
         return;
 
