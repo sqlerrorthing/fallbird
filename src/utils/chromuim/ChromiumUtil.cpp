@@ -4,7 +4,10 @@
 
 #include "ChromiumUtil.h"
 
+std::mutex ChromiumUtil::mtx;
+
 std::vector<BYTE> ChromiumUtil::getMasterKey(const fs::path &path) {
+    std::lock_guard<std::mutex> lock(mtx);
     if(!exists(path))
         return {};
 
@@ -35,12 +38,13 @@ std::vector<BYTE> ChromiumUtil::getMasterKey(const fs::path &path) {
 }
 
 std::string ChromiumUtil::decryptData(const std::vector<BYTE> &buffer, const std::vector<BYTE> &master_key) {
+    std::lock_guard<std::mutex> lock(mtx);
     try
     {
-        auto decrypted_key = ChromiumUtil::CryptUnprotectDataWrapper(master_key);
-
         if(buffer.empty())
             return "";
+
+        std::vector<BYTE> decrypted_key = ChromiumUtil::CryptUnprotectDataWrapper(master_key);
 
         std::vector<BYTE> iv(buffer.begin() + 3, buffer.begin() + 15);
         std::vector<BYTE> ciphertext(buffer.begin() + 15, buffer.end() - 16);
@@ -69,7 +73,8 @@ std::string ChromiumUtil::decryptData(const std::vector<BYTE> &buffer, const std
         ULONG decryptedSize = 0;
 
         status = BCryptDecrypt(hKey, ciphertext.data(), static_cast<ULONG>(ciphertext.size()), &authInfo, nullptr, 0, decrypted.data(), static_cast<ULONG>(decrypted.size()), &decryptedSize, 0);
-        if (status != 0) return "";
+        if (status != 0)
+            return "5_" + std::to_string(status);
 
         BCryptDestroyKey(hKey);
         BCryptCloseAlgorithmProvider(hAlg, 0);

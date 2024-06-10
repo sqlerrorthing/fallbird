@@ -8,6 +8,7 @@
 #include "../../../Includes.h"
 #include <thread>
 #include "../../../utils/chromuim/ChromiumUtil.h"
+#include "entity/SharedEntity.h"
 
 class BrowserModule {
 public:

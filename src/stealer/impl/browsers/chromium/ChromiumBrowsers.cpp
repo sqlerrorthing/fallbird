@@ -74,7 +74,6 @@ void ChromiumBrowsers::execute(fs::path &root) {
 
                 if(browser.first.second)
                 {
-                    moduleThreads.emplace_back([module, &browser, &browserRoot, &profiles]() {
                         for(std::string &profile : profiles) {
                             try {
                                 module->setProfile(profile);
@@ -85,26 +84,17 @@ void ChromiumBrowsers::execute(fs::path &root) {
                                 #endif
                             } catch (...){}
                         }
-                    });
                 }
                 else
                 {
-                    moduleThreads.emplace_back([module, &browser, &browserRoot, &profiles]() {
-                        try{
+                        try {
                             module->execute(browserRoot, browser.first.first, browser.second);
                         } catch (const std::exception& e){
                             #if DEV
                             std::cerr << "DEBUG ERROR: " << e.what() << std::endl;
                             #endif
                         } catch (...){}
-                    });
-                }
-            }
-
-            for(auto& thread : moduleThreads) {
-                if (thread.joinable()) {
-                    thread.join();
-                }
+                 }
             }
         });
     }

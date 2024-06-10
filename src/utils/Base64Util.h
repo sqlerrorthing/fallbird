@@ -6,10 +6,12 @@
 #define STEALER_BASE64UTIL_H
 
 #include "../Includes.h"
+#include <mutex>
 
 class Base64Util {
 public:
     static std::vector<BYTE> b64decode(const std::string &input);
+    static std::mutex mtx;
 };
 
 

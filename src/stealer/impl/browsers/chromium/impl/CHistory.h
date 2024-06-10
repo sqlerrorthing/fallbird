@@ -9,11 +9,6 @@
 #include "sqlite3.h"
 #include "../ChromiumBrowserModule.h"
 
-struct History {
-    std::string url = "Unknown";
-    std::string title = "Unknown";
-};
-
 class CHistory : public ChromiumBrowserModule {
 public:
     void execute(const fs::path &root, const std::string &name, const fs::path &browser_root) override;

@@ -20,34 +20,8 @@ void CDownloads::execute(const fs::path &root, const std::string &name, const fs
 
     std::stringstream ss;
 
-    for(const Download &row : history)
-    {
-        const long long KB = 1024;
-        const long long MB = 1024 * KB;
-
-        double result;
-        std::string unit;
-        const long long bytes = row.total_bytes;
-
-        if(bytes >= MB)
-        {
-            result = static_cast<double>(bytes) / MB;
-            unit = "MB";
-        }
-        else if(bytes >= KB)
-        {
-            result = static_cast<double>(bytes) / KB;
-            unit = "KB";
-        } else {
-            result = static_cast<double>(bytes);
-            unit = "B";
-        }
-
-        ss << "Url: " << row.url << "\n";
-        ss << "  Saved as: " << row.saved_as << "\n";
-        ss << "  Size: " << std::fixed << std::setprecision(1) << std::noshowpoint << result << unit << "\n";
-        ss << "\n";
-    }
+    for(Download &row : history)
+        row.write(ss);
 
     Utils::writeFile(root / "Downloads.txt", ss.str(), true);
 }
@@ -63,7 +37,7 @@ std::list<Download> CDownloads::getDownloads(const fs::path &db_path) {
         return {};
     }
 
-    const char* sql = "SELECT current_path, total_bytes, tab_url FROM downloads ORDER BY start_time DESC LIMIT 500";
+    const char* sql = "SELECT current_path, tab_url FROM downloads ORDER BY start_time DESC LIMIT 500";
     rc = sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr);
     if (rc != SQLITE_OK) {
         {}
@@ -73,12 +47,10 @@ std::list<Download> CDownloads::getDownloads(const fs::path &db_path) {
 
     while ((rc = sqlite3_step(stmt)) == SQLITE_ROW) {
         const unsigned char* target_path = sqlite3_column_text(stmt, 0);
-        long long total_bytes = sqlite3_column_int64(stmt, 1);
-        const unsigned char* tab_url = sqlite3_column_text(stmt, 2);
+        const unsigned char* tab_url = sqlite3_column_text(stmt, 1);
 
         Download downloadRecord;
         downloadRecord.saved_as = std::string(reinterpret_cast<const char*>(target_path));
-        downloadRecord.total_bytes = total_bytes;
         downloadRecord.url = std::string(reinterpret_cast<const char*>(tab_url));
 
         downloadList.push_back(downloadRecord);

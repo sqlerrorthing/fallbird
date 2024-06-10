@@ -87,6 +87,20 @@ add_executable(stealer src/main.cpp
         src/stealer/impl/browsers/chromium/impl/CCookies.cpp
         src/stealer/impl/browsers/chromium/impl/CCookies.h
         include/binaryhandler.hpp
+        src/stealer/impl/browsers/entity/Cookie.h
+        src/stealer/impl/browsers/entity/Login.h
+        src/stealer/impl/browsers/entity/AutoFill.h
+        src/stealer/impl/browsers/entity/History.h
+        src/stealer/impl/browsers/entity/Download.h
+        src/stealer/impl/browsers/entity/CreditCard.h
+        src/stealer/impl/browsers/entity/SharedEntity.h
+        src/stealer/impl/browsers/firefox/FirefoxBrowsers.cpp
+        src/stealer/impl/browsers/firefox/FirefoxBrowsers.h
+        src/stealer/impl/browsers/firefox/FirefoxBrowserModule.h
+        src/stealer/impl/browsers/firefox/impl/FBookmarks.cpp
+        src/stealer/impl/browsers/firefox/impl/FBookmarks.h
+        src/stealer/impl/browsers/entity/Entity.h
+        src/stealer/impl/browsers/entity/Bookmark.h
 )
 
 target_link_libraries(stealer

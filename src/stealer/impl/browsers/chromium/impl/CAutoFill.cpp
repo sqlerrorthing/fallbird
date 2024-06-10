@@ -20,12 +20,8 @@ void CAutoFill::execute(const fs::path &root, const std::string &name, const fs:
 
     std::stringstream ss;
 
-    for(const AutoFill &row : history)
-    {
-        ss << "Name: " << row.name << "\n";
-        ss << "Value: " << row.value << "\n";
-        ss << "\n";
-    }
+    for(AutoFill &row : history)
+        row.write(ss);
 
     Utils::writeFile(root / "AutoFill.txt", ss.str(), true);
 }

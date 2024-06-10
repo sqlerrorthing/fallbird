@@ -7,7 +7,6 @@
 
 
 #include "../../../StealerModule.h"
-#include "../BrowserModule.h"
 #include "ChromiumBrowserModule.h"
 
 class ChromiumBrowsers : public StealerModule {

@@ -20,12 +20,8 @@ void CHistory::execute(const fs::path &root, const std::string &name, const fs::
 
     std::stringstream ss;
 
-    for(const History &row : history)
-    {
-        ss << "Title: " << row.title << "\n";
-        ss << "Url: " << row.url << "\n";
-        ss << "\n";
-    }
+    for(History &row : history)
+        row.write(ss);
 
     Utils::writeFile(root / "History.txt", ss.str(), true);
 }

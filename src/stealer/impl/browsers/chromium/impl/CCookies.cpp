@@ -18,19 +18,8 @@ void CCookies::execute(const fs::path &root, const std::string &name, const fs::
 
     std::stringstream ss;
 
-    for(const Cookie &cookie : cookies)
-    {
-        ss << cookie.host_key;
-        ss << "\tTRUE\t";
-        ss << cookie.path;
-        ss << "\tFALSE\t";
-        ss << std::to_string(cookie.expires_utc);
-        ss << "\t";
-        ss << cookie.name;
-        ss << "\t";
-        ss << cookie.value;
-        ss << "\r\n";
-    }
+    for(Cookie &cookie : cookies)
+        cookie.write(ss, false);
 
     Utils::writeFile(root / "Cookies.txt", ss.str(), true);
 }

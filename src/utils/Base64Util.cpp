@@ -4,6 +4,8 @@
 
 #include "Base64Util.h"
 
+std::mutex Base64Util::mtx;
+
 static const std::string base64_chars =
         "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         "abcdefghijklmnopqrstuvwxyz"
@@ -15,6 +17,7 @@ static inline bool is_base64(BYTE c) {
 }
 
 std::vector<BYTE> Base64Util::b64decode(const std::string &input) {
+    std::lock_guard<std::mutex> lock(mtx);
     size_t in_len = input.size();
     int i = 0;
     int j = 0;
