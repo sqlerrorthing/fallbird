@@ -5,7 +5,7 @@
 #ifndef STEALER_HISTORY_H
 #define STEALER_HISTORY_H
 
-#include "../../../../Includes.h"
+#include "../Includes.h"
 #include "Entity.h"
 
 struct History : public Entity {

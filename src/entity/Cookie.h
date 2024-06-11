@@ -5,7 +5,7 @@
 #ifndef STEALER_COOKIE_H
 #define STEALER_COOKIE_H
 
-#include "../../../../Includes.h"
+#include "../Includes.h"
 #include "Entity.h"
 
 struct Cookie : public Entity {

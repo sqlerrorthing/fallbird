@@ -5,7 +5,7 @@
 #ifndef STEALER_PASSWORD_H
 #define STEALER_PASSWORD_H
 
-#include "../../../../Includes.h"
+#include "../Includes.h"
 #include "Entity.h"
 
 struct Password : public Entity {

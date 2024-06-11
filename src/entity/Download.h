@@ -5,7 +5,7 @@
 #ifndef STEALER_DOWNLOAD_H
 #define STEALER_DOWNLOAD_H
 
-#include "../../../../Includes.h"
+#include "../Includes.h"
 #include "Entity.h"
 
 struct Download : public Entity {

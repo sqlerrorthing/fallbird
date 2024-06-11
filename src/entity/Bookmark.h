@@ -6,7 +6,7 @@
 #define STEALER_BOOKMARK_H
 
 #include "Entity.h"
-#include "../../../../Includes.h"
+#include "../Includes.h"
 
 struct Bookmark : public Entity {
     std::string name;

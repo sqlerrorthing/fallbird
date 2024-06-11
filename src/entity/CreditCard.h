@@ -5,7 +5,7 @@
 #ifndef STEALER_CREDITCARD_H
 #define STEALER_CREDITCARD_H
 
-#include "../../../../Includes.h"
+#include "../Includes.h"
 #include "Entity.h"
 
 struct CreditCard : public Entity {

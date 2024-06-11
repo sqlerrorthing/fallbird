@@ -5,7 +5,7 @@
 #ifndef STEALER_ENTITY_H
 #define STEALER_ENTITY_H
 
-#include "../../../../Includes.h"
+#include "../Includes.h"
 
 struct Entity {
     virtual std::string toString() = 0;
