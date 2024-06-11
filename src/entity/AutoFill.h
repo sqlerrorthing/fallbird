@@ -17,6 +17,8 @@ struct AutoFill : public Entity {
     }
 
     std::string toString() override {
+        Counter::increaseAutoFills();
+
         return "Name: " + this->name + "\n" +
                "Value: " + this->value;
     }

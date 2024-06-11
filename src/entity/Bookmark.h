@@ -17,6 +17,8 @@ struct Bookmark : public Entity {
     }
 
     std::string toString() override {
+        Counter::increaseBookmarks();
+
         return "Name: " + name + "\n" +
                "Url: " + url;
     }

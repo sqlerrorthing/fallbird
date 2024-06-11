@@ -25,6 +25,8 @@ struct MinecraftAccount : public Entity {
     MicrosoftToken microsoftToken;
 
     std::string toString() override {
+        Counter::setMinecraft();
+
         std::stringstream ss;
 
         ss << "Username: " << username << "\n";

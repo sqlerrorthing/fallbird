@@ -20,6 +20,8 @@ struct Cookie : public Entity {
     }
 
     std::string toString() override {
+        Counter::increaseCookies();
+
         return this->host_key +
                "\tTRUE\t" +
                this->path +

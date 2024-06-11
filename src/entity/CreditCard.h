@@ -19,6 +19,8 @@ struct CreditCard : public Entity {
     }
 
     std::string toString() override {
+        Counter::increaseCards();
+
         return  "Card: " + this->card_number + "\n" +
                 "  Expiration: " + std::to_string(this->expiration_month) + "/" + std::to_string(this->expiration_year) + "\n" +
                 "  Name: " + this->name_on_card;

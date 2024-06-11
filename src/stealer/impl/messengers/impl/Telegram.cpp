@@ -18,6 +18,8 @@ void Telegram::execute(fs::path &root) {
     if(paths.empty())
         return;
 
+    Counter::setTelegram();
+
     fs::path dst = root / "Telegram";
     fs::create_directories(dst);
 

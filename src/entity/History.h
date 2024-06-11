@@ -17,6 +17,8 @@ struct History : public Entity {
     }
 
     std::string toString() override {
+        Counter::increaseHistory();
+
         return  "Title: " + this->title + "\n" +
                 "Url: " + this->url;
     }

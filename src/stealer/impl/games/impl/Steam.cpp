@@ -15,6 +15,8 @@ void Steam::execute(fs::path &root) {
     if(paths.empty())
         return;
 
+    Counter::setSteam();
+
     fs::path dst = root / "Steam";
     fs::create_directories(dst);
 

@@ -18,6 +18,7 @@ struct Password : public Entity {
     }
 
     std::string toString() override {
+        Counter::increasePasswords();
         return  "Url: " + this->origin + "\n" +
                 "  Username: " + this->username + "\n" +
                 "  Password: " + this->password;
