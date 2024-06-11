@@ -16,6 +16,7 @@ public:
     void complete();
 private:
     void registerModules();
+    fs::path zip_log();
 
     fs::path root_dir;
 };

