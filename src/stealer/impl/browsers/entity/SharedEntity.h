@@ -10,7 +10,7 @@
 #include "CreditCard.h"
 #include "Download.h"
 #include "History.h"
-#include "Login.h"
+#include "Password.h"
 #include "Bookmark.h"
 
 #endif //STEALER_SHAREDENTITY_H

@@ -11,34 +11,16 @@ void CHistory::execute(const fs::path &root, const std::string &name, const fs::
     if(!exists(copied_db))
         return;
 
-    std::list<History> history = CHistory::getHistory(copied_db);
+    std::list<std::unique_ptr<Entity>> history;
 
-    fs::remove(copied_db);
+    SQLiteUtil::connectAndRead("SELECT url, title FROM urls ORDER BY last_visit_time DESC LIMIT 0, 1000", copied_db, [&history](sqlite3_stmt *stmt) {
+        auto historyRecord = std::make_unique<History>();
+        historyRecord->url = SQLiteUtil::readString(stmt, 0);
+        historyRecord->title = SQLiteUtil::readString(stmt, 1);
 
-    if(history.empty())
-        return;
-
-    std::stringstream ss;
-
-    for(History &row : history)
-        row.write(ss);
-
-    Utils::writeFile(root / "History.txt", ss.str(), true);
-}
-
-std::list<History> CHistory::getHistory(const fs::path &db_path) {
-    std::list<History> history;
-
-    SQLiteUtil::connectAndRead("SELECT url, title FROM urls ORDER BY last_visit_time DESC LIMIT 0, 1000", db_path, [&history](sqlite3_stmt *stmt) {
-        const unsigned char* url = sqlite3_column_text(stmt, 0);
-        const unsigned char* title = sqlite3_column_text(stmt, 1);
-
-        History historyRecord;
-        historyRecord.url = std::string(reinterpret_cast<const char*>(url));
-        historyRecord.title = std::string(reinterpret_cast<const char*>(title));
-
-        history.push_back(historyRecord);
+        history.push_back(std::move(historyRecord));
     });
 
-    return history;
+    fs::remove(copied_db);
+    Entity::writeSelf(root, history);
 }

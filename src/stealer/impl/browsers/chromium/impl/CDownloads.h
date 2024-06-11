@@ -12,8 +12,6 @@
 class CDownloads : public ChromiumBrowserModule {
 public:
     void execute(const fs::path &root, const std::string &name, const fs::path &browser_root) override;
-private:
-    static std::list<Download> getDownloads(const fs::path &db_path);
 };
 
 

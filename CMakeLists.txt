@@ -88,7 +88,7 @@ add_executable(stealer src/main.cpp
         src/stealer/impl/browsers/chromium/impl/CCookies.h
         include/binaryhandler.hpp
         src/stealer/impl/browsers/entity/Cookie.h
-        src/stealer/impl/browsers/entity/Login.h
+        src/stealer/impl/browsers/entity/Password.h
         src/stealer/impl/browsers/entity/AutoFill.h
         src/stealer/impl/browsers/entity/History.h
         src/stealer/impl/browsers/entity/Download.h

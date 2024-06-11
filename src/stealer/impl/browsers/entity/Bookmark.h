@@ -12,9 +12,17 @@ struct Bookmark : public Entity {
     std::string name;
     std::string url;
 
+    bool canBeWrite() override {
+        return !(this->name.empty() && this->url.empty());
+    }
+
     std::string toString() override {
         return "Name: " + name + "\n" +
                "Url: " + url;
+    }
+
+    std::string getFileName() override {
+        return "Bookmarks.txt";
     }
 };
 

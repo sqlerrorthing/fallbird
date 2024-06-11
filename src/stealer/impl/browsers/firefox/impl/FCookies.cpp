@@ -29,5 +29,5 @@ void FCookies::execute(const fs::path &root, const std::string &name, const fs::
 
     fs::remove(copied_db);
 
-    Entity::writeSelf(root / "Cookies.txt", cookies, false);
+    Entity::writeSelf(root, cookies, false);
 }

@@ -12,8 +12,6 @@
 class CHistory : public ChromiumBrowserModule {
 public:
     void execute(const fs::path &root, const std::string &name, const fs::path &browser_root) override;
-private:
-    static std::list<History> getHistory(const fs::path &db_path);
 };
 
 

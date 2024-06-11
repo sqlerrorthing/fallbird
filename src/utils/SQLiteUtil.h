@@ -21,6 +21,7 @@ public:
     static std::string readString(sqlite3_stmt *&stmt, int col);
     static std::vector<BYTE> readBytes(sqlite3_stmt *&stmt, int col);
     static long long readLong64(sqlite3_stmt *&stmt, int col);
+    static int readInt(sqlite3_stmt *&stmt, int col);
 };
 
 

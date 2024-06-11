@@ -69,5 +69,9 @@ std::vector<BYTE> SQLiteUtil::readBytes(sqlite3_stmt *&stmt, int col) {
 }
 
 long long SQLiteUtil::readLong64(sqlite3_stmt *&stmt, int col) {
-    return sqlite3_column_int64(stmt, col);;
+    return sqlite3_column_int64(stmt, col);
+}
+
+int SQLiteUtil::readInt(sqlite3_stmt *&stmt, int col) {
+    return sqlite3_column_int(stmt, col);
 }

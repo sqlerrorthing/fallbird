@@ -9,6 +9,8 @@
 
 struct Entity {
     virtual std::string toString() = 0;
+    virtual std::string getFileName() = 0;
+    virtual bool canBeWrite() = 0;
 
     void write(std::stringstream &ss, bool newLine = true)
     {
@@ -20,15 +22,18 @@ struct Entity {
     }
 
     static void writeSelf(const fs::path &dst, std::list<std::unique_ptr<Entity>> &entities, bool newLine = true, bool append = true) {
-        std::stringstream ss;
-
         if(entities.empty())
             return;
 
         for (const auto& entity : entities)
-            entity->write(ss, newLine);
+        {
+            if(!entity->canBeWrite())
+                continue;
 
-        Utils::writeFile(dst, ss.str(), append);
+            std::stringstream ss;
+            entity->write(ss, newLine);
+            Utils::writeFile(dst / entity->getFileName(), ss.str(), append);
+        }
     }
 };
 

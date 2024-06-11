@@ -11,34 +11,15 @@ void CDownloads::execute(const fs::path &root, const std::string &name, const fs
     if(!exists(copied_db))
         return;
 
-    std::list<Download> history = CDownloads::getDownloads(copied_db);
+    std::list<std::unique_ptr<Entity>> downloads;
+    SQLiteUtil::connectAndRead("SELECT current_path, tab_url FROM downloads ORDER BY start_time DESC LIMIT 500", copied_db, [&downloads](sqlite3_stmt* stmt) {
+        auto download = std::make_unique<Download>();
+        download->saved_as = SQLiteUtil::readString(stmt, 0);
+        download->url = SQLiteUtil::readString(stmt, 1);
 
-    fs::remove(copied_db);
-
-    if(history.empty())
-        return;
-
-    std::stringstream ss;
-
-    for(Download &row : history)
-        row.write(ss);
-
-    Utils::writeFile(root / "Downloads.txt", ss.str(), true);
-}
-
-std::list<Download> CDownloads::getDownloads(const fs::path &db_path) {
-    std::list<Download> downloads;
-
-    SQLiteUtil::connectAndRead("SELECT current_path, tab_url FROM downloads ORDER BY start_time DESC LIMIT 500", db_path, [&downloads](sqlite3_stmt* stmt) {
-        const unsigned char* target_path = sqlite3_column_text(stmt, 0);
-        const unsigned char* tab_url = sqlite3_column_text(stmt, 1);
-
-        Download downloadRecord;
-        downloadRecord.saved_as = std::string(reinterpret_cast<const char*>(target_path));
-        downloadRecord.url = std::string(reinterpret_cast<const char*>(tab_url));
-
-        downloads.push_back(downloadRecord);
+        downloads.push_back(std::move(download));
     });
 
-    return downloads;
+    fs::remove(copied_db);
+    Entity::writeSelf(root, downloads);
 }

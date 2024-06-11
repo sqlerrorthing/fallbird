@@ -11,31 +11,26 @@ void CBookmarks::execute(const fs::path &root, const std::string &name, const fs
         return;
 
     json j = json::parse(data);
-    std::list<Bookmark> bookmarks;
+    std::list<std::unique_ptr<Entity>> bookmarks;
 
-    if (j.contains("roots") && j["roots"].contains("bookmark_bar")) {
-        try
-        {
+    if(j.contains("roots") && j["roots"].contains("bookmark_bar")) {
+        try {
             CBookmarks::getBookmark(j["roots"]["bookmark_bar"], bookmarks);
         }
-        catch (...) {} // ignored
+        catch (...) {}
     }
 
-    std::stringstream output;
-    for(Bookmark &bookmark : bookmarks)
-        bookmark.write(output);
-
-    Utils::writeFile(root / "Bookmarks.txt", output.str(), true);
+    Entity::writeSelf(root, bookmarks);
 }
 
-void CBookmarks::getBookmark(const json &j, std::list<Bookmark> &data) {
-    if (j.contains("url")) {
-        Bookmark bookmark;
-        bookmark.name = j["name"];
-        bookmark.url = j["url"];
+void CBookmarks::getBookmark(const json &j, std::list<std::unique_ptr<Entity>> &data) {
+    if(j.contains("url")) {
+        auto bookmark = std::make_unique<Bookmark>();
+        bookmark->name = j["name"];
+        bookmark->url = j["url"];
 
-        data.push_back(bookmark);
-    } else if (j.contains("children")) {
+        data.push_back(std::move(bookmark));
+    } else if(j.contains("children")) {
         for (const auto& child : j["children"]) {
             CBookmarks::getBookmark(child, data);
         }

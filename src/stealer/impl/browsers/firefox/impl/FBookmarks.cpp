@@ -29,5 +29,5 @@ void FBookmarks::execute(const fs::path &root, const std::string &name, const fs
 
     fs::remove(copied_db);
 
-    Entity::writeSelf(root / "Bookmarks.txt", bookmarks);
+    Entity::writeSelf(root, bookmarks);
 }

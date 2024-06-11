@@ -15,6 +15,10 @@ struct Cookie : public Entity {
     std::string path;
     long long expires_utc;
 
+    bool canBeWrite() override {
+        return !(host_key.empty() && name.empty() && value.empty() && path.empty() && 0 == expires_utc);
+    }
+
     std::string toString() override {
         return this->host_key +
                "\tTRUE\t" +
@@ -26,6 +30,10 @@ struct Cookie : public Entity {
                "\t" +
                this->value +
                "\r";
+    }
+
+    std::string getFileName() override {
+        return "Cookies.txt";
     }
 };
 

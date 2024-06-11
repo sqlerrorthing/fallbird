@@ -14,10 +14,18 @@ struct CreditCard : public Entity {
     int expiration_month;
     int expiration_year;
 
+    bool canBeWrite() override {
+        return !(name_on_card.empty() && card_number.empty() && 0 == expiration_year && 0 == expiration_month);
+    }
+
     std::string toString() override {
         return  "Card: " + this->card_number + "\n" +
                 "  Expiration: " + std::to_string(this->expiration_month) + "/" + std::to_string(this->expiration_year) + "\n" +
                 "  Name: " + this->name_on_card;
+    }
+
+    std::string getFileName() override {
+        return "Credit Cards.txt";
     }
 };
 
