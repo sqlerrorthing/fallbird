@@ -17,17 +17,17 @@ add_executable(stealer src/main.cpp
         src/stealer/impl/Screenshot.cpp
         src/stealer/impl/Screenshot.h
         include/xorstr.hpp
-        src/stealer/impl/socials/Socials.cpp
-        src/stealer/impl/socials/Socials.h
-        src/stealer/impl/socials/impl/Discord.cpp
-        src/stealer/impl/socials/impl/Discord.h
+        src/stealer/impl/messengers/Socials.cpp
+        src/stealer/impl/messengers/Socials.h
+        src/stealer/impl/messengers/impl/Discord.cpp
+        src/stealer/impl/messengers/impl/Discord.h
         include/json.hpp
         src/utils/StringUtil.cpp
         src/utils/StringUtil.h
         src/utils/HttpUtil.cpp
         src/utils/HttpUtil.h
-        src/stealer/impl/socials/impl/Telegram.cpp
-        src/stealer/impl/socials/impl/Telegram.h
+        src/stealer/impl/messengers/impl/Telegram.cpp
+        src/stealer/impl/messengers/impl/Telegram.h
         src/stealer/impl/files/Files.cpp
         src/stealer/impl/files/Files.h
         src/stealer/impl/Info.cpp
@@ -109,8 +109,8 @@ add_executable(stealer src/main.cpp
         src/stealer/impl/browsers/firefox/impl/FPasswords.h
         src/stealer/impl/browsers/firefox/impl/FCookies.cpp
         src/stealer/impl/browsers/firefox/impl/FCookies.h
-        src/stealer/impl/socials/impl/Tox.cpp
-        src/stealer/impl/socials/impl/Tox.h
+        src/stealer/impl/messengers/impl/Tox.cpp
+        src/stealer/impl/messengers/impl/Tox.h
 )
 
 target_link_libraries(stealer

