@@ -14,7 +14,9 @@ namespace fs = std::filesystem;
 
 class Utils {
 public:
-    static std::string generateString(size_t length);
+    static std::string generateString(size_t length, const std::string &characters = "0123456789"
+                                                                                     "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                                                                                     "abcdefghijklmnopqrstuvwxyz");
     static fs::path getTemp();
     static fs::path getUserHome();
     static fs::path getRoamingPath();

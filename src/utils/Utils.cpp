@@ -5,11 +5,7 @@
 #include <fstream>
 #include "Utils.h"
 
-std::string Utils::generateString(size_t length) {
-    const std::string characters =
-            "0123456789"
-            "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-            "abcdefghijklmnopqrstuvwxyz";
+std::string Utils::generateString(size_t length, const std::string &characters) {
 
     std::random_device rd;
     std::mt19937 generator(rd());
