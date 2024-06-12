@@ -6,5 +6,6 @@
 #define STEALER_CONFIG_H
 
 #define VERSION "1.0.0"
+#define NAME "Plustealer"
 
 #endif //STEALER_CONFIG_H

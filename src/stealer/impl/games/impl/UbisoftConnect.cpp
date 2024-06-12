@@ -12,7 +12,7 @@ void UbisoftConnect::execute(fs::path &root) {
     if(paths.empty())
         return;
 
-    Counter::setSteam();
+    Counter::setUbisoftConnect();
 
     fs::path dst = root / "Ubisoft Connect";
     fs::create_directories(dst);
