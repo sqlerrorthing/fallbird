@@ -8,11 +8,14 @@
 #include <windows.h>
 #include <wininet.h>
 #include <unordered_map>
+#include <json.hpp>
+
+using json = nlohmann::json;
 
 class HttpUtil {
 public:
     static std::pair<std::string, int> sendHttpRequest(const std::string& url, const std::unordered_map<std::string, std::string> &headers = {});
-
+    static void sentPostRequest(const std::string &url, const json &data);
 };
 
 

@@ -79,7 +79,7 @@ void ChromiumBrowsers::execute(fs::path &root) {
                                 module->setProfile(profile);
                                 module->execute(browserRoot, browser.first.first, browser.second);
                             } catch (const std::exception& e) {
-                                #if DEV
+                                #ifdef DEV
                                     std::cerr << "DEBUG ERROR: " << e.what() << std::endl;
                                 #endif
                             } catch (...){}
@@ -90,7 +90,7 @@ void ChromiumBrowsers::execute(fs::path &root) {
                         try {
                             module->execute(browserRoot, browser.first.first, browser.second);
                         } catch (const std::exception& e){
-                            #if DEV
+                            #ifdef DEV
                             std::cerr << "DEBUG ERROR: " << e.what() << std::endl;
                             #endif
                         } catch (...){}

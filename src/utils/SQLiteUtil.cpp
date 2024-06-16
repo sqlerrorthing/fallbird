@@ -23,7 +23,7 @@ void SQLiteUtil::connectAndExecute(const char *sql, const fs::path &db_path,
 
     callback(rc, stmt);
     if (rc != SQLITE_DONE) {
-#if DEV
+#ifdef DEV
         std::cerr << "Execution failed: " << sqlite3_errmsg(db) << std::endl;
 #endif
     }
@@ -40,7 +40,7 @@ void SQLiteUtil::connectAndRead(const char *sql, const fs::path &db_path,
                 callback(stmt);
             }
             catch (...) {
-#if DEV
+#ifdef DEV
                 std::cerr << "Error when trying to get something in the database " << db_path.string() << std::endl;
 #endif
             }

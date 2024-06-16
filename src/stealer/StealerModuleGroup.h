@@ -23,7 +23,7 @@ protected:
                 }
                 catch (const std::exception& e)
                 {
-                    #if DEV
+                    #ifdef DEV
                         std::cerr << "DEBUG ERROR: " << e.what() << std::endl;
                     #endif
                 }

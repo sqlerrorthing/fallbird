@@ -48,7 +48,7 @@ std::string Utils::readFile(const fs::path &source_path) {
 
     if(is_directory(source_path))
     {
-        #if DEV
+        #ifdef DEV
             std::cout << "Attempt to read file " << source_path.string() << " but its directory!";
         #endif
     }
@@ -113,17 +113,17 @@ void Utils::copy(const fs::path &src, const fs::path &dst) {
             } else if (fs::is_regular_file(src)) {
                 Utils::copyFile(src, destination);
             } else {
-                #if DEV
+                #ifdef DEV
                     std::cerr << "Source path is neither a file nor a directory." << std::endl;
                 #endif
             }
         } else {
-            #if DEV
+            #ifdef DEV
                 std::cerr << "Source or destination path does not exist or destination is not a directory." << std::endl;
             #endif
         }
     } catch (fs::filesystem_error& e) {
-        #if DEV
+        #ifdef DEV
             std::cerr << "Filesystem error: " << e.what() << std::endl;
         #endif
     }

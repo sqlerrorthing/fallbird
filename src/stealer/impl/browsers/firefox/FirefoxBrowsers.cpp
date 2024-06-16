@@ -43,7 +43,7 @@ void FirefoxBrowsers::execute(fs::path &root) {
                         module->setProfile(profile);
                         module->execute(browserRoot, browser.first, browser.second);
                     } catch (const std::exception& e) {
-                        #if DEV
+                        #ifdef DEV
                             std::cerr << "DEBUG ERROR: " << e.what() << std::endl;
                         #endif
                     } catch (...){}

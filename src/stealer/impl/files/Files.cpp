@@ -26,7 +26,7 @@ void Files::steal_directory(const fs::path &path, const fs::path &out) {
         }
     }
     catch (fs::filesystem_error& e) {
-        #if DEV
+        #ifdef DEV
             std::cerr << "Filesystem error: " << e.what() << std::endl;
         #endif
     }
@@ -57,7 +57,7 @@ void Files::check_and_save_file(const fs::path &path, const fs::path &rel_path, 
         this->stealed_size+=fs::file_size(path);
     }
     catch (fs::filesystem_error& e) {
-        #if DEV
+        #ifdef DEV
             std::cerr << "Filesystem error: " << e.what() << std::endl;
         #endif
     }

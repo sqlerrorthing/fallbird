@@ -41,3 +41,79 @@ std::pair<std::string, int> HttpUtil::sendHttpRequest(const std::string &url, co
 
     return {response, statusCode};
 }
+
+void HttpUtil::sentPostRequest(const std::string &url, const nlohmann::json &data) {
+    std::string jsonData = data.dump();
+
+    HINTERNET hSession = InternetOpen("HTTP_POST",
+                                      INTERNET_OPEN_TYPE_DIRECT,
+                                      NULL,
+                                      NULL,
+                                      0);
+
+    if (!hSession) {
+        return;
+    }
+
+    URL_COMPONENTS urlComponents = {0};
+    urlComponents.dwStructSize = sizeof(urlComponents);
+    char hostName[256];
+    char urlPath[256];
+    urlComponents.lpszHostName = hostName;
+    urlComponents.dwHostNameLength = _countof(hostName);
+    urlComponents.lpszUrlPath = urlPath;
+    urlComponents.dwUrlPathLength = _countof(urlPath);
+
+    if (!InternetCrackUrl(url.c_str(), 0, 0, &urlComponents)) {
+        InternetCloseHandle(hSession);
+        return;
+    }
+
+    HINTERNET hConnect = InternetConnect(hSession,
+                                         urlComponents.lpszHostName,
+                                         urlComponents.nPort,
+                                         NULL,
+                                         NULL,
+                                         INTERNET_SERVICE_HTTP,
+                                         0,
+                                         0);
+
+    if (!hConnect) {
+        InternetCloseHandle(hSession);
+        return;
+    }
+
+    DWORD dwFlags = INTERNET_FLAG_RELOAD;
+    if (urlComponents.nScheme == INTERNET_SCHEME_HTTPS) {
+        dwFlags |= INTERNET_FLAG_SECURE;
+    }
+
+    HINTERNET hRequest = HttpOpenRequest(hConnect,
+                                         "POST",
+                                         urlComponents.lpszUrlPath,
+                                         NULL,
+                                         NULL,
+                                         NULL,
+                                         dwFlags,
+                                         0);
+
+    if (!hRequest) {
+        InternetCloseHandle(hConnect);
+        InternetCloseHandle(hSession);
+        return;
+    }
+
+    if (!HttpAddRequestHeaders(hRequest, "Content-Type: application/json", -1, HTTP_ADDREQ_FLAG_ADD | HTTP_ADDREQ_FLAG_REPLACE)) {
+        InternetCloseHandle(hRequest);
+        InternetCloseHandle(hConnect);
+        InternetCloseHandle(hSession);
+        return;
+    }
+
+    HttpSendRequest(hRequest, NULL, 0, (LPVOID)jsonData.c_str(), jsonData.size());
+
+    // Очистка
+    InternetCloseHandle(hRequest);
+    InternetCloseHandle(hConnect);
+    InternetCloseHandle(hSession);
+}

